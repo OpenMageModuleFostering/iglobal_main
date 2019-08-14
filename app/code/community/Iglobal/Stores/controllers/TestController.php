@@ -6,9 +6,9 @@ class Iglobal_Stores_TestController extends Mage_Core_Controller_Front_Action
     {
 
 	echo "in the controller <br/>";
-	
+	echo Mage::getStoreConfig('iglobal_integration/igmat/flag_code');
 
-        $_order = $this->getRequest()->getParam('orderId', null);
+       /* $_order = $this->getRequest()->getParam('orderId', null);
 
 	
  
@@ -33,7 +33,7 @@ class Iglobal_Stores_TestController extends Mage_Core_Controller_Front_Action
 	    if ($data['testOrder'] = true) {
 		echo "stuff <br />";
 	     }
-
+*/
     }
 
 }

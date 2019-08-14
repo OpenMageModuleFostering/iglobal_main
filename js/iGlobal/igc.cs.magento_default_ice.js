@@ -43,6 +43,10 @@ function igcCheckout() {
     igcGoToCheckout(igStoreId);
 }
 
+function getSelectedCountry() { 
+	return ig_country; 
+}
+
 function getSubDomain() {
     return igSubdomain;
 } 

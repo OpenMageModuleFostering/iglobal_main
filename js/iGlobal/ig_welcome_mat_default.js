@@ -46,7 +46,7 @@ var ajaxResult = igJq.ajax({
 						var ajaxResult = eval("(" + data + ")");
 						//console.log(ajaxResult);
 								//store ID
-						if (ajaxResult.storeId){
+						if (ajaxResult.storeId && ajaxResult.storeId != "Your Store ID Goes Here"){
 							 // store ID is set
 							 ig_storeId = ajaxResult.storeId;
 						}
@@ -96,7 +96,7 @@ var ajaxResult = igJq.ajax({
 				}); 
 
 
-//console.log('outside: id: ' + ig_storeId + ' || flag: ' + ig_flagLocation + ' || Logo: ' + ig_logoUrl  + ' || Domestic countries: ' + ig_domestic + " || Serviced Countries: " + ig_countries);
+console.log('outside: method: ' + ig_flagMethod + ' || flag: ' + ig_flagLocation + ' || code: ' + ig_flagCode  + ' || Domestic countries: ' + ig_domestic + " || Serviced Countries: " + ig_countries);
 
 
 
@@ -126,17 +126,17 @@ igJq(function(){
 */
 
 igJq(function(){
-	if (ig_flagMethod = "prepend"){
+	if (ig_flagMethod == "prepend"){
 		igJq(ig_flagLocation).prepend(ig_flagCode);	
 	}
-	else if (ig_flagMethod = "append"){
+	else if (ig_flagMethod == "append"){
 		igJq(ig_flagLocation).append(ig_flagCode);	
 	}
-	else if (ig_flagMethod = "before"){
+	else if (ig_flagMethod == "before"){
 		igJq(ig_flagLocation).before(ig_flagCode);	
 	}
-	else if (ig_flagMethod = "after"){
-		igJq(ig_flagLocation).pafter(ig_flagCode);	
+	else if (ig_flagMethod == "after"){
+		igJq(ig_flagLocation).after(ig_flagCode);	
 	}
 	else {
 		igJq(ig_flagLocation).prepend(ig_flagCode);	

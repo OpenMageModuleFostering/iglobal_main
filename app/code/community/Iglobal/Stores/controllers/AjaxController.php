@@ -45,14 +45,14 @@ class Iglobal_Stores_AjaxController extends Mage_Core_Controller_Front_Action
 			$matData['flag_parent'] = Mage::getStoreConfig('iglobal_integration/igmat/flag_parent');
 		 }
 		 
-		// TODO: flag placement method		
+		//  flag placement method		
 		if  (Mage::getStoreConfig('iglobal_integration/igmat/flag_method')) {
 			$matData['flag_method'] = Mage::getStoreConfig('iglobal_integration/igmat/flag_method');
 		 }
 		
-		// TODO: flag placement code		
-		if  (Mage::getStoreConfig('iglobal_integration/igmat/flag_code')) {
-			$matData['flag_method'] = Mage::getStoreConfig('iglobal_integration/igmat/flag_code');
+		//  flag placement code		
+		if  (true || Mage::getStoreConfig('iglobal_integration/igmat/flag_code')) {
+			$matData['flag_code'] = Mage::getStoreConfig('iglobal_integration/igmat/flag_code');
 		 }
 		 
 		//figure out what countries are serviced
