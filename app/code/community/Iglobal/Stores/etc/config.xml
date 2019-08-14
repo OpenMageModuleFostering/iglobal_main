@@ -181,6 +181,16 @@
         </routers>
     </admin>
     <global>
+        <sales>
+            <quote>
+                <totals>
+                    <tax>
+                        <class>stores/sales_quote_address_total_fee</class>
+                        <before>subtotal</before>
+                    </tax>
+                </totals>
+            </quote>
+        </sales>
         <events>
             <core_block_abstract_prepare_layout_before>
                 <observers>

@@ -15,9 +15,10 @@
 
 
 	foreach ($cart->getAllVisibleItems() as $item) {
-	      
+
 	        echo '<div class="igItemDetails '.$item->getName().'">';
-		 
+		$product = $item->getProduct();
+
 		/* figure this item type problem out, okay? 
 		
 		$options = $item->getOptionByCode('simple_product')->getProduct()->getTypeInstance(true)->getOrderOptions($item->getProduct());
@@ -27,7 +28,7 @@
 			if(isset($options['options'])){
 			
 				echo '<span class="igItemOptions"><dl class="igOptionsList">';
-				
+
 				$optionArray = $options['options'];
 				foreach ($optionArray as $optionDetails) {
 					echo '<dt>' . $optionDetails['label'] . '</dt>';
@@ -51,13 +52,13 @@
 
 		 echo '<span class="igPrice">'.$item->getPrice().'</span>';
 
-		 echo '<span class="igUrl">'.Mage::getModel('catalog/product')->load($item->getProductId())->getProductUrl().'</span>';
+		 echo '<span class="igUrl">'.$product->getProductUrl().'</span>';
 
 		 echo '<span class="igImage">'. str_replace("http:", "https:",Mage::helper('catalog/image')->init($item->getProduct(), 'thumbnail')).'</span>';
 
-		 echo '<span class="igDescription">'. Mage::getModel('catalog/product')->load($item->getProductId())->getDescription().'</span>'; 
+		 echo '<span class="igDescription">'.$product->getDescription().'</span>';
 
-		 echo '<span class="igShortDescription">'. Mage::getModel('catalog/product')->load($item->getProductId())->getShortDescription().'</span>';
+		 echo '<span class="igShortDescription">'.$product->getShortDescription().'</span>';
 		 
 		 echo '<span class="MageWeight">'.$item->getWeight().'</span>';
 
@@ -67,7 +68,7 @@
 
 		 //starts here
 
-		 $sku = $item->getProduct()->getTypeId() == 'bundle' ? substr($item->getSku(), strpos($item->getSku(), '-')+1) : $item->getSku();
+        $sku = $product->getTypeId() == 'bundle' ? substr($item->getSku(), strpos($item->getSku(), '-')+1) : $item->getSku();
 
         $id = $item->getProductId();
 
@@ -87,10 +88,6 @@
 
         try {
 
-
-
-            $allItemData = Mage::getModel('catalog/product')->load($item['product_id']);
-
             $weightUnits = "";
 
             $dimUnits = "";
@@ -99,9 +96,9 @@
 
                 $weightUnits = "";
 
-                if (!empty($allItemData['ig_weight_units'])) {
+                if (!empty($product['ig_weight_units'])) {
 
-                    $weightUnits = $allItemData->getAttributeText('ig_weight_units');
+                    $weightUnits = $product->getAttributeText('ig_weight_units');
 
                 }
 
@@ -115,11 +112,11 @@
 
                 $weight = "";
 
-                if (!empty($allItemData['ig_weight'])) {
+                if (!empty($product['ig_weight'])) {
 
-                    $weight = $allItemData->getData('ig_weight');
+                    $weight = $product->getData('ig_weight');
 
-                } else if (!empty($allItemData['weight'])) {
+                } else if (!empty($product['weight'])) {
 
 			$weight = $item->getWeight();
 
@@ -161,9 +158,9 @@
 
                 $dimUnits = "";
 
-                if (!empty($allItemData['ig_dimension_units'])) {
+                if (!empty($product['ig_dimension_units'])) {
 
-                    $dimUnits = $allItemData->getAttributeText('ig_dimension_units');
+                    $dimUnits = $product->getAttributeText('ig_dimension_units');
 
                 }
 
@@ -177,25 +174,25 @@
 
                 $length = "";
 
-                if (!empty($allItemData['ig_length'])) {
+                if (!empty($product['ig_length'])) {
 
-                    $length = $allItemData->getData('ig_length');
+                    $length = $product->getData('ig_length');
 
                 }
 
                 $width = "";
 
-                if (!empty($allItemData['ig_width'])) {
+                if (!empty($product['ig_width'])) {
 
-                    $width = $allItemData->getData('ig_width');
+                    $width = $product->getData('ig_width');
 
                 }
 
                 $height = "";
 
-                if (!empty($allItemData['ig_height'])) {
+                if (!empty($product['ig_height'])) {
 
-                    $height = $allItemData->getData('ig_height');
+                    $height = $product->getData('ig_height');
 
                 }
 

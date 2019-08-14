@@ -86,11 +86,11 @@ class Iglobal_Stores_Model_Observer
     public function orderRec () {	
 	
 		//get array with all orders in past
-		$rest = Mage::getModel('stores/rest_order'); // get rest model		
+		$rest = Mage::getModel('stores/rest'); // get rest model
 			
 			//fetch all orders for the store from iGlobal server		
 			$data = $rest->getAllOrdersSinceDate('20140526');
-			$orderData = $data['order'];		
+			$orderData = $data['order'];
 			$restOrders = array();
 			
 			//build array of orders with keypairs "ig_order_number" => "the number as a string"
