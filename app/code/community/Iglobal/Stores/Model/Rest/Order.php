@@ -25,7 +25,7 @@ class Iglobal_Stores_Model_Rest_Order extends Mage_Core_Model_Abstract
 		}
 		
 		//set entryPoint
-        $this->_entryPoint = 'https://checkout.iglobalstores.com'; //change this to "https://checkout.iglobalstores.com' when you go live
+        $this->_entryPoint = 'https://checkout.iglobalstores.com'; 
 		
     }
     
@@ -68,7 +68,10 @@ class Iglobal_Stores_Model_Rest_Order extends Mage_Core_Model_Abstract
         $data = array('operation'=>'orderDetail', 'orderId' => $order);
         $client = $this->getRestClient();
         $result = $client->restPost('iglobalstores/services/OrderRestService/v1.06', $this->addCredentials($data))->getBody();
-
+//echo "Rest result: <br />";
+//Zend_Debug::dump($result);
+//Mage::log("The rest result for order {$order}:"  . Zend_Debug::dump($result), 'mattscustom.log', true);
+Mage::log("The rest result for order {$order}:" . print_r($result, true), null, 'mattscustom.log', true);	
         $result = mb_convert_encoding($result, "HTML-ENTITIES", "UTF-8");
         return json_decode(json_encode((array) simplexml_load_string($result)),1);
     }

@@ -40,7 +40,7 @@
 	}
 
 	//set includes for ICE and main
-	if ((false !== strpos($url,'cart')) || (false !== strpos($url,'checkout'))) {
+	if (Mage::getStoreConfig('iglobal_integration/apireqs/ice_toggle') && ((false !== strpos($url,'cart')) || (false !== strpos($url,'checkout')))) {
 		
 		//include main js
 		 echo '<script type="text/javascript" src="https://checkout.iglobalstores.com/js/igc.cs.main.js"></script>'; 

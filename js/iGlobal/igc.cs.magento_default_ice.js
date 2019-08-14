@@ -5,13 +5,12 @@ $igc =jQuery
 	//identify the store
 	var igStoreId = "3"; //this can be set by updating the "iGlobal Store ID Number" in Magento conficuration options
 	var igSubdomain = "checkout"; //this can be set by updating the "iGlobal Hosted Checkout Subdomain" in Magento conficuration options
-	var igCartUrl = "/magento/index.php/checkout/cart";
-	var ajaxPath = window.location.href.replace(window.location.origin, '');
-	ajaxPath = '/magento/index.php/iglobal/ajax/icedata'; //override this to adjust for different paths in different installs
+	var igCartUrl = "/checkout/cart";
+	var ajaxPath = '/iglobal/ajax/icedata';
+	//ajaxPath = '/magento/index.php/iglobal/ajax/icedata'; //override used on some testing installs
 	
 $igc.post (
 	ajaxPath,
-	//'/magento/iglobal/ajax/icedata',
 	function(data){
 	
 		//console.log(data);
@@ -37,7 +36,7 @@ $igc.post (
 //}
 
 function igcCheckout() {
-//TODO: reset to store 3
+
     igcGoToCheckout(igStoreId);
 }
 
@@ -112,6 +111,7 @@ function ig_recordOnClick () {
 		//hide the shipping estimate and discount codes for int'l visitors 
 		$igc(".shipping").show();
 		$igc(".discount").show();
+		$igc('a[title="Checkout with Multiple Addresses"]').show();
 	}
 
 
@@ -127,6 +127,7 @@ function ig_recordOnClick () {
 		//hide the shipping estimate and discount codes for int'l visitors 
 		$igc(".shipping").hide();
 		$igc(".discount").hide();
+		$igc('a[title="Checkout with Multiple Addresses"]').hide();
 		
 	}
 
@@ -177,13 +178,7 @@ $igc(document).ready(function(){
 			
 				ig_recordOnClick();
 				
-				if(!ig_isDomesticCountry()){
-				
-						
-					//hide the shipping estimate and discount codes for int'l visitors 
-					//$igc(".shipping").hide();
-					//$igc(".discount").hide();
-		
+				if(!ig_isDomesticCountry()){		
 
 					ig_internationalActions ();	
 					

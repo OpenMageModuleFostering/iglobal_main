@@ -22,7 +22,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 
 			$rest = Mage::getModel('stores/rest_order');
 			$data = $rest->getOrder($_order);
-			
+			//Mage::log("the data in the controller for order {$_order}:" . print_r($data, true), null, 'mattscustom.log', true);	
 			//set ddp
 			$quote->setFeeAmount($data['dutyTaxesTotal']); 
 			
@@ -97,6 +97,11 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 			} else {
 				$billingAddressData = $addressData;
 			}
+			
+
+			//Mage::log('address data for order {$_order}: ' . print_r($addressData, true), null, 'mattscustom.log', true);
+		
+			//Mage::log('billing address data for order {$_order}: ' . print_r($billingAddressData, true), null, 'mattscustom.log', true);	
 
 			//Figure out shipping carrier name etc.
 			$shippingRate = $data['shippingTotal'];
@@ -208,6 +213,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 			$quote->getPayment()->importData(array('method' => $paymentType));
 
 			$quote->collectTotals()->save();
+			$quote->setIsActive(0)->save();
 
 			$service = Mage::getModel('stores/service_quote', $quote);
 			$service->submitAll();
@@ -274,6 +280,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 				$adminEmail = Mage::getStoreConfig('iglobal_integration/apireqs/admin_email');
 			} 
 			mail('monitoring@iglobalstores.com', 'Magento Integration Error - International order failed to import', 'International order# '. $_order .'.'. ' Exception Message: '.$e->getMessage());
+			mail('magentomissedorders@iglobalstores.com', 'Magento Integration Error - International order failed to import', 'International order# '. $_order .'.'. ' Exception Message: '.$e->getMessage());
 			 if ($adminEmail) {
 				mail($adminEmail, 'iGlobal Import Error - International order failed to import', 'iGlobal International order# '. $_order . " failed to import properly.  We've already received notice of the problem, and are probably working on it as you read this.  Until then, you may manually enter the order, or give us a call for help at 1-800-942-0721." );
 			} 

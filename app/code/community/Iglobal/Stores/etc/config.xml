@@ -4,7 +4,7 @@
 <config>    
     <modules>
         <Iglobal_Stores>
-            <version>1.0.7</version>
+            <version>1.0.8</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
@@ -277,6 +277,7 @@
 		<apireqs>
 			<secret>Your API Code Goes Here</secret>
 			<iglobalid>Your Store ID Goes Here</iglobalid>
+			<ice_toggle>0</ice_toggle>
 		</apireqs>
 		<igmat>
 			<welcome_mat_active>0</welcome_mat_active>

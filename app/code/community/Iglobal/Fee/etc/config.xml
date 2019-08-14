@@ -49,7 +49,7 @@
                 <totals>
                     <fee>
 						<class>fee/sales_quote_address_total_fee</class>
-						<after>tax</after>
+						<before>subtotal</before>
                     </fee>
                 </totals>
             </quote>
@@ -57,7 +57,7 @@
                 <totals>
                     <fee>
                         <class>fee/sales_order_total_invoice_fee</class>
-						<after>tax</after>
+						<before>subtotal</before>
                     </fee>
                 </totals>
             </order_invoice>
@@ -65,7 +65,7 @@
                 <totals>
                     <fee>
                         <class>fee/sales_order_total_creditmemo_fee</class>
-						<after>tax</after>
+						<before>subtotal</before>
                     </fee>
                 </totals>
             </order_creditmemo>

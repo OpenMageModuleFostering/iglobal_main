@@ -113,7 +113,18 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>                    
-					</ice>
+					</ice>	
+					
+					<ice_toggle>
+						<label>Turn on International Checkout?</label>
+						<comment>Turn on to enable iGlobal International Checkout. Leave this off until setup and testing has been completed!</comment>
+						<frontend_type>select</frontend_type>
+						<source_model>adminhtml/system_config_source_yesno</source_model>
+						<sort_order>5</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>                  
+					</ice_toggle>
 											
 					<heading_error translate="label">
 						<label>Error Reporting</label>
@@ -170,9 +181,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>
-						<depends>
-							<welcome_mat_active>1</welcome_mat_active>
-						</depends>
+						<!--<depends><welcome_mat_active>1</welcome_mat_active></depends>-->
 					</welcome_mat_script>
 											
 					<welcome_mat_css translate="label comment">
@@ -184,9 +193,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>
-						<depends>
-							<welcome_mat_active>1</welcome_mat_active>
-						</depends>
+						<!--<depends><welcome_mat_active>1</welcome_mat_active></depends>-->
 					</welcome_mat_css>
 					
 					<flag_parent>
@@ -197,9 +204,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>      
-						<depends>
-							<welcome_mat_active>1</welcome_mat_active>
-						</depends>              
+						<!--<depends><welcome_mat_active>1</welcome_mat_active></depends>-->              
 					</flag_parent>
 					
 				<!--	<flag_method>
@@ -224,9 +229,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>      
-						<depends>
-							<welcome_mat_active>1</welcome_mat_active>
-						</depends>              
+						<!--<depends><welcome_mat_active>1</welcome_mat_active></depends>-->             
 					</flag_method>
 					
 					<flag_code>
@@ -237,9 +240,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>      
-						<depends>
-							<welcome_mat_active>1</welcome_mat_active>
-						</depends>              
+						<!--<depends><welcome_mat_active>1</welcome_mat_active></depends>-->              
 					</flag_code>
 					
 					<store_logo>
@@ -250,9 +251,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>      
-						<depends>
-							<welcome_mat_active>1</welcome_mat_active>
-						</depends>              
+						<!--<depends><welcome_mat_active>1</welcome_mat_active></depends>-->              
 					</store_logo>
 					
 				</fields>

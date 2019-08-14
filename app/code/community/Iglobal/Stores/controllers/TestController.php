@@ -9,37 +9,87 @@ class Iglobal_Stores_TestController extends Mage_Core_Controller_Front_Action
 
 	echo "in the controller <br/>";
 	
-	    //   $_order = "902-111111";
-		   $_order = $this->getRequest()->getParam('orderId', null);
+
+        $_order = '902-107604'; // has different addresses
+	 //$_order = '902-107620'; // has same addresses
+
+            $rest = Mage::getModel('stores/rest_order');
+            $data = $rest->getOrder($_order);
+echo "Data in controller: <br />";
+Zend_Debug::dump($data);
 			
-            $quote = Mage::getSingleton('checkout/session')->getQuote()->setStoreId(Mage::app()->getStore()->getId());//if more than one store, then this should be set dynamically
-		$table = "sales_flat_order"; 
-		$tableName = Mage::getSingleton("core/resource")->getTableName($table); 
-		$existsQuery = "SELECT `entity_id` FROM `" . $tableName. "` WHERE `ig_order_number` = '{$_order}'";
-		$orderExists = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchRow($existsQuery);
-
-		echo 'My Query: ' . $existsQuery . '<br />';
-		echo 'My Query result: ' . $orderExists . '<br />';
-		Zend_Debug::dump($orderExists);
-		
-        if(!$_order ){ 
-			echo 'Order is not defined. <br />'; 
-		}else { 
-			echo 'Order is defined <br />';
+            $_name = explode(' ', $data['name'], 2);
+	     if ($data['testOrder'] == "true") {
+		     $name_first = "TEST ORDER! DO NOT SHIP! - " . array_shift($_name);
+		     $name_last = array_pop($_name);
+		} else {
+		     $name_first = array_shift($_name);
+		     $name_last = array_pop($_name);		
 		}
-		
-        if($orderExists){ 
-			echo 'Order Exists. <br />'; 
-		}else { 
-			echo 'Order does not exist. <br />';
-		}
-   
-		if(!$_order || $orderExists){
-			echo "I'm going to stop this right here.";
-		}else {
-			echo "I'll let you through.";
-		};
 
+            $street = $data['address2'] ?  array($data['address1'], $data['address2']) : $data['address1'];
+			
+			// to fix error with countries w/o zip codes
+			if (is_array($data['zip'])){
+				$igcZipCode = ' ';
+			}else {
+				$igcZipCode = $data['zip'];
+			}
+
+            $addressData = array(
+                'firstname' => $name_first,
+                'lastname' => $name_last,
+                'street' => $street,
+                'city' => $data['city'],
+                'postcode' => $igcZipCode,
+                'telephone' => $data['phone'],
+		  'region' => $data['state'],
+		  //'region' => 'utah',
+		  //'region_id' => 'ut',
+                'country_id' => $data['countryCode'],
+		  'company' => $data['company'],
+            );
+	     
+		$billingCheckVar = $data['billingAddress1'];
+		if (!empty($billingCheckVar)){ 
+			$_nameBilling = explode(' ', $data['billingName'], 2);
+		     if ($data['testOrder'] == "true") {
+			     $name_first_billing = "TEST ORDER! DO NOT SHIP! - " . array_shift($_nameBilling);
+			     $name_last_billing = array_pop($_nameBilling);
+			} else {
+			     $name_first_billing = array_shift($_nameBilling);
+			     $name_last_billing = array_pop($_nameBilling);		
+			}
+			
+
+		     $streetBilling = $data['billingAddress2'] ? array($data['billingAddress1'], $data['billingAddress2']) : $data['billingAddress1'];
+				
+				// to fix error with countries w/o zip codes
+				if (is_array($data['billingZip'])){
+					$igcZipCodeBilling = ' ';
+				}else {
+					$igcZipCodeBilling = $data['billingZip'];
+				}
+		     
+		     $billingAddressData = array(
+			  'firstname' => $name_first_billing,
+			  'lastname' => $name_last_billing,
+			  'street' => $streetBilling,
+			  'city' => $data['billingCity'],
+			  'postcode' => $igcZipCodeBilling,
+			  'telephone' => $data['billingPhone'],
+			  'region' => $data['billingState'],
+			  'country_id' => $data['billingCountryCode'],
+		     );
+	     } else {
+			$billingAddressData = $addressData;
+	     }
+	echo "Address Data: <br />";
+	Zend_Debug::dump($addressData);
+	
+	
+	echo "Billing Address Data: <br />";
+	Zend_Debug::dump($billingAddressData);
 /*
 // Load the session
 $session = Mage::getModel('checkout/cart');
