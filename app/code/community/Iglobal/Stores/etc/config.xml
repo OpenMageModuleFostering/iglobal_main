@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Iglobal_Stores>
-            <version>1.5.4</version>
+            <version>1.5.5</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
