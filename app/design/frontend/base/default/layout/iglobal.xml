@@ -4,17 +4,32 @@
 	<!-- add template that allows us to include our js files through admin config settings-->
 	<default>
 			<reference name="head">
-				<block type="core/template" name="iglobal" template="iglobal/stores/igcincludes.phtml" />			
+				<block type="core/template" name="iglobal.includes" template="iglobal/stores/igcincludes.phtml" />			
 			</reference>	     	
 	</default>
 				
 	<!-- change renderer to add ig_ item details added by our extension-->
-	<checkout_cart_index translate="label">
+	<!--<checkout_cart_index translate="label">
 			<reference name="checkout.cart">
 				   <action method="addItemRender"><type>simple</type><block>checkout/cart_item_renderer</block><template>iglobal/checkout/cart/item/default.phtml</template></action>
 				   <action method="addItemRender"><type>grouped</type><block>checkout/cart_item_renderer</block><template>iglobal/checkout/cart/item/default.phtml</template></action>
 				   <action method="addItemRender"><type>configurable</type><block>checkout/cart_item_renderer</block><template>iglobal/checkout/cart/item/default.phtml</template></action>
 			</reference>
+	</checkout_cart_index>
+	
+	<zxyxz_store_index_cart>
+		 <reference name="root">
+		   <action method="setTemplate"><template>page/1column.phtml</template></action>
+		 </reference>
+		 <reference name="content">
+			<block type="iglobal_stores/cart" name="zxyxz_store.cart" template="iglobal/cart.phtml"/>
+		 </reference>
+	</zxyxz_store_index_cart>-->
+	
+	<checkout_cart_index>
+		 <reference name="content"> <!--can also reference content if there are problems with the theme -->
+		     <block type="core/template" name="iglobal.cart" as="iglobal.cart" template="iglobal/stores/cart.phtml"/>
+		 </reference>
 	</checkout_cart_index>
 		
 	<!-- set template for success page-->

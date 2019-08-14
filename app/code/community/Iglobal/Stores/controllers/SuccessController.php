@@ -55,6 +55,35 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
                 'telephone' => $data['phone'],
                 'country_id' => $data['countryCode'],
             );
+	     
+            $_nameBilling = explode(' ', $data['billingName'], 2);
+	     if ($data['testOrder'] = true) {
+		     $name_first_billing = "TEST ORDER! DO NOT SHIP! - " . array_shift($_nameBilling);
+		     $name_last_billing = array_pop($_nameBilling);
+		} else {
+		     $name_first_billing = array_shift($_nameBilling);
+		     $name_last_billing = array_pop($_nameBilling);		
+		}
+		
+
+            $streetBilling = $data['billingAddress2'] ? implode(' ', array($data['billingAddress1'], $data['billingAddress2'])) : $data['billingAddress1'];
+			
+			// to fix error with countries w/o zip codes
+			if (is_array($data['billingZip'])){
+				$igcZipCodeBilling = ' ';
+			}else {
+				$igcZipCodeBilling = $data['billingZip'];
+			}
+	     
+            $billingAddressData = array(
+                'firstname' => $name_first_billing,
+                'lastname' => $name_last_billing,
+                'street' => $streetBilling,
+                'city' => $data['billingCity'],
+                'postcode' => $igcZipCodeBilling,
+                'telephone' => $data['billingPhone'],
+                'country_id' => $data['billingCountryCode'],
+            );
 
 	     /*
 		// code to pull available shipping methods pulls all available shipping methods and makes an array.  used if you want to use merchants avaialable methods instead of iglobal custom method.
@@ -74,60 +103,9 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 			//matches XML shipping level with Magento carrier code
 
 		//  shipping methods designed to use in store shipping methods already in place.  changing this for our current version
+			set the  shipping method name here, like in the code below
 			//matches XML shipping level with Magento carrier code
-			$shippingCarrierMethod = $data['shippingCarrierServiceLevel'];
-			switch ($shippingCarrierMethod) {
-				case 'DHL_EXPRESS' :
-					$shipper = 'dhlint_D';
-					break;
-				case 'DHL_GLOBAL_MAIL' :
-					$shipper = 'dhlint_R';
-					break;
-				case 'FEDEX_ECONOMY' :
-					$shipper = 'fedex_INTERNATIONAL_ECONOMY';
-					break;
-				case 'FEDEX_GROUND' :
-					$shipper = 'fedex_INTERNATIONAL_GROUND';
-					break;
-				case 'FEDEX_PRIORITY' :
-					$shipper = 'fedex_INTERNATIONAL_PRIORITY';
-					break;
-				case 'UPS_EXPEDITED' :
-					$shipper = 'ups_XPD';
-					break;
-				case 'UPS_EXPRESS' :
-					$shipper = 'ups_XPR';
-					break;
-				case 'UPS_EXPRESS_SAVER':
-					$shipper = 'ups_WXS';
-					break;
-				case 'UPS_GROUND':
-					$shipper = 'ups_GND';
-					break;
-				case 'UPS_STANDARD' : 
-					$shipper = 'ups_STD';
-					break;
-				case 'USPS_FIRST_CLASS_MAIL_INTERNATIONAL' :
-					$shipper = 'usps_INT_15';
-					break;
-				case 'USPS_PRIORITY_MAIL_EXPRESS_INTERNATIONAL' :
-					$shipper = 'usps_INT_1';
-					break;
-				case 'USPS_PRIORITY_MAIL_INTERNATIONAL' :
-					$shipper = 'usps_INT_2';
-					break;
-				case  'LANDMARK_LGINTREGU':
-				case 'LANDMARK_LGINTSTD':
-				case 'LANDMARK_LGINTSTDU':
-				case 'MSI_PARCEL':
-				case 'MSI_PRIORITY':
-					$shipper = 'excellence_excellence';
-					$shippingCarrierTitle = 'iGlobal';
-					$shippingMethodTitle = 'Landmark';
-					break;
-				default: 
-					$shipper = 'excellence_excellence';
-			} 
+	
 			 used if you are trying to validate shipping method against merchent avaialable methods to use their built in modules
 				$shippingRate = $data['shippingTotal'];
 			if (!$shippingCarrierTitle || !$shippingMethodTItle){	
@@ -231,7 +209,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 				Mage::register('shipping_methodtitle', $shippingMethodTitle);
 
             //set shipping info
-			$billingAddress = $quote->getBillingAddress()->addData($addressData);
+			$billingAddress = $quote->getBillingAddress()->addData($billingAddressData);  // i think this is wehre to add the billing address info.  try creating a seperate address  data aray and mapping billing address info to it.
             $shippingAddress = $quote->getShippingAddress()->addData($addressData);
             $shippingAddress->setCollectShippingRates(true)->collectShippingRates()
 							->setShippingMethod('excellence_excellence')

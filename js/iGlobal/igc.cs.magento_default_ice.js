@@ -54,27 +54,20 @@ function getSubDomain() {
 function igcGetItems() {
 
     var items = new Array();
-    var itemRows = $igc("#shopping-cart-table > tbody > tr");//products rows	
+    var itemRows = $igc(".igItemDetails");//products rows	
 	
     $igc(itemRows).each(function() {
-		var tds = $igc(this).find('td');//different columns of each row
-        var qty    = $igc(tds).find('.qty').val();
-	   var price   = parseFloat($igc(tds).find(".ig_itemPrice").text().replace('$','')); //price is passed in USD as itemProductPrice[]
-        var imgURL   = $igc(tds).eq(0).find('img').attr("src");
-        var itemURL   = $igc(tds).eq(0).find('a').attr("href");
-        var descTxt  = $igc(tds).eq(1).find('.product-name').text();
-			if($igc(tds).eq(1).find('.item-options').length>0){//if this product has options
-				$igc(tds).eq(1).find(".item-options dt").each(function(){
-				descTxt  += "<br />"+$igc(this).text()+" : "+$igc(this).next().text()
-				});
-			}
-		descTxt  += "<br />Size : "+$igc(tds).eq(2).text();
-		var sku = $igc(tds).find(".ig_itemSku").text();
-		var pid = $igc(tds).find(".ig_itemProductId").text();
-		var weight = $igc(tds).find(".ig_itemWeight").text();
-		var length = $igc(tds).find(".ig_itemLength").text();;
-		var width = $igc(tds).find(".ig_itemWidth").text();
-		var height = $igc(tds).find(".ig_itemHeight").text();
+		 var qty    = $igc(this).find('.igQty').text();
+		 var price   = $igc(this).find('.igPrice').text();
+		 var imgURL   = $igc(this).find('.igImage').text();
+		 var itemURL   = $igc(this).find('.igUrl').text();
+		 var descTxt  = '<span class="itemDescription">' + $igc(this).find('.igName').text() + '</span>' + $igc(this).find('.igItemOptions').html();
+		var sku = $igc(this).find('.igSku').text();
+		var pid =$igc(this).find('.igID').text();
+		var weight = $igc(this).find('.ig_itemWeight').text();
+		var length = $igc(this).find('.ig_itemLength').text();
+		var width = $igc(this).find('.ig_itemWidth').text();
+		var height = $igc(this).find('.ig_itemHeight').text();
         
 		
 		if(qty){

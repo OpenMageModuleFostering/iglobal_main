@@ -96,7 +96,7 @@ var ajaxResult = igJq.ajax({
 				}); 
 
 
-console.log('outside: method: ' + ig_flagMethod + ' || flag: ' + ig_flagLocation + ' || code: ' + ig_flagCode  + ' || Domestic countries: ' + ig_domestic + " || Serviced Countries: " + ig_countries);
+//console.log('outside: method: ' + ig_flagMethod + ' || flag: ' + ig_flagLocation + ' || code: ' + ig_flagCode  + ' || Domestic countries: ' + ig_domestic + " || Serviced Countries: " + ig_countries);
 
 
 
