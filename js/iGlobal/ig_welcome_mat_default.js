@@ -7,102 +7,32 @@
 //
 
 //default settings - these will be overwritten by any settings made in Magento
-var ig_storeId = 3;
+var ig_storeId = ig_vars.storeId || 3;
 var ig_cookieDomain = window.location.hostname;// If you prefer, you can put your domain here, like so "yourdomain.com";
-var ig_countries = {"AL":"Albania","DZ":"Algeria","AS":"American Samoa","AD":"Andorra","AO":"Angola","AI":"Anguilla","AG":"Antigua","AR":"Argentina","AM":"Armenia","AW":"Aruba","AU":"Australia","AT":"Austria","AZ":"Azerbaijan","BS":"Bahamas","BH":"Bahrain","BD":"Bangladesh","BB":"Barbados","BE":"Belgium","BZ":"Belize","BJ":"Benin","BM":"Bermuda","BT":"Bhutan","BO":"Bolivia","BQ":"Bonaire, St. Eustatius & Saba","BA":"Bosnia & Herzegovina","BW":"Botswana","BR":"Brazil","BN":"Brunei","BG":"Bulgaria","BF":"Burkina Faso","BI":"Burundi","KH":"Cambodia","CM":"Cameroon","CA":"Canada","IC":"Canary Islands","CV":"Cape Verde","KY":"Cayman Islands","CF":"Central African Republic","TD":"Chad","CL":"Chile","CN":"China - People's Republic of","CO":"Colombia","KM":"Comoros","CG":"Congo","CK":"Cook Islands","CR":"Costa Rica","HR":"Croatia","CW":"Curaçao","CY":"Cyprus","CZ":"Czech Republic","DK":"Denmark","DJ":"Djibouti","DM":"Dominica","DO":"Dominican Republic","EC":"Ecuador","EG":"Egypt","SV":"El Salvador","GQ":"Equatorial Guinea","ER":"Eritrea","EE":"Estonia","ET":"Ethiopia","FK":"Falkland Islands","FO":"Faroe Islands (Denmark)","FJ":"Fiji","FI":"Finland","FR":"France","GF":"French Guiana","GA":"Gabon","GM":"Gambia","GE":"Georgia","DE":"Germany","GH":"Ghana","GI":"Gibraltar","GR":"Greece","GL":"Greenland (Denmark)","GD":"Grenada","GP":"Guadeloupe","GU":"Guam","GT":"Guatemala","GG":"Guernsey","GN":"Guinea","GW":"Guinea-Bissau","GY":"Guyana","HT":"Haiti","HN":"Honduras","HK":"Hong Kong","HU":"Hungary","IS":"Iceland","IN":"India","ID":"Indonesia","IE":"Ireland - Republic Of","IL":"Israel","IT":"Italy","CI":"Ivory Coast","JM":"Jamaica","JP":"Japan","JE":"Jersey","JO":"Jordan","KZ":"Kazakhstan","KE":"Kenya","KI":"Kiribati","KR":"Korea, Republic of (South Korea)","KW":"Kuwait","KG":"Kyrgyzstan","LA":"Laos","LV":"Latvia","LS":"Lesotho","LR":"Liberia","LI":"Liechtenstein","LT":"Lithuania","LU":"Luxembourg","MO":"Macau","MK":"Macedonia","MG":"Madagascar","MW":"Malawi","MY":"Malaysia","MV":"Maldives","ML":"Mali","MT":"Malta","MH":"Marshall Islands","MQ":"Martinique","MR":"Mauritania","MU":"Mauritius","YT":"Mayotte","MX":"Mexico","FM":"Micronesia - Federated States of","MD":"Moldova","MC":"Monaco","MN":"Mongolia","ME":"Montenegro","MS":"Montserrat","MA":"Morocco","MZ":"Mozambique","MM":"Myanmar","NA":"Namibia","NR":"Nauru, Republic of","NP":"Nepal","NL":"Netherlands (Holland)","NV":"Nevis","NC":"New Caledonia","NZ":"New Zealand","NI":"Nicaragua","NE":"Niger","NG":"Nigeria","NU":"Niue Island","NO":"Norway","OM":"Oman","PK":"Pakistan","PW":"Palau","PA":"Panama","PG":"Papua New Guinea","PY":"Paraguay","PE":"Peru","PH":"Philippines","PL":"Poland","PT":"Portugal","PR":"Puerto Rico","QA":"Qatar","RE":"Reunion","RO":"Romania","RU":"Russia","RW":"Rwanda","SM":"San Marino","ST":"Sao Tome & Principe","SA":"Saudi Arabia","SN":"Senegal","RS":"Serbia & Montenegro","SC":"Seychelles","SL":"Sierra Leone","SG":"Singapore","SK":"Slovakia","SI":"Slovenia","SB":"Solomon Islands","ZA":"South Africa","SS":"South Sudan","ES":"Spain","LK":"Sri Lanka","BL":"St. Barthelemy","EU":"St. Eustatius","KN":"St. Kitts and Nevis","LC":"St. Lucia","MF":"St. Maarten","VC":"St. Vincent","SR":"Suriname","SZ":"Swaziland","SE":"Sweden","CH":"Switzerland","PF":"Tahiti","TW":"Taiwan","TJ":"Tajikistan","TZ":"Tanzania","TH":"Thailand","TL":"Timor-Leste","TG":"Togo","TO":"Tonga","TT":"Trinidad and Tobago","TN":"Tunisia","TR":"Turkey","TM":"Turkmenistan","TC":"Turks and Caicos Islands","TV":"Tuvalu","UG":"Uganda","UA":"Ukraine","AE":"United Arab Emirates","GB":"United Kingdom","US":"United States","UY":"Uruguay","UZ":"Uzbekistan","VU":"Vanuatu","VE":"Venezuela","VN":"Vietnam","VG":"Virgin Islands (British)","VI":"Virgin Islands (U.S.)","WS":"Western Samoa","YE":"Yemen","ZM":"Zambia","ZW":"Zimbabwe"};
-var ig_domesticCountryCodes = ['US'];
-var ig_logoUrl = "http://iglobalstores.com/images/iglobal-stores.png";
-var ig_flagLocation = "body";
-var ig_flagMethod = "prepend";
-var ig_flagCode = '<div id="igFlag"></div>';
-var ajaxPath = '/iglobal/ajax/matdata';
-//ajaxPath = '/magento/index.php/iglobal/ajax/matdata'; //override used on some testing installs
-
-// Set internal JQuery Variable
+var ig_countries = ig_vars.servicedCountries || {"AL":"Albania","DZ":"Algeria","AS":"American Samoa","AD":"Andorra","AO":"Angola","AI":"Anguilla","AG":"Antigua","AR":"Argentina","AM":"Armenia","AW":"Aruba","AU":"Australia","AT":"Austria","AZ":"Azerbaijan","BS":"Bahamas","BH":"Bahrain","BD":"Bangladesh","BB":"Barbados","BE":"Belgium","BZ":"Belize","BJ":"Benin","BM":"Bermuda","BT":"Bhutan","BO":"Bolivia","BQ":"Bonaire, St. Eustatius & Saba","BA":"Bosnia & Herzegovina","BW":"Botswana","BR":"Brazil","BN":"Brunei","BG":"Bulgaria","BF":"Burkina Faso","BI":"Burundi","KH":"Cambodia","CM":"Cameroon","CA":"Canada","IC":"Canary Islands","CV":"Cape Verde","KY":"Cayman Islands","CF":"Central African Republic","TD":"Chad","CL":"Chile","CN":"China - People's Republic of","CO":"Colombia","KM":"Comoros","CG":"Congo","CK":"Cook Islands","CR":"Costa Rica","HR":"Croatia","CW":"Curaçao","CY":"Cyprus","CZ":"Czech Republic","DK":"Denmark","DJ":"Djibouti","DM":"Dominica","DO":"Dominican Republic","EC":"Ecuador","EG":"Egypt","SV":"El Salvador","GQ":"Equatorial Guinea","ER":"Eritrea","EE":"Estonia","ET":"Ethiopia","FK":"Falkland Islands","FO":"Faroe Islands (Denmark)","FJ":"Fiji","FI":"Finland","FR":"France","GF":"French Guiana","GA":"Gabon","GM":"Gambia","GE":"Georgia","DE":"Germany","GH":"Ghana","GI":"Gibraltar","GR":"Greece","GL":"Greenland (Denmark)","GD":"Grenada","GP":"Guadeloupe","GU":"Guam","GT":"Guatemala","GG":"Guernsey","GN":"Guinea","GW":"Guinea-Bissau","GY":"Guyana","HT":"Haiti","HN":"Honduras","HK":"Hong Kong","HU":"Hungary","IS":"Iceland","IN":"India","ID":"Indonesia","IE":"Ireland - Republic Of","IL":"Israel","IT":"Italy","CI":"Ivory Coast","JM":"Jamaica","JP":"Japan","JE":"Jersey","JO":"Jordan","KZ":"Kazakhstan","KE":"Kenya","KI":"Kiribati","KR":"Korea, Republic of (South Korea)","KW":"Kuwait","KG":"Kyrgyzstan","LA":"Laos","LV":"Latvia","LS":"Lesotho","LR":"Liberia","LI":"Liechtenstein","LT":"Lithuania","LU":"Luxembourg","MO":"Macau","MK":"Macedonia","MG":"Madagascar","MW":"Malawi","MY":"Malaysia","MV":"Maldives","ML":"Mali","MT":"Malta","MH":"Marshall Islands","MQ":"Martinique","MR":"Mauritania","MU":"Mauritius","YT":"Mayotte","MX":"Mexico","FM":"Micronesia - Federated States of","MD":"Moldova","MC":"Monaco","MN":"Mongolia","ME":"Montenegro","MS":"Montserrat","MA":"Morocco","MZ":"Mozambique","MM":"Myanmar","NA":"Namibia","NR":"Nauru, Republic of","NP":"Nepal","NL":"Netherlands (Holland)","NV":"Nevis","NC":"New Caledonia","NZ":"New Zealand","NI":"Nicaragua","NE":"Niger","NG":"Nigeria","NU":"Niue Island","NO":"Norway","OM":"Oman","PK":"Pakistan","PW":"Palau","PA":"Panama","PG":"Papua New Guinea","PY":"Paraguay","PE":"Peru","PH":"Philippines","PL":"Poland","PT":"Portugal","PR":"Puerto Rico","QA":"Qatar","RE":"Reunion","RO":"Romania","RU":"Russia","RW":"Rwanda","SM":"San Marino","ST":"Sao Tome & Principe","SA":"Saudi Arabia","SN":"Senegal","RS":"Serbia & Montenegro","SC":"Seychelles","SL":"Sierra Leone","SG":"Singapore","SK":"Slovakia","SI":"Slovenia","SB":"Solomon Islands","ZA":"South Africa","SS":"South Sudan","ES":"Spain","LK":"Sri Lanka","BL":"St. Barthelemy","EU":"St. Eustatius","KN":"St. Kitts and Nevis","LC":"St. Lucia","MF":"St. Maarten","VC":"St. Vincent","SR":"Suriname","SZ":"Swaziland","SE":"Sweden","CH":"Switzerland","PF":"Tahiti","TW":"Taiwan","TJ":"Tajikistan","TZ":"Tanzania","TH":"Thailand","TL":"Timor-Leste","TG":"Togo","TO":"Tonga","TT":"Trinidad and Tobago","TN":"Tunisia","TR":"Turkey","TM":"Turkmenistan","TC":"Turks and Caicos Islands","TV":"Tuvalu","UG":"Uganda","UA":"Ukraine","AE":"United Arab Emirates","GB":"United Kingdom","US":"United States","UY":"Uruguay","UZ":"Uzbekistan","VU":"Vanuatu","VE":"Venezuela","VN":"Vietnam","VG":"Virgin Islands (British)","VI":"Virgin Islands (U.S.)","WS":"Western Samoa","YE":"Yemen","ZM":"Zambia","ZW":"Zimbabwe"};
+var ig_domesticCountryCodes = (ig_vars.domesticCountries || 'US').split(",");
+var ig_logoUrl = ig_vars.storeLogo || "http://iglobalstores.com/images/iglobal-stores.png";
+var ig_flagLocation = ig_vars.flag_parent || "body";
+var ig_flagMethod = ig_vars.flag_method || "prepend";
+var ig_flagCode = ig_vars.flag_code || '<div id="igFlag"></div>';
 // Can set to existing $ on page, or can include Jquery here, and set igJq to jquery-no-conflict
-//
-igJq = jQuery; //Sets internal jquery variable to the existing $ on the page.
-
-//set my dynamic variables with ajax call to use Magento Configs.
-//countries are set in general>country options
-//other settings are in the iGlobal tab
-var ajaxResult = igJq.ajax({ 
-					 async: false, 
-					 global: false, 
-					 url: ajaxPath, 
-					 //dataType: 'json', 
-					 success: function(data){
-
-						var ajaxResult = eval("(" + data + ")");
-						//console.log(ajaxResult);
-								//store ID
-						if (ajaxResult.storeId && ajaxResult.storeId != "Your Store ID Goes Here"){
-							 // store ID is set
-							 ig_storeId = ajaxResult.storeId;
-						}
-						
-						//flag placement parent
-						if (ajaxResult.flag_parent){
-							 // store ID is set
-							 ig_flagLocation = ajaxResult.flag_parent;
-						}
-						
-						// TODO: flag placement method
-						if (ajaxResult.flag_method){
-							 // store ID is set
-							 ig_flagMethod = ajaxResult.flag_method;
-							 ig_flagMethod = ig_flagMethod.toLowerCase();
-						}
-						
-						// TODO: flag placement code
-						if (ajaxResult.flag_code){
-							 // store ID is set
-							 ig_flagCode = ajaxResult.flag_code;
-						}
-						
-						//serviced country list
-						if (ajaxResult.servicedCountries){
-							 // store ID is set
-							 ig_countries = ajaxResult.servicedCountries;
-						}
-						
-						
-						//domestic countries list
-						if (ajaxResult.domesticCountries){
-							 // store ID is set
-							 ig_domestic = ajaxResult.domesticCountries;
-							 ig_domesticCountryCodes = ig_domestic.split(",")
-							 //console.log(ig_domesticCountryCodes);
-						}
-						
-						
-						//logo URL
-						if (ajaxResult.storeLogo){
-							 // store ID is set
-							 ig_logoUrl = ajaxResult.storeLogo;
-						}
-						
-					}
-				}); 
-
-
-
+igJq = jQuery;
 
 igJq(function(){
 	if (ig_flagMethod == "prepend"){
-		igJq(ig_flagLocation).prepend(ig_flagCode);	
+		igJq(ig_flagLocation).prepend(ig_flagCode);
 	}
 	else if (ig_flagMethod == "append"){
-		igJq(ig_flagLocation).append(ig_flagCode);	
+		igJq(ig_flagLocation).append(ig_flagCode);
 	}
 	else if (ig_flagMethod == "before"){
-		igJq(ig_flagLocation).before(ig_flagCode);	
+		igJq(ig_flagLocation).before(ig_flagCode);
 	}
 	else if (ig_flagMethod == "after"){
-		igJq(ig_flagLocation).after(ig_flagCode);	
+		igJq(ig_flagLocation).after(ig_flagCode);
 	}
 	else {
-		igJq(ig_flagLocation).prepend(ig_flagCode);	
+		igJq(ig_flagLocation).prepend(ig_flagCode);
 	}
 });
 
@@ -738,7 +668,7 @@ function ig_showTheSplash() {
 }
 
 function ig_createNestContents() {
-    return '<img onclick="ig_showTheSplash();" src="https://d1vyngmisxigjx.cloudfront.net/images/flags/96x64/'+((ig_country)?ig_country.toUpperCase():'undefined')+'.png" class="igWelcomeFlagHeader" alt="Select your country." />';
+    return '<img onclick="ig_showTheSplash();" src="https://d1vyngmisxigjx.cloudfront.net/images/flags/96x64/'+((ig_country)?ig_country.toUpperCase():'US')+'.png" class="igWelcomeFlagHeader" alt="Select your country." />';
 }
 
 function ig_placeNestHtml() {

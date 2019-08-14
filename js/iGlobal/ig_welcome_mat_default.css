@@ -22,7 +22,7 @@
 .headerOne { font-size: 30px; padding-left: 0.5em; color: #0068AC; /* Set the color of your choice here */ text-transform: uppercase; }
 .headerTwo { color: #999; margin-top: 7px; font-size: 12px; }
 .igModalBody { text-align: center; background-color: white; width: 100%; min-height: 320px; }
-.countryDropDownWrapper { width: 250px; min-height: 25px; -webkit-border-radius: 10px; border-radius: 10px; background: url(https://iglobalstores.com/images/downarrow.png) no-repeat 94% center; border: 2px solid #0068AC; /* Set the color of your choice here */ margin: 0 auto; padding: 0; cursor: pointer; }
+.countryDropDownWrapper { width: 250px; min-height: 25px; -webkit-border-radius: 10px; border-radius: 10px; border: 2px solid #0068AC; /* Set the color of your choice here */ margin: 0 auto; padding: 0; cursor: pointer; }
 #countrySelect { position: relative; height: 35px; padding: 7px 10px; margin: 0px; font-size: 14px; line-height: 14px; color: #333 !important; text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75); cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; -o-user-select: none; user-select: none; background: none !important; border: 0 !important; -webkit-appearance: none; -moz-appearance: window; appearance: none; ms-appearance: none; overflow: hidden; }
 select::-ms-expand { display: none; }
 ul.featureList { padding: 20px; margin: 0; -webkit-padding-start: 0; background-color: #999; color: #e8e8e8; }

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Iglobal_Stores>
-            <version>1.1.1</version>
+            <version>1.4.0</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
@@ -169,7 +169,7 @@
             </countries>
         </Iglobal_Stores>
     </modules>
-    <admin>
+    <!--admin>
         <routers>
             <stores>
                 <use>admin</use>
@@ -179,16 +179,16 @@
                 </args>
             </stores>
         </routers>
-    </admin>
+    </admin-->
     <global>
         <sales>
             <quote>
                 <totals>
-                    <tax>
-                        <class>stores/sales_quote_address_total_fee</class>
-                        <after>subtotal,shipping</after>
+                    <fee>
+                        <class>stores/tax</class>
+                        <after>tax</after>
                         <before>grand_total</before>
-                    </tax>
+                    </fee>
                 </totals>
             </quote>
         </sales>

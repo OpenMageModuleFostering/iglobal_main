@@ -5,10 +5,9 @@
 
 	//label the area of DOM
 	echo '<!--Added for iGlobal-->';
-
 	//set include for welcome mat
 	if (Mage::getStoreConfig('iglobal_integration/igmat/welcome_mat_active')){ //welcome mat is on
-		
+		echo '<script type="text/javascript">var ig_vars=' . Mage::helper('stores')->getJavascriptVars() . ';</script>';
 			if (Mage::getStoreConfig('iglobal_integration/igmat/welcome_mat_script')){ //custom welcome mat js has been uploaded
 			
 				//include custom welcome mat
@@ -41,17 +40,54 @@
 
 	//set includes for ICE and main
 	if (Mage::getStoreConfig('iglobal_integration/apireqs/ice_toggle') && Mage::getStoreConfig('iglobal_integration/apireqs/use_ice')) { //&& ((false !== strpos($url,'cart')) || (false !== strpos($url,'checkout')))
-		
+
 		//include main js
-		 echo '<script type="text/javascript" src="https://checkout.iglobalstores.com/js/igc.cs.main.js"></script>'; 
-		
-		if (Mage::getStoreConfig('iglobal_integration/apireqs/ice')){
+		echo '<script type="text/javascript" src="https://checkout.iglobalstores.com/js/igc.cs.main.js"></script>';
+
+		if (Mage::getStoreConfig('iglobal_integration/apireqs/ice')) {
 			//include custom ICE
-			echo '<script type="text/javascript" src="'.Mage::getStoreConfig('iglobal_integration/apireqs/ice').'"></script>';
+			echo '<script type="text/javascript" src="' . Mage::getStoreConfig('iglobal_integration/apireqs/ice') . '"></script>';
 		} else {
 			//include default ICE
-			echo '<script type="text/javascript" src="' . Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) . 'iGlobal/igc.cs.magento_default_ice.js"></script>'; 
+			echo '<script type="text/javascript" src="' . Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS) . 'iGlobal/igc.cs.magento_default_ice.js"></script>';
+		}
+		//If logged in, pre-populate shopping cart with customer data
+		if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+			$customer = Mage::getSingleton('customer/session')->getCustomer();
+			$shipping_id = $customer->getDefaultShipping();
+
+			if ($shipping_id) {
+				$shipping_address = Mage::getModel('customer/address')->load($shipping_id);
+			}
+
+			$customer_data = '<script type="text/javascript">';
+
+			if (!$shipping_address) {
+				$customer_data .= '
+	  		    var customerName="' . $customer['firstname'] . ' ' . $customer['lastname'] . '";
+			    var customerCompany="' . $customer['company'] . '";
+			    var customerEmail="' . $customer['email'] . '";
+			    var customerPhone="' . $customer['telephone'] . '";
+        	';
+
+			} else {
+				$customer_data .= '
+				var customerName="' . $shipping_address['firstname'] . ' ' . $shipping_address['lastname'] . '";
+			    var customerCompany="' . $shipping_address['company'] . '";
+			    var customerEmail="' . $customer['email'] . '";
+			    var customerPhone="' . $shipping_address['telephone'] . '";
+				var customerAddress1="' . $shipping_address->getStreet(1) . '";
+			    var customerAddress2="' . $shipping_address->getStreet(2) . '";
+			    var customerCity="' . $shipping_address['city'] . '";
+			    var customerState="' . $shipping_address['region'] . '";
+			    var customerCountry="' . $shipping_address['country_id'] . '";
+			    var customerZip="' . $shipping_address['postcode'] . '";
+			';
+			}
+
+			$customer_data .= '</script>';
+
+			echo $customer_data;
 		}
 	}
-	
 	echo '<!--End of iGlobal-->';

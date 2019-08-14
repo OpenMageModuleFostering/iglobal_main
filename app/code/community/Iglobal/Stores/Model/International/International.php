@@ -27,6 +27,8 @@ class Iglobal_Stores_Model_International_International extends Mage_Core_Model_A
 		$response = $rest->createTempCart(array(
 			"storeId" => Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid'),
 			"referenceId" => $cart->getId(),
+			"externalConfirmationPageURL" => MAge::getUrl('iglobal/success', array('_secure'=> true)),
+			"misc6" => "iGlobal v".Mage::getConfig()->getModuleConfig("Iglobal_Stores")->version. ", Magento v".Mage::getVersion(),
 			"items" => $items,));
 		return $response->tempCartUUID;
 	}

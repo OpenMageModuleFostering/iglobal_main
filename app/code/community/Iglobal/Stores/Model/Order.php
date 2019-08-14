@@ -316,6 +316,9 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             } catch (Exception $e){
                 $transaction_id = '34234234234';
             }
+            if(!$transaction_id) {
+                $transaction_id = '34234234234';
+            }
             $transaction = Mage::getModel('sales/order_payment_transaction');
             $transaction->setOrderPaymentObject($order->getPayment());
             $transaction->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH);
