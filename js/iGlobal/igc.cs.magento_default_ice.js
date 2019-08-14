@@ -7,7 +7,7 @@ $igc =jQuery
 	var igSubdomain = "checkout"; //this can be set by updating the "iGlobal Hosted Checkout Subdomain" in Magento conficuration options
 	var igCartUrl = "/magento/index.php/checkout/cart";
 	var ajaxPath = window.location.href.replace(window.location.origin, '')
-	ajaxPath = ajaxPath.substring(0, ajaxPath.indexOf("/",1)) + '/iglobal/ajax/icedata'; //parses the uri to figure out how to get to the right controller
+	ajaxPath = '/iglobal/ajax/icedata'; //parses the uri to figure out how to get to the right controller
 	//ajaxPath = ajaxPath.substring(0, ajaxPath.indexOf("index.php")+9) + '/iglobal/ajax/icedata'; //parses the url to figure out how to get to the right controller
 
 
@@ -61,7 +61,7 @@ function igcGetItems() {
 		 var price   = $igc(this).find('.igPrice').text();
 		 var imgURL   = $igc(this).find('.igImage').text();
 		 var itemURL   = $igc(this).find('.igUrl').text();
-		 var descTxt  = '<span class="itemDescription">' + $igc(this).find('.igName').text() + '</span>' + $igc(this).find('.igItemOptions').html();
+		 var descTxt  = '<span class="itemDescription">' + $igc(this).find('.igName').text() + '</span>';// + $igc(this).find('.igItemOptions').html();
 		var sku = $igc(this).find('.igSku').text();
 		var pid =$igc(this).find('.igID').text();
 		var weight = $igc(this).find('.ig_itemWeight').text();

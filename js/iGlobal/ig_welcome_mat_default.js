@@ -16,7 +16,7 @@ var ig_flagLocation = "body";
 var ig_flagMethod = "prepend";
 var ig_flagCode = '<div id="igFlag"></div>';
 var ajaxPath = window.location.href.replace(window.location.origin, '')
-ajaxPath = ajaxPath.substring(0, ajaxPath.indexOf("/",1)) + '/iglobal/ajax/matdata'; //parses the uri to figure out how to get to the right controller
+ajaxPath ='/iglobal/ajax/matdata';// ajaxPath.substring(0, ajaxPath.indexOf("/",1)) + '/iglobal/ajax/matdata'; //parses the uri to figure out how to get to the right controller
 
 /* TODO: this method was taking too long.  still promising route.  check into it again.
 if (window.location.href.indexOf("index.php") != -1){
