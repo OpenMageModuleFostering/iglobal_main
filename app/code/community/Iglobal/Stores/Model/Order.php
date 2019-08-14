@@ -48,7 +48,10 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
     public function processOrder($orderid, $quote=NULL)
     {
         $this->setIglobalOrder($orderid);
-
+        if ($this->iglobal_order->merchantOrderId)
+        {
+            return false;
+        }
         // check the if this is the same quote that was sent.
         if ($quote)
         {
@@ -68,7 +71,12 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $this->setItems();
         $shippingAddress = $this->setShipping($shippingAddress);
         $this->setPayment($shippingAddress);
-        return $this->createOrder();
+        $order = $this->createOrder();
+        Mage::unregister('duty_tax');
+        Mage::unregister('shipping_cost');
+        Mage::unregister('shipping_carriertitle');
+        Mage::unregister('shipping_methodtitle');
+        return $order;
     }
 
     protected function setContactInfo()
@@ -232,6 +240,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             'USPS_EPACKET'=>          array('UPS', 'USPS ePacket - iGlobal'),
             'USPS_EXPRESS_1'=>        array('UPS', 'Express 1 Mail - iGlobal'),
             'USPS_IPA'=>              array('UPS', 'USPS IPA - iGlobal'),
+            'USPS_PRIORITY_DOMESTIC'=>array('UPS', 'USPS Priority Domestic - iGlobal'),
             'LANDMARK_LGINTREGU' =>   array('iGlobal', 'Landmark'),
             'LANDMARK_LGINTSTD' =>    array('iGlobal', 'Landmark'),
             'LANDMARK_LGINTSTDU' =>   array('iGlobal', 'Landmark'),
@@ -242,7 +251,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $carrierMethod = $this->iglobal_order->shippingCarrierServiceLevel;
         if (!isset($shippers[$carrierMethod]))
         {
-          $carrierMethod = 'default';
+            $carrierMethod = 'default';
         }
         $shipper = $shippers[$carrierMethod];
 
@@ -288,7 +297,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
 
         $id = $order->getEntityId();
 
-        if (!Mage::helper('sales')->canSendNewOrderEmail() && Mage::getStoreConfig('iglobal_integration/apireqs/send_order_email')) {
+        if (Mage::getStoreConfig('iglobal_integration/apireqs/send_order_email')) {
                 $order->sendNewOrderEmail();
         }
         Mage::getSingleton('checkout/session')->setLastOrderId($order->getId());

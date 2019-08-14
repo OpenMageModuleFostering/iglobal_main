@@ -7,7 +7,10 @@ class Iglobal_Stores_CheckoutController extends Mage_Core_Controller_Front_Actio
     public function indexAction()
     {
         //todo: add a check to see if they are domestic and then redirect to domestic checkout
-
+		if (Mage::getStoreConfig('iglobal_integration/apireqs/force_login') && !Mage::getSingleton('customer/session')->isLoggedIn()) {
+			Mage::getSingleton('customer/session')->setBeforeAuthUrl(Mage::getUrl('iglobal/checkout'));
+			Mage::app()->getFrontController()->getResponse()->setRedirect(Mage::getUrl('customer/account/login'));
+		}
 
         $cartQty = (int) Mage::getModel('checkout/cart')->getQuote()->getItemsQty();
         if (!$cartQty) {

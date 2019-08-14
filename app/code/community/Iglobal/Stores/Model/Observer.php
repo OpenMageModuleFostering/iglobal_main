@@ -67,13 +67,14 @@ class Iglobal_Stores_Model_Observer
 			->getItems();
 
         foreach ($orders as $order) {
-			$magentoOrders[] = array($order->getIgOrderNumber =>$order);
+			$magentoOrders[$order->getIgOrderNumber()] = $order;
         }
 
 		//get array with all orders in past
-		$data = Mage::getModel('stores/rest')->getAllOrdersSinceDate('20140526');
+		$data = Mage::getModel('stores/rest')->getAllOrdersSinceDate('20151006');
 		foreach ($data->orders as $igOrder)
         {
+
             if ($igOrder->testOrder)
             {
                 continue;
@@ -85,7 +86,7 @@ class Iglobal_Stores_Model_Observer
             } else {
                 try {
                     // re-import the order
-                    Mage::getModel('stores/order')->processOrder($igOrder->id);
+                    // Mage::getModel('stores/order')->processOrder($igOrder->id);
                 }
                 catch(Exception $e)
                 {
