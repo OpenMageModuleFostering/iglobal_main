@@ -19,7 +19,7 @@ var ajaxPath = '/iglobal/ajax/matdata';
 //ajaxPath = '/magento/index.php/iglobal/ajax/matdata'; //override used on some testing installs
 
 var hrefMagento = false,
-var hrefIndex = false,
+    hrefIndex = false,
     url = window.location.toString(),
     ajaxPath = "";
 
