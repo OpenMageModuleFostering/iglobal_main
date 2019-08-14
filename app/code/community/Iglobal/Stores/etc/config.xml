@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-<config>    
+<config>
     <modules>
         <Iglobal_Stores>
-            <version>1.0.8</version>
+            <version>1.1.0</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
@@ -212,11 +210,21 @@
             <stores>
                 <class>Iglobal_Stores_Block</class>
             </stores>
+            <checkout>
+                <rewrite>
+                    <onepage_link>Iglobal_Stores_Block_Link</onepage_link>
+                </rewrite>
+            </checkout>
         </blocks>
         <helpers>
             <stores>
                 <class>Iglobal_Stores_Helper</class>
             </stores>
+            <checkout>
+                <rewrite>
+                    <url>Iglobal_Stores_Helper_Url</url>
+                </rewrite>
+            </checkout>
         </helpers>
         <resources>
             <iglobal_stores_setup>
@@ -278,6 +286,7 @@
 			<secret>Your API Code Goes Here</secret>
 			<iglobalid>Your Store ID Goes Here</iglobalid>
 			<ice_toggle>0</ice_toggle>
+            <use_iframe>1</use_iframe>
 		</apireqs>
 		<igmat>
 			<welcome_mat_active>0</welcome_mat_active>
@@ -329,7 +338,7 @@
 			<observers>
 				<iglobal_notification>
 					<type>singleton</type>
-					<class>stores/feed</class>
+					<class>stores/ddpd</class>
 					<method>observe</method>
 				</iglobal_notification>
 			</observers>

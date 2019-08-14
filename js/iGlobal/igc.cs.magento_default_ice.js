@@ -167,7 +167,7 @@ $igc(document).ready(function(){
 		if ( !ig_isDomesticCountry() ){
 
 			alert('You are using the domestic checkout for an international order.  Please return to your cart and checkout again.');
-			window.location.replace(igCartUrl);
+			//window.location.replace(igCartUrl);
 
 		} 	
 	}

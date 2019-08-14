@@ -113,7 +113,7 @@
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
 						<show_in_store>1</show_in_store>                    
-					</ice>	
+					</ice>
 					
 					<ice_toggle>
 						<label>Turn on International Checkout?</label>
@@ -123,8 +123,30 @@
 						<sort_order>5</sort_order>
 						<show_in_default>1</show_in_default>
 						<show_in_website>1</show_in_website>
-						<show_in_store>1</show_in_store>                  
+						<show_in_store>1</show_in_store>
 					</ice_toggle>
+
+                    <use_iframe>
+                        <label>Embed iGlobal Checkout by iframe?</label>
+                        <comment>Embed the iGlobal Checkout into your site, making customers feel more secure by seeing your url and improving the user experience.</comment>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <sort_order>42</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </use_iframe>
+
+                    <use_ice>
+                        <label>Use an iCE Integration File?</label>
+                        <comment>Turn on to use an iGlobal Connect Engine Integration Method instead of the default method. This should only be selected if suggested by an iGlobal Integration Specialist.</comment>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <sort_order>45</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </use_ice>
 											
 					<heading_error translate="label">
 						<label>Error Reporting</label>
@@ -280,6 +302,17 @@
 					<show_in_website>1</show_in_website>
 					<show_in_store>1</show_in_store>
 					</enabled>
+
+                    <iglogging>
+                        <label>Turn on iGlobal Logging?</label>
+                        <comment>Turn on to enable iGlobal Logging.  This can result in very large log files, so it's best to leave this off unless needed!</comment>
+                        <frontend_type>select</frontend_type>
+                        <source_model>adminhtml/system_config_source_yesno</source_model>
+                        <sort_order>5</sort_order>
+                        <show_in_default>1</show_in_default>
+                        <show_in_website>1</show_in_website>
+                        <show_in_store>1</show_in_store>
+                    </iglogging>
 				
 				</fields>
 			</igjq>

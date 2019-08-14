@@ -18,6 +18,23 @@ var ig_flagCode = '<div id="igFlag"></div>';
 var ajaxPath = '/iglobal/ajax/matdata';
 //ajaxPath = '/magento/index.php/iglobal/ajax/matdata'; //override used on some testing installs
 
+var hrefMagento = false,
+var hrefIndex = false,
+    url = window.location.toString(),
+    ajaxPath = "";
+
+hrefMagento = url.indexOf('/magento');
+hrefIndex = url.indexOf('/index.php');
+
+if (hrefMagento != -1 && hrefIndex != -1) {
+    ajaxPath = '/magento/index.php/iglobal/ajax/matdata';
+} else if (hrefMagento != -1 && hrefIndex == -1) {
+    ajaxPath = '/magento/iglobal/ajax/matdata';
+} else if (hrefMagento == -1 && hrefIndex != -1) {
+    ajaxPath = '/iglobal/ajax/matdata';
+}
+
+
 // Set internal JQuery Variable
 // Can set to existing $ on page, or can include Jquery here, and set igJq to jquery-no-conflict
 //
@@ -712,6 +729,7 @@ function ig_countrySelected() {
     ig_setCountry(ig_validateCountryCode(countryCode));
     igJq("#igSplashElement").html(ig_createSplashContentsHtml());
     ig_alertIceOfCountryChange();
+    location.reload();
 }
 
 //Called by auto popup logic for first time non domestic country customers.  Also called by ALL customers clicking the nested flag on the page

@@ -46,23 +46,23 @@ class Iglobal_Stores_Model_Rest_Order extends Mage_Core_Model_Abstract
         $result = $client->restPost('/iglobalstores/services/OrderRestService/v1.06', $this->addCredentials($data))->getBody();
         return json_decode(json_encode((array) simplexml_load_string($result)),1);
     }
-    
+
     public function getAllOrders()
     {
         $data = array('operation'=>'orderNumbers', 'sinceDate'=>'20100101');
 	$client = $this->getRestClient();
         $result = $client->restPost('/iglobalstores/services/OrderRestService/v1.06', $this->addCredentials($data))->getBody();
         return json_decode(json_encode((array) simplexml_load_string($result)),1);
-    }    
-    
+    }
+
     public function getAllOrdersSinceDate($data)
     {
         $data = array('operation'=>'orderNumbers', 'sinceDate'=>$data);
 	$client = $this->getRestClient();
         $result = $client->restPost('/iglobalstores/services/OrderRestService/v1.06', $this->addCredentials($data))->getBody();
         return json_decode(json_encode((array) simplexml_load_string($result)),1);
-    }    
-    
+    }
+
     public function getOrder($order)
     {
         $data = array('operation'=>'orderDetail', 'orderId' => $order);
@@ -71,8 +71,8 @@ class Iglobal_Stores_Model_Rest_Order extends Mage_Core_Model_Abstract
 //echo "Rest result: <br />";
 //Zend_Debug::dump($result);
 //Mage::log("The rest result for order {$order}:"  . Zend_Debug::dump($result), 'mattscustom.log', true);
-Mage::log("The rest result for order {$order}:" . print_r($result, true), null, 'mattscustom.log', true);	
-        $result = mb_convert_encoding($result, "HTML-ENTITIES", "UTF-8");
+//Mage::log("The rest result for order {$order}:" . print_r($result, true), null, 'mattscustom.log', true);
+        //$result = mb_convert_encoding($result, "HTML-ENTITIES", "UTF-8");
         return json_decode(json_encode((array) simplexml_load_string($result)),1);
     }
 

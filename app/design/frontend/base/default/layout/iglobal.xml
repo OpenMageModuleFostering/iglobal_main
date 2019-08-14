@@ -31,6 +31,12 @@
 		     <block type="core/template" name="iglobal.cart" as="iglobal.cart" template="iglobal/stores/cart.phtml"/>
 		 </reference>
 	</checkout_cart_index>
+
+    <checkout_onepage_index>
+        <reference name="content"> <!--can also reference content if there are problems with the theme -->
+            <block type="core/template" name="iglobal.cart" as="iglobal.cart" template="iglobal/stores/cart.phtml"/>
+        </reference>
+    </checkout_onepage_index>
 		
 	<!-- set template for success page-->
     <iglobal_success_index translate="label">
