@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Iglobal_Stores>
-            <version>1.4.0</version>
+            <version>1.5.0</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
@@ -315,6 +315,13 @@
 		<igc_dev>
 			<dev_on>0</dev_on>
 		</igc_dev>
+    <ig_item_attribute>
+        <weight>weight</weight>
+        <length>ig_length</length>
+        <width>ig_width</width>
+        <height>ig_height</height>
+        <country_of_origin>country_of_manufacture</country_of_origin>
+    </ig_item_attribute>
 	</iglobal_integration>
 
 	<general>
@@ -366,7 +373,7 @@
 	<crontab>
         <jobs>
             <iglobal_order_update>
-                <schedule><cron_expr>* */4 * * *</cron_expr></schedule>
+                <schedule><cron_expr>*/30 * * * *</cron_expr></schedule>
                 <run><model>stores/observer::orderRec</model></run>
             </iglobal_order_update>
         </jobs>

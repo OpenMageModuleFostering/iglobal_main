@@ -53,10 +53,10 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
             $weight = $item->getWeight();
         }
         $dimensions = array(
-            'weight' => $this->units2lbs($weight, $product->getAttributeText('ig_weight_units')),
-            'length' => $this->dim2inch($product->getIgLength(), $dim),
-            'width'  => $this->dim2inch($product->getIgWidth(), $dim),
-            'height' => $this->dim2inch($product->getIgHeight(), $dim),
+            'weight' => $this->units2lbs($this->getProductAttribute($product, 'weight'), $product->getAttributeText('ig_weight_units')),
+            'length' => $this->dim2inch($this->getProductAttribute($product, 'length'), $dim),
+            'width'  => $this->dim2inch($this->getProductAttribute($product, 'width'), $dim),
+            'height' => $this->dim2inch($this->getProductAttribute($product, 'height'), $dim),
         );
         return $dimensions;
     }
@@ -85,7 +85,15 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
             'itemURL' => $product->getProductUrl(),
             'imageURL' => str_replace("http:", "https:", Mage::helper('catalog/image')->init($product, 'thumbnail')),
             'itemDescriptionLong' => $optionList,
-            'countryOfOrigin' => $product->getCountryOfManufacture(),
+            'countryOfOrigin' => $this->getProductAttribute($product, 'country_of_origin'),
+            'itemBrand' => $this->getProductAttribute($product, 'brand'),
+            'itemCategory' => $this->getProductAttribute($product, 'category'),
+            'itemHSCode' => $this->getProductAttribute($product, 'hs_code'),
+            'itemCustomization' => $this->getProductAttribute($product, 'customization'),
+            'itemColor' => $this->getProductAttribute($product, 'color'),
+            'itemMaterial' => $this->getProductAttribute($product, 'material'),
+            'status' => $this->getProductAttribute($product, 'status'),
+            'nonShippable' => (bool)$this->getProductAttribute($product, 'non_shippable'),
         ) + $this->getDimensions($product, $item);
         return $details;
     }
@@ -209,6 +217,13 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
         return $this->_files;
     }
 
+    protected  function getProductAttribute($product, $attributeName) {
+        $value = Mage::getStoreconfig('iglobal_integration/ig_item_attribute/' . $attributeName);
+        if($value) {
+            return $product->getData($value);
+        }
+        return null;
+    }
     protected function _getConfigValue($key, $store)
     {
         return Mage::getStoreConfig(self::XML_CONFIG_PATH . $key, $store = '');

@@ -1,6 +1,6 @@
 // iGlobal Welcome Mat Script
 // Authored by iGlobal Stores (www.iglobalstores.com)
-// Copyright iGlobal Stores 2013
+// Copyright iGlobal Stores 2016
 
 //
 // Store specific settings
@@ -15,7 +15,11 @@ var ig_logoUrl = ig_vars.storeLogo || "http://iglobalstores.com/images/iglobal-s
 var ig_flagLocation = ig_vars.flag_parent || "body";
 var ig_flagMethod = ig_vars.flag_method || "prepend";
 var ig_flagCode = ig_vars.flag_code || '<div id="igFlag"></div>';
+var ig_nestElementId = "igFlag";
+//
+// Set internal JQuery Variable
 // Can set to existing $ on page, or can include Jquery here, and set igJq to jquery-no-conflict
+//
 igJq = jQuery;
 
 igJq(function(){
@@ -36,16 +40,7 @@ igJq(function(){
 	}
 });
 
-//
-// END Store specific settings
-//
-
-///////////////////////////////////////////////////////////////////////////////
-
-//
-// Begin jquery jsonp plugin
-//
-/*
+/**
  * jQuery JSONP Core Plugin 2.4.0 (2012-08-21)
  *
  * https://github.com/jaubourg/jquery-jsonp
@@ -55,508 +50,21 @@ igJq(function(){
  * This document is licensed as free software under the terms of the
  * MIT License: http://www.opensource.org/licenses/mit-license.php
  */
-( function( igJq ) {
+!function(e){function t(){}function n(e){r=[e]}function c(e,t,n){return e&&e.apply(t.context||t,n)}function i(e){return/\?/.test(e)?"&":"?"}function o(o){function m(e){V++||(W(),L&&(I[N]={s:[e]}),A&&(e=A.apply(o,[e])),c(R,o,[e,k,o]),c(z,o,[o,k]))}function F(e){V++||(W(),L&&e!=x&&(I[N]=e),c(U,o,[o,e]),c(z,o,[o,e]))}o=e.extend({},q,o);var S,$,_,J,P,R=o.success,U=o.error,z=o.complete,A=o.dataFilter,G=o.callbackParameter,H=o.callback,K=o.cache,L=o.pageCache,M=o.charset,N=o.url,O=o.data,Q=o.timeout,V=0,W=t;return w&&w(function(e){e.done(R).fail(U),R=e.resolve,U=e.reject}).promise(o),o.abort=function(){!V++&&W()},c(o.beforeSend,o,[o])===!1||V?o:(N=N||l,O=O?"string"==typeof O?O:e.param(O,o.traditional):l,N+=O?i(N)+O:l,G&&(N+=i(N)+encodeURIComponent(G)+"=?"),!K&&!L&&(N+=i(N)+"_"+(new Date).getTime()+"="),N=N.replace(/=\?(&|$)/,"="+H+"$1"),L&&(S=I[N])?S.s?m(S.s[0]):F(S):(C[H]=n,_=e(j)[0],_.id=f+T++,M&&(_[u]=M),B&&B.version()<11.6?(J=e(j)[0]).text="document.getElementById('"+_.id+"')."+h+"()":_[a]=a,D&&(_.htmlFor=_.id,_.event=p),_[y]=_[h]=_[g]=function(e){if(!_[v]||!/i/.test(_[v])){try{_[p]&&_[p]()}catch(t){}e=r,r=0,e?m(e[0]):F(s)}},_.src=N,W=function(e){P&&clearTimeout(P),_[g]=_[y]=_[h]=null,E[b](_),J&&E[b](J)},E[d](_,$=E.firstChild),J&&E[d](J,$),P=Q>0&&setTimeout(function(){F(x)},Q)),o)}var r,a="async",u="charset",l="",s="error",d="insertBefore",f="_jqjsp",m="on",p=m+"click",h=m+s,y=m+"load",g=m+"readystatechange",v="readyState",b="removeChild",j="<script>",k="success",x="timeout",C=window,w=e.Deferred,E=e("head")[0]||document.documentElement,I={},T=0,q={callback:f,url:location.href},B=C.opera,D=!!e("<div>").html("<!--[if IE]><i><![endif]-->").find("i").length;o.setup=function(t){e.extend(q,t)},e.jsonp=o}(igJq);
 
-    // ###################### UTILITIES ##
-
-    // Noop
-    function noop() {
-    }
-
-    // Generic callback
-    function genericCallback( data ) {
-	 lastValue = [ data ];
-    }
-
-    // Call if defined
-    function callIfDefined( method , object , parameters ) {
-	 return method && method.apply( object.context || object , parameters );
-    }
-
-    // Give joining character given url
-    function qMarkOrAmp( url ) {
-	 return /\?/ .test( url ) ? "&" : "?";
-    }
-
-    var // String constants (for better minification)
-	 STR_ASYNC = "async",
-	 STR_CHARSET = "charset",
-	 STR_EMPTY = "",
-	 STR_ERROR = "error",
-	 STR_INSERT_BEFORE = "insertBefore",
-	 STR_JQUERY_JSONP = "_jqjsp",
-	 STR_ON = "on",
-	 STR_ON_CLICK = STR_ON + "click",
-	 STR_ON_ERROR = STR_ON + STR_ERROR,
-	 STR_ON_LOAD = STR_ON + "load",
-	 STR_ON_READY_STATE_CHANGE = STR_ON + "readystatechange",
-	 STR_READY_STATE = "readyState",
-	 STR_REMOVE_CHILD = "removeChild",
-	 STR_SCRIPT_TAG = "<script>",
-	 STR_SUCCESS = "success",
-	 STR_TIMEOUT = "timeout",
-
-    // Window
-	 win = window,
-    // Deferred
-	 Deferred = igJq.Deferred,
-    // Head element
-	 head = igJq( "head" )[ 0 ] || document.documentElement,
-    // Page cache
-	 pageCache = {},
-    // Counter
-	 count = 0,
-    // Last returned value
-	 lastValue,
-
-    // ###################### DEFAULT OPTIONS ##
-	 xOptionsDefaults = {
-	     //beforeSend: undefined,
-	     //cache: false,
-	     callback: STR_JQUERY_JSONP,
-	     //callbackParameter: undefined,
-	     //charset: undefined,
-	     //complete: undefined,
-	     //context: undefined,
-	     //data: "",
-	     //dataFilter: undefined,
-	     //error: undefined,
-	     //pageCache: false,
-	     //success: undefined,
-	     //timeout: 0,
-	     //traditional: false,
-	     url: location.href
-	 },
-
-    // opera demands sniffing :/
-	 opera = win.opera,
-
-    // IE < 10
-	 oldIE = !!igJq( "<div>" ).html( "<!--[if IE]><i><![endif]-->" ).find("i").length;
-
-    // ###################### MAIN FUNCTION ##
-    function jsonp( xOptions ) {
-
-	 // Build data with default
-	 xOptions = igJq.extend( {} , xOptionsDefaults , xOptions );
-
-	 // References to xOptions members (for better minification)
-	 var successCallback = xOptions.success,
-	     errorCallback = xOptions.error,
-	     completeCallback = xOptions.complete,
-	     dataFilter = xOptions.dataFilter,
-	     callbackParameter = xOptions.callbackParameter,
-	     successCallbackName = xOptions.callback,
-	     cacheFlag = xOptions.cache,
-	     pageCacheFlag = xOptions.pageCache,
-	     charset = xOptions.charset,
-	     url = xOptions.url,
-	     data = xOptions.data,
-	     timeout = xOptions.timeout,
-	     pageCached,
-
-	 // Abort/done flag
-	     done = 0,
-
-	 // Life-cycle functions
-	     cleanUp = noop,
-
-	 // Support vars
-	     supportOnload,
-	     supportOnreadystatechange,
-
-	 // Request execution vars
-	     firstChild,
-	     script,
-	     scriptAfter,
-	     timeoutTimer;
-
-	 // If we have Deferreds:
-	 // - substitute callbacks
-	 // - promote xOptions to a promise
-	 Deferred && Deferred(function( defer ) {
-	     defer.done( successCallback ).fail( errorCallback );
-	     successCallback = defer.resolve;
-	     errorCallback = defer.reject;
-	 }).promise( xOptions );
-
-	 // Create the abort method
-	 xOptions.abort = function() {
-	     !( done++ ) && cleanUp();
-	 };
-
-	 // Call beforeSend if provided (early abort if false returned)
-	 if ( callIfDefined( xOptions.beforeSend , xOptions , [ xOptions ] ) === !1 || done ) {
-	     return xOptions;
-	 }
-
-	 // Control entries
-	 url = url || STR_EMPTY;
-	 data = data ? ( (typeof data) == "string" ? data : igJq.param( data , xOptions.traditional ) ) : STR_EMPTY;
-
-	 // Build final url
-	 url += data ? ( qMarkOrAmp( url ) + data ) : STR_EMPTY;
-
-	 // Add callback parameter if provided as option
-	 callbackParameter && ( url += qMarkOrAmp( url ) + encodeURIComponent( callbackParameter ) + "=?" );
-
-	 // Add anticache parameter if needed
-	 !cacheFlag && !pageCacheFlag && ( url += qMarkOrAmp( url ) + "_" + ( new Date() ).getTime() + "=" );
-
-	 // Replace last ? by callback parameter
-	 url = url.replace( /=\?(&|$)/ , "=" + successCallbackName + "$1" );
-
-	 // Success notifier
-	 function notifySuccess( json ) {
-
-	     if ( !( done++ ) ) {
-
-		  cleanUp();
-		  // Pagecache if needed
-		  pageCacheFlag && ( pageCache [ url ] = { s: [ json ] } );
-		  // Apply the data filter if provided
-		  dataFilter && ( json = dataFilter.apply( xOptions , [ json ] ) );
-		  // Call success then complete
-		  callIfDefined( successCallback , xOptions , [ json , STR_SUCCESS, xOptions ] );
-		  callIfDefined( completeCallback , xOptions , [ xOptions , STR_SUCCESS ] );
-
-	     }
-	 }
-
-	 // Error notifier
-	 function notifyError( type ) {
-
-	     if ( !( done++ ) ) {
-
-		  // Clean up
-		  cleanUp();
-		  // If pure error (not timeout), cache if needed
-		  pageCacheFlag && type != STR_TIMEOUT && ( pageCache[ url ] = type );
-		  // Call error then complete
-		  callIfDefined( errorCallback , xOptions , [ xOptions , type ] );
-		  callIfDefined( completeCallback , xOptions , [ xOptions , type ] );
-
-	     }
-	 }
-
-	 // Check page cache
-	 if ( pageCacheFlag && ( pageCached = pageCache[ url ] ) ) {
-
-	     pageCached.s ? notifySuccess( pageCached.s[ 0 ] ) : notifyError( pageCached );
-
-	 } else {
-
-	     // Install the generic callback
-	     // (BEWARE: global namespace pollution ahoy)
-	     win[ successCallbackName ] = genericCallback;
-
-	     // Create the script tag
-	     script = igJq( STR_SCRIPT_TAG )[ 0 ];
-	     script.id = STR_JQUERY_JSONP + count++;
-
-	     // Set charset if provided
-	     if ( charset ) {
-		  script[ STR_CHARSET ] = charset;
-	     }
-
-	     opera && opera.version() < 11.60 ?
-		  // onerror is not supported: do not set as async and assume in-order execution.
-		  // Add a trailing script to emulate the event
-		  ( ( scriptAfter = igJq( STR_SCRIPT_TAG )[ 0 ] ).text = "document.getElementById('" + script.id + "')." + STR_ON_ERROR + "()" )
-		  :
-		  // onerror is supported: set the script as async to avoid requests blocking each others
-		  ( script[ STR_ASYNC ] = STR_ASYNC )
-
-	     ;
-
-	     // Internet Explorer: event/htmlFor trick
-	     if ( oldIE ) {
-		  script.htmlFor = script.id;
-		  script.event = STR_ON_CLICK;
-	     }
-
-	     // Attached event handlers
-	     script[ STR_ON_LOAD ] = script[ STR_ON_ERROR ] = script[ STR_ON_READY_STATE_CHANGE ] = function ( result ) {
-
-		  // Test readyState if it exists
-		  if ( !script[ STR_READY_STATE ] || !/i/.test( script[ STR_READY_STATE ] ) ) {
-
-		      try {
-
-			   script[ STR_ON_CLICK ] && script[ STR_ON_CLICK ]();
-
-		      } catch( _ ) {}
-
-		      result = lastValue;
-		      lastValue = 0;
-		      result ? notifySuccess( result[ 0 ] ) : notifyError( STR_ERROR );
-
-		  }
-	     };
-
-	     // Set source
-	     script.src = url;
-
-	     // Re-declare cleanUp function
-	     cleanUp = function( i ) {
-		  timeoutTimer && clearTimeout( timeoutTimer );
-		  script[ STR_ON_READY_STATE_CHANGE ] = script[ STR_ON_LOAD ] = script[ STR_ON_ERROR ] = null;
-		  head[ STR_REMOVE_CHILD ]( script );
-		  scriptAfter && head[ STR_REMOVE_CHILD ]( scriptAfter );
-	     };
-
-	     // Append main script
-	     head[ STR_INSERT_BEFORE ]( script , ( firstChild = head.firstChild ) );
-
-	     // Append trailing script if needed
-	     scriptAfter && head[ STR_INSERT_BEFORE ]( scriptAfter , firstChild );
-
-	     // If a timeout is needed, install it
-	     timeoutTimer = timeout > 0 && setTimeout( function() {
-		  notifyError( STR_TIMEOUT );
-	     } , timeout );
-
-	 }
-
-	 return xOptions;
-    }
-
-    // ###################### SETUP FUNCTION ##
-    jsonp.setup = function( xOptions ) {
-	 igJq.extend( xOptionsDefaults , xOptions );
-    };
-
-    // ###################### INSTALL in jQuery ##
-    igJq.jsonp = jsonp;
-
-} )( igJq );
-//
-// End jquery jsonp plugin
-//
-
-//
-// Begin embedded easyModal.js
-//
 /**
  * easyModal.js v1.1.0
  * A minimal jQuery modal that works with your CSS.
  * Author: Flavius Matis - http://flaviusmatis.github.com/
  * URL: https://github.com/flaviusmatis/easyModal.js
  */
+!function(o){var e={init:function(e){var n={top:"100",autoOpen:!1,overlayOpacity:.7,overlayColor:"#9aa0a3",overlayClose:!0,overlayParent:"body",closeOnEscape:!0,closeButtonClass:".close",onOpen:!1,onClose:!1};return e=o.extend(n,e),this.each(function(){var n=e,t=o('<div class="lean-overlay"></div>');t.css({display:"none",position:"fixed","z-index":2e3,top:0,left:0,height:"100%",width:"100%",background:n.overlayColor,opacity:n.overlayOpacity}).appendTo(n.overlayParent);var a=o(this);a.css({opacity:"0"}),a.bind("openModal",function(){o(this).css({opacity:"1"}),t.fadeIn(200,function(){n.onOpen&&"function"==typeof n.onOpen&&n.onOpen(a[0])})}),a.bind("closeModal",function(){o(this).css("opacity","0"),t.fadeOut(200,function(){n.onClose&&"function"==typeof n.onClose&&n.onClose(a[0])})}),t.click(function(){n.overlayClose&&a.trigger("closeModal")}),o(document).keydown(function(o){n.closeOnEscape&&27==o.keyCode&&a.trigger("closeModal")}),a.on("click",n.closeButtonClass,function(o){a.trigger("closeModal"),o.preventDefault()}),n.autoOpen&&a.trigger("openModal")})}};o.fn.easyModal=function(n){return e[n]?e[n].apply(this,Array.prototype.slice.call(arguments,1)):"object"!=typeof n&&n?void o.error("Method "+n+" does not exist on jQuery.easyModal"):e.init.apply(this,arguments)}}(igJq);
 
-(function(igJq){
+/**
+ * Begin embedded jquery cookie plugin, for readying and writing cookies easily
+ */
+!function(e){"function"==typeof define&&define.amd?define(["jquery"],e):e(igJq)}(function(e){function n(e){return e}function o(e){return decodeURIComponent(e.replace(t," "))}function i(e){0===e.indexOf('"')&&(e=e.slice(1,-1).replace(/\\"/g,'"').replace(/\\\\/g,"\\"));try{return r.json?JSON.parse(e):e}catch(n){}}var t=/\+/g,r=e.cookie=function(t,c,a){if(void 0!==c){if(a=e.extend({},r.defaults,a),"number"==typeof a.expires){var f=a.expires,u=a.expires=new Date;u.setDate(u.getDate()+f)}return c=r.json?JSON.stringify(c):String(c),document.cookie=[r.raw?t:encodeURIComponent(t),"=",r.raw?c:encodeURIComponent(c),a.expires?"; expires="+a.expires.toUTCString():"",a.path?"; path="+a.path:"",a.domain?"; domain="+a.domain:"",a.secure?"; secure":""].join("")}for(var d=r.raw?n:o,p=document.cookie.split("; "),s=t?void 0:{},m=0,x=p.length;x>m;m++){var g=p[m].split("="),l=d(g.shift()),v=d(g.join("="));if(t&&t===l){s=i(v);break}t||(s[l]=i(v))}return s};r.defaults={},e.removeCookie=function(n,o){return void 0!==e.cookie(n)?(e.cookie(n,"",e.extend({},o,{expires:-1})),!0):!1}});
 
-    var methods = {
-	 init : function(options) {
-
-	     var defaults = {
-		  top: '100',
-		  autoOpen: false,
-		  overlayOpacity: 0.5,
-		  overlayColor: '#000',
-		  overlayClose: true,
-		  overlayParent: 'body',
-		  closeOnEscape: true,
-		  closeButtonClass: '.close',
-		  onOpen: false,
-		  onClose: false
-	     };
-
-	     options = igJq.extend(defaults, options);
-
-	     return this.each(function() {
-
-		  var o = options;
-
-		  var $overlay = igJq('<div class="lean-overlay"></div>');
-
-		  $overlay.css({
-		      'display': 'none',
-		      'position': 'fixed',
-		      'z-index': 2000,
-		      'top': 0,
-		      'left': 0,
-		      'height': 100 + '%',
-		      'width': 100+ '%',
-		      'background': o.overlayColor,
-		      'opacity': o.overlayOpacity
-		  }).appendTo(o.overlayParent);
-
-		  var $modal = igJq(this);
-
-		  $modal.css({
-		      'display': 'none',
-		      'position' : 'absolute',
-		      'z-index': 2001,
-		      'left' : 50 + '%',
-		      'top' : parseInt(o.top) > -1 ? o.top + 'px' : 50 + '%'
-		  });
-
-		  $modal.bind('openModal', function(){
-		      igJq(this).css({
-			   'display' : 'block',
-			   'margin-left' : -($modal.outerWidth()/2) + 'px',
-			   'margin-top' : (parseInt(o.top) > -1 ? 0 : -($modal.outerHeight()/2)) + 'px'
-		      });
-		      $overlay.fadeIn(200, function(){
-			   if (o.onOpen && typeof (o.onOpen) === 'function') {
-				// onOpen callback receives as argument the modal window
-				o.onOpen($modal[0]);
-			   }
-		      });
-		  });
-
-		  $modal.bind('closeModal', function(){
-		      igJq(this).css('display', 'none');
-		      $overlay.fadeOut(200, function(){
-			   if (o.onClose && typeof(o.onClose) === 'function') {
-				// onClose callback receives as argument the modal window
-				o.onClose($modal[0]);
-			   }
-		      });
-		  });
-
-		  // Close on overlay click
-		  $overlay.click(function() {
-		      if (o.overlayClose)
-			   $modal.trigger('closeModal');
-		  });
-
-		  igJq(document).keydown(function(e) {
-		      // ESCAPE key pressed
-		      if (o.closeOnEscape && e.keyCode == 27) {
-			   $modal.trigger('closeModal');
-		      }
-		  });
-
-		  // Close when button pressed
-		  $modal.on('click', o.closeButtonClass, function(e) {
-		      $modal.trigger('closeModal');
-		      e.preventDefault();
-		  });
-
-		  // Automatically open modal if option set
-		  if (o.autoOpen)
-		      $modal.trigger('openModal');
-
-	     });
-
-	 }
-    };
-
-    igJq.fn.easyModal = function(method) {
-
-	 // Method calling logic
-	 if (methods[method]) {
-	     return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-	 } else if (typeof method === 'object' || ! method) {
-	     return methods.init.apply(this, arguments);
-	 } else {
-	     igJq.error('Method ' + method + ' does not exist on jQuery.easyModal');
-	 }
-
-    };
-
-})(igJq);
-//
-// End embedded easyModal.js
-//
-
-
-//
-// Begin embedded jquery cookie plugin, for readying and writing cookies easily
-//
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-// AMD. Register as anonymous module.
-	 define(['jquery'], factory);
-    } else {
-// Browser globals.
-	 factory(igJq);
-    }
-}(function (igJq) {
-
-    var pluses = /\+/g;
-
-    function raw(s) {
-	 return s;
-    }
-
-    function decoded(s) {
-	 return decodeURIComponent(s.replace(pluses, ' '));
-    }
-
-    function converted(s) {
-	 if (s.indexOf('"') === 0) {
-// This is a quoted cookie as according to RFC2068, unescape
-	     s = s.slice(1, -1).replace(/\\"/g, '"').replace(/\\\\/g, '\\');
-	 }
-	 try {
-	     return config.json ? JSON.parse(s) : s;
-	 } catch(er) {}
-    }
-
-    var config = igJq.cookie = function (key, value, options) {
-
-// write
-	 if (value !== undefined) {
-	     options = igJq.extend({}, config.defaults, options);
-
-	     if (typeof options.expires === 'number') {
-		  var days = options.expires, t = options.expires = new Date();
-		  t.setDate(t.getDate() + days);
-	     }
-
-	     value = config.json ? JSON.stringify(value) : String(value);
-
-	     return (document.cookie = [
-		  config.raw ? key : encodeURIComponent(key),
-		  '=',
-		  config.raw ? value : encodeURIComponent(value),
-		  options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
-		  options.path    ? '; path=' + options.path : '',
-		  options.domain  ? '; domain=' + options.domain : '',
-		  options.secure  ? '; secure' : ''
-	     ].join(''));
-	 }
-
-// read
-	 var decode = config.raw ? raw : decoded;
-	 var cookies = document.cookie.split('; ');
-	 var result = key ? undefined : {};
-	 for (var i = 0, l = cookies.length; i < l; i++) {
-	     var parts = cookies[i].split('=');
-	     var name = decode(parts.shift());
-	     var cookie = decode(parts.join('='));
-
-	     if (key && key === name) {
-		  result = converted(cookie);
-		  break;
-	     }
-
-	     if (!key) {
-		  result[name] = converted(cookie);
-	     }
-	 }
-
-	 return result;
-    };
-
-    config.defaults = {};
-
-    igJq.removeCookie = function (key, options) {
-	 if (igJq.cookie(key) !== undefined) {
-// Must not alter options, thus extending a fresh object...
-	     igJq.cookie(key, '', igJq.extend({}, options, { expires: -1 }));
-	     return true;
-	 }
-	 return false;
-    };
-
-}));
-//
-// End embedded jquery cookie plugin, for readying and writing cookies easily
-//
 
 
 //
@@ -566,12 +74,12 @@ igJq(function(){
 function ig_getParameterByName(name) {
     name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-	 results = regex.exec(location.search);
+        results = regex.exec(location.search);
     return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
 function ig_createSplashHtml() {
-    var ig_splashHtml = '<div id="igSplashElement" style="display:none;">';
+    var ig_splashHtml = '<div id="igSplashElement" class="modal-open" style="opacity: 0;">';
     ig_splashHtml += ig_createSplashContentsHtml();
     ig_splashHtml += '</div><!--/#igSplashElement -->';
     return ig_splashHtml;
@@ -579,60 +87,59 @@ function ig_createSplashHtml() {
 
 function ig_createSplashContentsHtml() { // Feel free to edit the HTML below to match your site
     var ig_splashHtml = '' +
-	 '<img src="https://d1vyngmisxigjx.cloudfront.net/images/close-square.png" alt="Close" class="closeButton close" />' +
-	 '<div class="igModalHeader">' +
-	 '<div class="logoWrapper">' +
-	 '<img class="modalLogo" src="'+ig_logoUrl+'" alt="" />' +
-	 '</div><!--/.logoWrapper -->' +
-	 '<div class="messageWrapper">' +
-	 '<p class="headerZero">Thanks for visiting us from</p>' +
-	 '<img src="https://d1vyngmisxigjx.cloudfront.net/images/flags/96x64/'+((ig_country)?ig_country.toUpperCase():'undefined')+'.png" alt="Flag of '+ig_countries[ig_country]+'" class="headerFlag">' +
-	 '<span class="headerOne">' +ig_countries[ig_country]+'</span><!--/.headerOne-->' +
-	 '<p class="countryP" style="font-size: 12px;">Not in '+ig_countries[ig_country]+'? Please select your country below.</p> ' +
-	 '<div class="countryDropDownWrapper">' +
-	 '<select id="countrySelect" class=".coreUISelect" onchange="ig_countrySelected();"> ' +
-	 '<option value="">Select your country</option>';
+        '<div class="close">' +
+		    '<i class="material-icons">&#xE14C;</i>' +
+        '</div>' +
+		'<div class="igModalHeader">' +
+			'<div class="logoWrapper">' +
+	      '<img class="modalLogo" src="'+ig_logoUrl+'" alt="" />' +
+			'</div><!--/.logoWrapper -->' +
+			'<div class="messageWrapper">' +
+				'<p class="headerZero">Hello!</p>' +
+				'<p class="countryP">Select your country</p> ' +
+				'<div class="countryDropDownWrapper">' +
+                    '<img src="https://d1vyngmisxigjx.cloudfront.net/images/flags/96x64/'+((ig_country)?ig_country.toUpperCase():'undefined')+'.png" alt="Flag of '+ig_countries[ig_country]+'" class="headerFlag">' +
+                    '<i class="material-icons">&#xE313;</i>' +
+                    '<select id="countrySelect" class=".coreUISelect" onchange="ig_countrySelected();"> ' +
+						'<option value="">Select your country</option>';
 
-    for(var countryCode in ig_countries){
-	 ig_splashHtml += '<option '+((countryCode===ig_country)?'selected="selected" ':'')+'value="'+countryCode+'">'+ig_countries[countryCode]+'</option>';
-    }
+    				for(var countryCode in ig_countries){
+						ig_splashHtml += '<option '+((countryCode===ig_country)?'selected="selected" ':'')+'value="'+countryCode+'">'+ig_countries[countryCode]+'</option>';
+    				}
 
-    ig_splashHtml += '' +
-	 '</select>' +
-	 '</div><!--/.countryDropDownWrapper -->' +
-	 '</div><!--/.messageWrapper -->' +
-	 '</div><!--/.igModalHeader -->' +
-	 '<div class="igModalBody">';
+    				ig_splashHtml += '' +
+					'</select>' +
+				'</div><!--/.countryDropDownWrapper -->' +
+			'</div><!--/.messageWrapper -->' +
+		'</div><!--/.igModalHeader -->' +
+		'<div class="igModalBody">';
 
     if (ig_isDomesticCountry()) {
-	 //Don't show international shopping features
-	 ig_splashHtml += '' +
-	     '<ul class="featureList">' +
-	     '<div class="igFeatureHeader">Welcome to our website!</div>' +
-	     '</ul>';
+        //Don't show international shopping features
+
     } else {
-	 //Show international shopping features
-	 ig_splashHtml += ''+
-	     '<ul class="featureList">' +
-	     '<div class="igFeatureHeader">We offer the following services to shoppers in ' +ig_countries[ig_country]+'.</div>' +
-	     '<li><img src="https://d1vyngmisxigjx.cloudfront.net/images/currencies-icon.png" alt="Your Currency"> See totals and pay in <strong>your currency</strong>' +
-	     '</li>' +
-	     '<li><img src="https://d1vyngmisxigjx.cloudfront.net/images/payment-methods-icon.png" alt="Multiple Payment Methods"> <strong>Multiple payment methods</strong> available' +
-	     '</li>' +
-	     '<li><img src="https://d1vyngmisxigjx.cloudfront.net/images/prepay-duty-tax-icon.png" alt="Prepay Duties and Taxes"> Option to <strong>prepay duties and taxes</strong>' +
-	     '</li>' +
-	     '<li><img src="https://d1vyngmisxigjx.cloudfront.net/images/shipping-icon.png" alt="Shipping Options"> <strong>Multiple shipping options</strong> available' +
-	     '</li>' +
-	     '</ul>';
+        //Show international shopping features
+        ig_splashHtml += ''+
+            '<ul class="featureList">' +
+                '<div class="igFeatureHeader">We offer the following services to shoppers in ' +ig_countries[ig_country]+'.</div>' +
+                '<li><i class="material-icons">&#xE263;</i> See totals and pay in your currency' +
+                '</li>' +
+                '<li><i class="material-icons">&#xE870;</i> Multiple payment methods available' +
+                '</li>' +
+                '<li><i class="material-icons">&#xE065;</i> Option to prepay duties and taxes' +
+                '</li>' +
+                '<li><i class="material-icons">&#xE539;</i> Multiple shipping options available' +
+                '</li>' +
+            '</ul>';
     }
 
     ig_splashHtml += '' +
-	 '<div class="igWelcomeCTAButton">' +
-	 '<button class="close">Start Shopping</button>' +
-	 '</div><!--/.igWelcomeCTAButton -->' +
-	 '</div><!--/.igModalBody -->' +
-	 '<div class="igModalFooter">' +
-	 '</div><!--/.igModalFooter-->';
+		'<div class="igWelcomeCTAButton">' +
+				'<button class="close">Start Shopping</button>' +
+			'</div><!--/.igWelcomeCTAButton -->' +
+		'</div><!--/.igModalBody -->' +
+		'<div class="igModalFooter">' +
+		'</div><!--/.igModalFooter-->';
 
     return ig_splashHtml;
 }
@@ -651,39 +158,42 @@ function ig_showTheSplash() {
 
     //init easyModal.js modal, after modal content was placed on the page (line above)
     igJq("#igSplashElement").easyModal({
-	 onClose: function(myModal){
-	     //on close, let's remove the modal contents and the modal smokescreen created by easyModal.js
-	     igJq("#igSplashElement").remove();
-	     igJq(".lean-overlay").remove();
-	 }
+        onClose: function(myModal){
+            //on close, let's remove the modal contents and the modal smokescreen created by easyModal.js
+            igJq("#igSplashElement").remove();
+            igJq(".lean-overlay").remove();
+            igJq("body").removeClass("welcome-mat-blur welcome-mat-open");
+            igJq("#igSplashElement").removeClass("modal-open");
+        }
     });
 
     //Fire the modal!
     igJq("#igSplashElement").trigger('openModal');
+    igJq("body").addClass("welcome-mat-blur welcome-mat-open");
+    igJq("#igSplashElement").addClass("modal-open");
 
     //Set cookie for Splash shown
     if (ig_validateCountryCode(igJq.cookie("igCountry"))) { // Only set the splashShown cookie, if there is a valid countryCookie
-	 igJq.cookie('igSplash', 'igSplash', { expires: 7, path: '/', domain: ig_cookieDomain });
+        igJq.cookie('igSplash', 'igSplash', { expires: 7, path: '/', domain: ig_cookieDomain });
     }
 }
-
 function ig_createNestContents() {
-    return '<img onclick="ig_showTheSplash();" src="https://d1vyngmisxigjx.cloudfront.net/images/flags/96x64/'+((ig_country)?ig_country.toUpperCase():'US')+'.png" class="igWelcomeFlagHeader" alt="Select your country." />';
+    return '<img onclick="ig_showTheSplash();" src="https://d1vyngmisxigjx.cloudfront.net/images/flags/96x64/'+((ig_country)?ig_country.toUpperCase():'undefined')+'.png" class="igWelcomeFlagHeader" alt="Select your country." />';
 }
 
 function ig_placeNestHtml() {
     igJq(function(){
-	 if (igJq("#igFlag")) {
-	     igJq("#igFlag").html(ig_createNestContents());
-	 }
+        if (igJq("#"+ig_nestElementId)) {
+            igJq("#"+ig_nestElementId).html(ig_createNestContents());
+        }
     });
 }
 
 function ig_setCountry(country) {
     ig_country = country;
     if (ig_country) {
-	 //Set country cookie
-	 igJq.cookie('igCountry', ig_country, { expires: 365, path: '/', domain: ig_cookieDomain });
+        //Set country cookie
+        igJq.cookie('igCountry', ig_country, { expires: 365, path: '/', domain: ig_cookieDomain });
     }
     ig_placeNestHtml();
 }
@@ -700,9 +210,9 @@ function ig_validateCountryCode(countryCode) {
     //Return the country code if valid, return null if not valid
     var countryDisplayName = ig_countries[countryCode];
     if (typeof countryDisplayName !== 'undefined' && countryDisplayName) {
-	 return countryCode;
+        return countryCode;
     } else {
-	 return null;
+        return null;
     }
 }
 
@@ -722,37 +232,31 @@ function ig_detectCountryCallbackError() { // Error handling method for when the
 
 function ig_detectCountry() {
     igJq.jsonp({
-	 url: 'https://iprecon.iglobalstores.com/iGlobalIp.js?p=igcCallback',
-	 callback:'igcCallback',
-	 success: function(json, textStatus, xOptions){ig_detectCountryCallback(json);},
-	 error: function(){ig_detectCountryCallbackError();}
+        url: 'https://iprecon.iglobalstores.com/iGlobalIp.js?p=igcCallback',
+        callback:'igcCallback',
+        success: function(json, textStatus, xOptions){ig_detectCountryCallback(json);},
+        error: function(){ig_detectCountryCallbackError();}
     });
 }
 
 function ig_pingIglobal() {
-    try { // Don't break if this doesn't work
-	 if (!ig_countryParam) {//Only ping iGlobal for real visitors, not url parameter testing
-	     igJq.ajax({//we do not need to trap errors like 503's, for this call
-		  dataType: "jsonp",
-		  url: 'https://iprecon.iglobalstores.com/ping.js?s='+ig_storeId+'&c='+((ig_country)?ig_country:'')
-	     });
-	 }
-    } catch (err) {
-	 // do nothing
+  try { // Don't break if this doesn't work
+    if (!ig_countryParam) {//Only ping iGlobal for real visitors, not url parameter testing
+      igJq.ajax({//we do not need to trap errors like 503's, for this call
+        dataType: "jsonp",
+        url: 'https://iprecon.iglobalstores.com/ping.js?s='+ig_storeId+'&c='+((ig_country)?ig_country:'')
+      });
     }
+  } catch (err) {
+    // do nothing
+  }
 }
-
-//function ig_errorPingIglobal() {
-//    console.log("Couldn't update iGlobal");
-//}
 
 function ig_finishLoading() {
     ig_placeNestHtml();
     if (!ig_isDomesticCountry() && (!ig_splashCookie || !ig_country || ig_countryParam)) {
-	 igJq(ig_showTheSplash); //Schedule Showing the Splash
+        igJq(ig_showTheSplash); //Schedule Showing the Splash
     }
-    //Removed to avoid circular onReady dependency with iCE Script
-    // ig_alertIceOfCountryChange();
     ig_pingIglobal();
 }
 
@@ -777,3 +281,39 @@ if (!ig_country) {
 } else { // else go with whatever country we have, even no country
     ig_finishLoading();
 }
+
+// Redirect to int'l checkout if country is changed on domestic page
+function ig_countryRedirect(selectedCountry){
+  if(ig_domesticCountryCodes.indexOf(selectedCountry) == -1){
+    ig_setCountry(selectedCountry);
+    window.location.pathname = window.location.pathname.replace("/checkout/onepage/", "/iglobal/checkout/");
+  }
+}
+
+// check for change in shipping country on domestic checkout page.
+igJq(document).ready(function(){
+	billing_select = igJq("select[id *= 'billing:country_id']");
+	shipping_select = igJq("select[id *= 'shipping:country_id']");
+	rdo_same_as_billing = igJq("input[id *= 'billing:use_for_shipping_yes']");
+
+	// check for redirect if country selected and billing is same as shipping
+	igJq("select[id *= 'billing:country_id']").change(function(){
+		if(igJq(this).val() && rdo_same_as_billing.checked === true){
+			ig_countryRedirect(igJq(this).val());
+		}
+	});
+
+	//change in shipping country
+	igJq("select[id *= 'shipping:country_id']").change(function(){
+		if(igJq(this).val()){
+			ig_countryRedirect(igJq(this).val());
+		}
+	});
+
+  // same as shipping button is checked
+	igJq(rdo_same_as_billing).change(function(){
+		if(this.checked === true && billing_select.val()){
+		  ig_countryRedirect(billing_select.val());
+		}
+	});
+});

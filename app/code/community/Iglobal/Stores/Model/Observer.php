@@ -69,9 +69,9 @@ class Iglobal_Stores_Model_Observer
         foreach ($orders as $order) {
 			$magentoOrders[$order->getIgOrderNumber()] = $order;
         }
-
+        $date = date("Ymd", strtotime("-1 week"));
 		//get array with all orders in past
-		$data = Mage::getModel('stores/rest')->getAllOrdersSinceDate('20151006');
+		$data = Mage::getModel('stores/rest')->getAllOrdersSinceDate($date);
 		foreach ($data->orders as $igOrder)
         {
 

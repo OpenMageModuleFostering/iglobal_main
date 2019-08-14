@@ -1,15 +1,17 @@
 <?php
 
-class Iglobal_Stores_Model_ConfigOptions
+class Iglobal_Stores_Model_ConfigOptions extends Mage_Eav_Model_Entity_Attribute_Source_Store
 {
     public function toOptionArray()
     {
-        return array(
-            array('value'=>1, 'label'=>Mage::helper('stores')->__('Hello')),
-            array('value'=>2, 'label'=>Mage::helper('stores')->__('Goodbye')),
-            array('value'=>3, 'label'=>Mage::helper('stores')->__('Yes')),            
-            array('value'=>4, 'label'=>Mage::helper('stores')->__('No')),                       
-        );
+        $collection = Mage::getResourceModel('catalog/product_attribute_collection')->load();
+        $options = array(array('value'=> null, 'label'=> '- Not mapped -' ));
+        foreach($collection as $attr) {
+            if($attr->getIsVisible()) {
+                $options[] = array('value' => $attr->getAttributeCode(), 'label' => $attr->getFrontendLabel());
+            }
+        }
+        return $options;
     }
 
 }

@@ -2,7 +2,7 @@
 
 class Iglobal_Stores_Model_Rest extends Mage_Core_Model_Abstract
 {
-    protected $_entryPoint = 'https://api.iglobalstores.com/v1/';
+    protected $_entryPoint = 'https://api.iglobalstores.com/';
     protected $_store = 3; // default store ID
     protected $_key = '';
 
@@ -38,36 +38,36 @@ class Iglobal_Stores_Model_Rest extends Mage_Core_Model_Abstract
     public function getAllOrders()
     {
         $data = array('sinceDate'=>'20100101');
-        return $this->callApi('orderNumbers', $data);
+        return $this->callApi('v1/orderNumbers', $data);
     }
 
     public function getAllOrdersSinceDate($data)
     {
         $data = array('sinceDate'=>$data);
-        return $this->callApi('orderNumbers', $data);
+        return $this->callApi('v1/orderNumbers', $data);
     }
 
     public function getOrder($order)
     {
         $data = array('orderId' => $order);
-        return $this->callApi('orderDetail', $data);
+        return $this->callApi('v2/orderDetail', $data);
     }
 
     public function sendMagentoOrderId($igc_order_id, $magento_order_id) {
         $data = array('orderId' => $igc_order_id, 'merchantOrderId' => $magento_order_id);
-        return $this->callApi('updateMerchantOrderId', $data);
+        return $this->callApi('v1/updateMerchantOrderId', $data);
     }
 
     public function createTempCart(array $data)
     {
-        return $this->callApi('createTempCart', $data);
+        return $this->callApi('v1/createTempCart', $data);
     }
 
     public function getRegionId($countryId, $region, $orderid)
     {
         $data = array('countryCode'=> $countryId,'region'=> $region, 'orderId' => $orderid);
         return $this->callApi(
-            'magento-region',
+            'v1/magento-region',
             $data,
             array("serviceToken" => "31ae7155-5b9e-461f-8353-9a8c3f8ae35974ffec3a-88dc-4acb-8420-270df7967338")
         );

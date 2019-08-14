@@ -3,7 +3,7 @@
 <config>
 	<tabs>
 		<iglobal translate="label" module="stores">
-			<label>iGlobal Stores Configuration</label>
+			<label>iGlobal Stores</label>
 			<sort_order>150</sort_order>
 		</iglobal>
 	</tabs>
@@ -37,7 +37,7 @@
 
 	<sections>
 		<iglobal_integration translate="label" module="stores">
-			<label>iGlobal Integration Options</label>
+			<label>iGlobal Integration</label>
 			<tab>iglobal</tab>
 			<frontend_type>text</frontend_type>
 			<sort_order>1000</sort_order>
@@ -107,7 +107,7 @@
 
 					<ice>
 						<label>ICE script</label>
-						<comment>Paste the provided link here.  Please Be sure to include "https://" at the begining.</comment>
+						<comment>Paste the provided link here.  Please Be sure to include "https://" at the beginning.</comment>
 						<frontend_type>text</frontend_type>
 						<sort_order>50</sort_order>
 						<show_in_default>1</show_in_default>
@@ -259,7 +259,7 @@
 					</welcome_mat_css>
 
 					<flag_parent>
-						<label>Flag postition selector</label>
+						<label>Flag position selector</label>
 						<comment>Enter the code provided to customize the location of the Welcome Mat flag, or leave blank to use the default location.</comment>
 						<frontend_type>text</frontend_type>
 						<sort_order>40</sort_order>
@@ -270,7 +270,7 @@
 					</flag_parent>
 
 				<!--	<flag_method>
-						<label>Flag attachement method</label>
+						<label>Flag attachment method</label>
 						<comment>Enter the code provided to customize the location of the Welcome Mat flag, or leave blank to use the default location.</comment>
 						<frontend_type>select</frontend_type>
 						<source_model>iglobal_stores/system_config_source_dropdown_method</source_model>
@@ -319,7 +319,134 @@
 				</fields>
 
 			</igmat>
-
+			<ig_item_attribute translate="label">
+				<label>Cart Item Attribute Mapping</label>
+				<comment><![CDATA[ <div style="padding:10px;background-color:#fff;border:1px solid #ddd;margin-bottom:7px;">Map your existing and/or custom fields back to iGlobal for added product info and custom rules built around your store.</div>]]></comment>
+				<frontend_type>text</frontend_type>
+				<sort_order>19</sort_order>
+				<show_in_default>1</show_in_default>
+				<show_in_website>1</show_in_website>
+				<show_in_store>1</show_in_store>
+				<fields>
+					<weight translate="label">
+						<label>Weight</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>1</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</weight>
+					<length translate="label">
+						<label>Length</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>2</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</length>
+					<width translate="label">
+						<label>Width</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>3</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</width>
+					<height translate="label">
+						<label>Height</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>4</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</height>
+					<country_of_origin translate="label">
+						<label>Country of origin</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>5</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</country_of_origin>
+					<category translate="label">
+						<label>Category</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>6</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</category>
+					<brand translate="label">
+						<label>Brand</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>13</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</brand>
+					<hs_code translate="label">
+						<label>HS code</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>8</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</hs_code>
+					<customization translate="label">
+						<label>Customization</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>14</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</customization>
+					<color translate="label">
+						<label>Color</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>10</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</color>
+					<material translate="label">
+						<label>Material</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>11</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</material>
+					<status translate="label">
+						<label>Status</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>12</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</status>
+					<non_shippable translate="label">
+						<label>Non Shippable</label>
+						<frontend_type>select</frontend_type>
+						<source_model>stores/configoptions</source_model>
+						<sort_order>7</sort_order>
+						<show_in_default>1</show_in_default>
+						<show_in_website>1</show_in_website>
+						<show_in_store>1</show_in_store>
+					</non_shippable>
+				</fields>
+			</ig_item_attribute>
 			<igjq translate="label">
 			<label>jQuery Settings</label>
 			<frontend_type>text</frontend_type>

@@ -29,8 +29,8 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             $order->hold();
             $order->addStatusHistoryComment("Order Set to {$status} by iGlobal", false);
             $order->save();
-        } elseif ($status == self::STATUS_IN_PROCESS && $order->canUnHold()) {
-            $order->unHold();
+        } elseif ($status == self::STATUS_IN_PROCESS && $order->canUnhold()) {
+            $order->unhold();
             $order->addStatusHistoryComment("Order Set to {$status} by iGlobal", false);
             $order->save();
         }
@@ -78,7 +78,25 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         Mage::unregister('shipping_methodtitle');
         return $order;
     }
-
+    protected function regionId($state, $countryCode){
+      $region = Mage::getModel('directory/region')->loadbyName($state, $countryCode);
+      if (!$region->getId())
+      {
+        // Lookup region from iGlobalstores
+        $regionId = $this->rest->getRegionId($countryCode, $state, $this->iglobal_order_id);
+        $region->load($regionId->magentoRegionId);
+        if (!$region->getId())
+        {
+          try {
+          // Create a new region
+          $region->setData(array('country_id' => $countryCode, 'code'=> $regionId->isoCode,'default_name' => $state))->save();
+          } catch (Exception $e) {
+            return null;
+          }
+        }
+      }
+      return $region->getId();
+    }
     protected function setContactInfo()
     {
         //set customer info
@@ -102,27 +120,6 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             $street = array($street, $this->iglobal_order->address2);
         }
 
-        $region = Mage::getModel('directory/region')
-            ->loadbyName($this->iglobal_order->state, $this->iglobal_order->countryCode);
-        if (!$region->getId())
-        {
-            // Lookup region from iGlobalstores
-            $regionId = $this->rest->getRegionId(
-                $this->iglobal_order->countryCode,
-                $this->iglobal_order->state,
-                $this->iglobal_order_id);
-            $region->load($regionId->magentoRegionId);
-            if (!$region->getId())
-            {
-                // Create a new region
-                $region->setData(array(
-                    'country_id' => $this->iglobal_order->countryCode,
-                    'defalt_name' => $this->iglobal_order->state
-                ))->save();
-
-            }
-        }
-
         $addressData = array(
             'firstname' => $name_first,
             'lastname' => $name_last,
@@ -131,9 +128,9 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             'postcode' => $this->iglobal_order->zip,
             'telephone' => $this->iglobal_order->phone,
             'region' => $this->iglobal_order->state,
-            'region_id' => $region->getId(),
+            'region_id' => $this->regionId($this->iglobal_order->state, $this->iglobal_order->countryCode),
             'country_id' => $this->iglobal_order->countryCode,
-            'company' => '',//$this->iglobal_order->company,
+            'company' => $this->iglobal_order->company,
         );
 
         if (!empty($this->iglobal_order->billingAddress1)) {
@@ -158,9 +155,10 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
                 'city' => $this->iglobal_order->billingCity,
                 'postcode' => $this->iglobal_order->billingZip,
                 'telephone' => $this->iglobal_order->billingPhone,
-                'region' => $this->iglobal_order->state,
-                'region_id' => $region->getId(),
+                'region' => $this->iglobal_order->billingState,
+                'region_id' => $this->regionId($this->iglobal_order->billingState, $this->iglobal_order->billingCountryCode),
                 'country_id' => $this->iglobal_order->billingCountryCode,
+                'company' => $this->iglobal_order->company,
             );
 
         } else {
@@ -206,7 +204,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         }
         foreach($extra as $item)
         {
-            $this->quote->removeItem($item->getId());
+            // $this->quote->removeItem($item->getId());
         }
     }
 
@@ -254,11 +252,14 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             $carrierMethod = 'default';
         }
         $shipper = $shippers[$carrierMethod];
-
+        $shippingMethod = $shipper[1];
+        if($this->iglobal_order->customerSelectedShippingName) {
+            $shippingMethod = $this->iglobal_order->customerSelectedShippingName;
+        }
         //Add things to the register so they can be used by the shipping method
         Mage::register('shipping_cost', $this->iglobal_order->shippingTotal);
         Mage::register('shipping_carriertitle', $shipper[0]);
-        Mage::register('shipping_methodtitle', $shipper[1]);
+        Mage::register('shipping_methodtitle', $shippingMethod);
         $shippingAddress->setCollectShippingRates(true)
             ->collectShippingRates()
             ->setShippingMethod('excellence_excellence');
@@ -291,9 +292,14 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $service = Mage::getModel('stores/service_quote', $this->quote);
         $service->submitAll();
         $order = $service->getOrder();
+        if($order) {
+          // cleaning up
+          Mage::getSingleton('checkout/session')->clear();
+        } else {
+          $this->quote->setIsActive(1)->save();
+          return;
+        }
 
-        // cleaning up
-        Mage::getSingleton('checkout/session')->clear();
 
         $id = $order->getEntityId();
 
@@ -347,6 +353,25 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
                 }
             }
             $this->checkStatus($order);
+
+            // add customer notes
+            if($this->iglobal_order->notes){
+                foreach ($this->iglobal_order->notes as $note) {
+                  if($note->customerNote) {
+                      $order->addStatusHistoryComment($note->note, false);
+                  }
+                }
+            }
+            $extraNote = "";
+            if($this->iglobal_order->birthDate) {
+                $extraNote .= "Birthdate: " . $this->iglobal_order->birthDate . "\n";
+            }
+            if($this->iglobal_order->nationalIdentifier) {
+                $extraNote .= "National Identifier: " . $this->iglobal_order->nationalIdentifier . "\n";
+            }
+            if($extraNote) {
+                $order->addStatusHistoryComment($extraNote, false);
+            }
         } catch (Exception $e) {
             $order->addStatusHistoryComment('iGlobal Invoicer: Exception occurred during automatically invoicing. Exception message: '.$e->getMessage(), false);
             $order->save();
