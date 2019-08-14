@@ -1,41 +1,40 @@
 <?xml version="1.0"?>
 <package>
     <name>Iglobal_Main</name>
-    <version>1.5.3</version>
-    <stability>stable</stability>
+    <version>1.5.4.01</version>
+    <stability>beta</stability>
     <license>OSL</license>
     <channel>community</channel>
     <extends/>
-    <summary>Leverage iGlobal Stores&#x2019; technology for international eCommerce&#xD;
-</summary>
+    <summary>Leverage iGlobal Stores' technology for international eCommerce</summary>
     <description>International eCommerce Done Right&#xD;
- Thanks for checking out the iGlobal Stores extension for Magento Community Edition! This extension gives you access to the many features of iGlobal Stores services. For more information on this extension and iGlobal&#x2019;s services, please visit http://www.iglobalstores.com/magento&#xD;
+ Thanks for checking out the iGlobal Stores extension for Magento Community Edition! This extension gives you access to the many features of iGlobal Stores services. For more information on this extension and iGlobal's services, please visit http://www.iglobalstores.com/magento&#xD;
+ &#xD;
+ &#xD;
+ Improved Global Conversion Rates - Direct international visitors to the iGlobal checkout to keep your conversion rates at their highest&#xD;
+ &#xD;
+ Worldwide Geolocation- Automatically detect international visitors (by IP address) and show them a welcome mat, letting them know about all the ways you make ordering easy for them&#xD;
+ &#xD;
+ Duty, Tax, VAT? Done. - Calculate customs, duties, taxes and VAT and let your customers prepay them right in the checkout!&#xD;
+ &#xD;
+ Your Shipping Carriers - Work with the shipping carriers of your choice, at your rates.&#xD;
+ &#xD;
+ Direct Shipping to the World- Ship directly from your warehouse to anywhere in the world with iGlobal Stores' easy print and ship technology. We'll take care of the paperwork&#xD;
+ &#xD;
+ Their Currency - Show customers their order totals in their local currency, making the buying decision that much easier&#xD;
+ &#xD;
+ Your Payment Processor or Ours - Use your own payment processor or leverage the integrated payment system to settle in foreign currencies - it's up to you.&#xD;
+ &#xD;
+ Before You Install&#xD;
+ The iGlobal Stores extension will have limited use for stores that are not set up with an iGlobal Stores account. In order to accept orders internationally through iGlobal Stores, please contact us at 1-800-942-0721, at www.iglobalstores.com or at info@iglobalstores.com.</description>
+    <notes>New Features:&#xD;
 &#xD;
-&#xD;
-Improved Global Conversion Rates - Direct international visitors to the iGlobal checkout to keep your conversion rates at their highest&#xD;
-&#xD;
-Worldwide Geolocation- Automatically detect international visitors (by IP address) and show them a welcome mat, letting them know about all the ways you make ordering easy for them&#xD;
-&#xD;
-Duty, Tax, VAT? Done. - Calculate customs, duties, taxes and VAT and let your customers prepay them right in the checkout!&#xD;
-&#xD;
-Your Shipping Carriers - Work with the shipping carriers of your choice, at your rates.&#xD;
-&#xD;
-Direct Shipping to the World- Ship directly from your warehouse to anywhere in the world with iGlobal Stores&#x2019; easy print and ship technology. We&#x2019;ll take care of the paperwork&#xD;
-&#xD;
-Their Currency - Show customers their order totals in their local currency, making the buying decision that much easier&#xD;
-&#xD;
-Your Payment Processor or Ours - Use your own payment processor or leverage the integrated payment system to settle in foreign currencies - it&#x2019;s up to you.&#xD;
-&#xD;
-Before You Install&#xD;
- The iGlobal Stores extension will have limited use for stores that are not set up with an iGlobal Stores account. In order to accept orders internationally through iGlobal Stores, please contact us at 1-800-942-0721, at www.iglobalstores.com or at info@iglobalstores.com.&#xD;
-</description>
-    <notes>Fix:&#xD;
-&#xD;
-Cleaned up the code.</notes>
-    <authors><author><name>Brian Olsen</name><user>brianolsen</user><email>brian@iglobalstores.com</email></author></authors>
-    <date>2017-07-28</date>
-    <time>21:19:46</time>
-    <contents><target name="mageetc"><dir name="modules"><file name="Iglobal_Stores.xml" hash="56839ad045b6a99f97564de63ebed700"/><file name="Iglobal_Ship.xml" hash="6d40f1c84e29bb7d8b70eadd77a03917"/></dir></target><target name="magecommunity"><dir name="Iglobal"><dir name="Ship"><dir name="Block"><file name="Ship.php" hash="a802b4d42e72997ec4ab466dec75b743"/></dir><dir name="Helper"><file name="Data.php" hash="fe9f074c1cb74260fa134efa94eb67c9"/></dir><dir name="Model"><dir name="Carrier"><file name="Excellence.php" hash="d1814260e342346b74d7ff3543499d4f"/></dir></dir><dir name="controllers"><file name="IndexController.php" hash="3355a75caf30f4ff96499da3d8a4102a"/></dir><dir name="etc"><file name="config.xml" hash="adecbc76332ffb4b0f8918d3166c655c"/><file name="system.xml" hash="fea6b2ed9b7fdf5748cb57e53fe1301b"/></dir></dir><dir name="Stores"><dir name="Block"><file name="Ajax.php" hash="5d288c6bc298db3bdc86adcdd036bdd6"/><file name="Cart.php" hash="a162e67a8c445b911dd25897e4d886a3"/><file name="Includes.php" hash="8214ef5eae6a83e2909f8ebeee6ea1f7"/><file name="Link.php" hash="69b0efcc8d2ffd6ca9daed407260d793"/></dir><dir name="Helper"><file name="Configoptions.php" hash="b129e55b21f845a20d6e7fdb3b532be3"/><file name="Data.php" hash="95b0a619bff6bfd288a748aca65cdba9"/><file name="Url.php" hash="e430471ab463e1fc7812c4a96d5f3208"/></dir><dir name="Model"><file name="Configoptions.php" hash="2cbd3eb8357f80c2de5a48f32709b1c5"/><dir name="International"><file name="International.php" hash="afe4d55d944b7883fb9a14ded44d767a"/></dir><file name="Observer.php" hash="8bca52293f76cab0c92e8e30ada75662"/><file name="Order.php" hash="f880f8edd039bcfa878804b9c03a02ba"/><dir name="Payment"><file name="Iglobal.php" hash="9ac8f8d81b8f8d547831ad6db8a1c7fc"/><file name="Iglobalcreditcard.php" hash="f2f5cf4507a128fadc95071951ca2a41"/><file name="Iglobalpaypal.php" hash="3a566289db82b177ce6b52ce205728f6"/></dir><dir name="Resource"><file name="Setup.php" hash="f725924af461644af75a455210097a53"/></dir><file name="Rest.php" hash="267d2fdc2357886e752535879f47b418"/><dir name="Service"><file name="Quote.php" hash="bae0e5a710b9e3aa1427bb78a08fbfd8"/></dir><file name="Tax.php" hash="9645d04415913bea333b5aba99b1909c"/></dir><dir name="controllers"><file name="AjaxController.php" hash="62228ca95872788a18256bbf20839a07"/><file name="CheckoutController.php" hash="dc79a1b3d6734051ea0081f272432911"/><file name="SuccessController.php" hash="ed6df1368ce185de7bf6c557e55d2339"/></dir><dir name="etc"><file name="adminhtml.xml" hash="7f10c9724b1294a506df47cf569bc9e6"/><file name="config.xml" hash="2da68ac84a35fd01af4b493659269845"/><file name="system.xml" hash="c916869addc050f6b2e4d7b01cc7a6b2"/><file name=".config.xml.swp" hash="95b91a35220b969d02d96bc60bada9e2"/></dir><dir name="sql"><dir name="iglobal_stores_setup"><file name="mysql4-install-0.1.0.php" hash="72c543090fe27608e582d22494b65d75"/><file name="mysql4-upgrade-0.1.0-0.1.1.php" hash="51e83dd266d7b232d42f03cac66350df"/><file name="mysql4-upgrade-0.1.1-0.1.2.php" hash="4dc024ad63d7a7ea20697ddef4b60a29"/><file name="mysql4-upgrade-0.1.2-0.1.3.php" hash="51e83dd266d7b232d42f03cac66350df"/><file name="mysql4-upgrade-0.1.3-1.0.0.php" hash="829b7c08d5bce22b5c1750a3d72e21ca"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="layout"><file name="iglobal.xml" hash="6df6f5f0aceab891d0cd13061a3b5e55"/></dir><dir name="template"><dir name="iglobal"><dir name="sales"><dir name="order"><dir name="view"><file name="info.phtml" hash="06280040dd9521efcd36c12779648108"/></dir></dir></dir></dir></dir></dir></dir></dir><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="iglobal.xml" hash="d49680762997b0480aaaeae331dc4695"/></dir><dir name="template"><dir name="iglobal"><dir name="checkout"><dir name="cart"><dir name="item"><dir name="configure"><file name="updatecart.phtml" hash="9eaac8c650b6986db7c0a5005966c4ee"/></dir></dir></dir><dir name="onepage"><file name="link.phtml" hash="12a68b6580f9441bc0400b72c66b8358"/></dir></dir><dir name="stores"><file name="cart.phtml" hash="6afb67cae6995499ad5d13bbf56b1b0a"/><file name="igcincludes.phtml" hash="43752aafba25bc795f9f708c0d470181"/></dir></dir></dir></dir></dir></dir></target><target name="mage"><dir name="js"><dir name="iGlobal"><file name="ig_welcome_mat_default.css" hash="0cc7e4da2d6adae94e53326e5bae369a"/><file name="ig_welcome_mat_default.js" hash="27e179a7509505c6feee121b46298b88"/><file name="igc.cs.magento_default_ice.js" hash="eb2507a442883dda09975301455877a7"/><dir name="jquery"><file name="jquery.js" hash="6903c661e9db496b11e737478528318f"/><file name="jquery.noconflict.js" hash="09bfdd3b964eb2b17b5d6caa1d20a607"/></dir></dir></dir></target></contents>
+Update the shipping method with the actual shipping method chosen.&#xD;
+</notes>
+    <authors><author><name>Brian Olsen</name><user>brianolsen</user><email>brian@iglobalstores.com</email></author><author><name>iGlobal Stores</name><user>iGlobalStores</user><email>travis@iglobalstores.com</email></author></authors>
+    <date>2017-08-07</date>
+    <time>20:56:55</time>
+    <contents><target name="mageetc"><dir name="modules"><file name="Iglobal_Stores.xml" hash="56839ad045b6a99f97564de63ebed700"/><file name="Iglobal_Ship.xml" hash=""/></dir></target><target name="magecommunity"><dir name="Iglobal"><dir name="Stores"><dir name="Block"><file name="Ajax.php" hash="5d288c6bc298db3bdc86adcdd036bdd6"/><file name="Cart.php" hash="a162e67a8c445b911dd25897e4d886a3"/><file name="Includes.php" hash="8214ef5eae6a83e2909f8ebeee6ea1f7"/><file name="Link.php" hash="69b0efcc8d2ffd6ca9daed407260d793"/></dir><dir name="Helper"><file name="Configoptions.php" hash="b129e55b21f845a20d6e7fdb3b532be3"/><file name="Data.php" hash="4b4d51e05c6565a4413d68a9ef3ae555"/><file name="Url.php" hash="e430471ab463e1fc7812c4a96d5f3208"/></dir><dir name="Model"><file name="Carrier.php" hash="2c255448c82e20f375a8a81dae912a6e"/><file name="Configoptions.php" hash="2cbd3eb8357f80c2de5a48f32709b1c5"/><dir name="International"><file name="International.php" hash="c0d897eafe1fe60f725147c5e8789131"/></dir><file name="Observer.php" hash="8bca52293f76cab0c92e8e30ada75662"/><file name="Order.php" hash="42a9fc6cf2ab6d2e0ffa73304da17f5f"/><dir name="Payment"><file name="Iglobal.php" hash="9ac8f8d81b8f8d547831ad6db8a1c7fc"/><file name="Iglobalcreditcard.php" hash="f2f5cf4507a128fadc95071951ca2a41"/><file name="Iglobalpaypal.php" hash="3a566289db82b177ce6b52ce205728f6"/></dir><dir name="Resource"><file name="Setup.php" hash="f725924af461644af75a455210097a53"/></dir><file name="Rest.php" hash="98750cee4441854556cd5fe283e4e13e"/><dir name="Service"><file name="Quote.php" hash="bae0e5a710b9e3aa1427bb78a08fbfd8"/></dir><file name="Tax.php" hash="9645d04415913bea333b5aba99b1909c"/></dir><dir name="controllers"><file name="AjaxController.php" hash="62228ca95872788a18256bbf20839a07"/><file name="CheckoutController.php" hash="dc79a1b3d6734051ea0081f272432911"/><file name="SuccessController.php" hash="ed6df1368ce185de7bf6c557e55d2339"/></dir><dir name="etc"><file name="adminhtml.xml" hash="7f10c9724b1294a506df47cf569bc9e6"/><file name="config.xml" hash="809b49f6b69c00e80732c3ad3e9cb74c"/><file name="system.xml" hash="c5a58d69f8891793f2c94571f3b221f9"/></dir><dir name="sql"><dir name="iglobal_stores_setup"><file name="mysql4-install-0.1.0.php" hash="72c543090fe27608e582d22494b65d75"/><file name="mysql4-upgrade-0.1.0-0.1.1.php" hash="51e83dd266d7b232d42f03cac66350df"/><file name="mysql4-upgrade-0.1.1-0.1.2.php" hash="4dc024ad63d7a7ea20697ddef4b60a29"/><file name="mysql4-upgrade-0.1.2-0.1.3.php" hash="51e83dd266d7b232d42f03cac66350df"/><file name="mysql4-upgrade-0.1.3-1.0.0.php" hash="829b7c08d5bce22b5c1750a3d72e21ca"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="layout"><file name="iglobal.xml" hash="6df6f5f0aceab891d0cd13061a3b5e55"/></dir><dir name="template"><dir name="iglobal"><dir name="sales"><dir name="order"><dir name="view"><file name="info.phtml" hash="06280040dd9521efcd36c12779648108"/></dir></dir></dir></dir></dir></dir></dir></dir><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="iglobal.xml" hash="d49680762997b0480aaaeae331dc4695"/></dir><dir name="template"><dir name="iglobal"><dir name="checkout"><dir name="cart"><dir name="item"><dir name="configure"><file name="updatecart.phtml" hash="9eaac8c650b6986db7c0a5005966c4ee"/></dir></dir></dir><dir name="onepage"><file name="link.phtml" hash="12a68b6580f9441bc0400b72c66b8358"/></dir></dir><dir name="stores"><file name="cart.phtml" hash="6afb67cae6995499ad5d13bbf56b1b0a"/><file name="igcincludes.phtml" hash="43752aafba25bc795f9f708c0d470181"/></dir></dir></dir></dir></dir></dir></target><target name="mage"><dir name="js"><dir name="iGlobal"><file name="ig_welcome_mat_default.css" hash="6067b53be104d439c33bcbbd349f4b41"/><file name="ig_welcome_mat_default.js" hash="27e179a7509505c6feee121b46298b88"/><file name="igc.cs.magento_default_ice.js" hash="eb2507a442883dda09975301455877a7"/><dir name="jquery"><file name="jquery.js" hash="6903c661e9db496b11e737478528318f"/><file name="jquery.noconflict.js" hash="09bfdd3b964eb2b17b5d6caa1d20a607"/></dir></dir></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.2.0</min><max>7.0.7</max></php></required></dependencies>
 </package>

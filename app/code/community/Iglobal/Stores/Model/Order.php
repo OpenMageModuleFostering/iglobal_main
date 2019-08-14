@@ -50,7 +50,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $this->setIglobalOrder($orderid);
         if ($this->iglobal_order->merchantOrderId)
         {
-            return false;
+           return false;
         }
         // check the if this is the same quote that was sent.
         if ($quote)
@@ -210,59 +210,23 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
 
     protected function setShipping($shippingAddress)
     {
-        //Figure out shipping carrier name etc.
-        $shippers = array(
-            'DHL_EXPRESS' =>          array('DHL', 'Express - iGlobal'),
-            'DHL_GLOBAL_MAIL'=>       array('DHL', 'Global Mail - iGlobal'),
-            'FEDEX_ECONOMY'=>         array('FedExl', 'Economy - iGlobal'),
-            'FEDEX_GROUND'=>          array('FedEx', 'Ground - iGlobal'),
-            'FEDEX_PRIORITY'=>        array('FedEx', 'Priority - iGlobal'),
-            'UPS_EXPEDITED'=>         array('UPS', 'Expedited - iGlobal'),
-            'UPS_EXPRESS'=>           array('UPS', 'Express - iGlobal'),
-            'UPS_EXPRESS_SAVER' =>    array('UPS', 'Express Saver - iGlobal'),
-            'UPS_GROUND' =>           array('UPS', 'Canada Ground - iGlobal'),
-            'UPS_STANDARD'=>          array('UPS', 'Canada Standard - iGlobal'),
-            'USPS_FIRST_CLASS_MAIL_INTERNATIONAL'=>      array('USPS', 'First Class Mail, International - iGlobal'),
-            'USPS_PRIORITY_MAIL_EXPRESS_INTERNATIONAL'=> array('USPS', 'Priority Mail Express, International - iGlobal'),
-            'USPS_PRIORITY_MAIL_INTERNATIONAL'=>         array('USPS', 'Priority Mail, International - iGlobal'),
-            'APC_EXPEDITED_MAIL'=>    array('UPS', 'APC Expedited 3-5 Days - iGlobal'),
-            'APC_PRIORITY_MAIL'=>     array('UPS', 'APC Priority Mail 4-9 Days - iGlobal'),
-            'CANADA_POST_EXPEDITED'=> array('UPS', 'Canada Post Expedited - iGlobal'),
-            'FEDEX_IPD'=>             array('UPS', 'FedEx IPD - iGlobal'),
-            'UPS_2ND_DAY_AIR'=>       array('UPS', 'UPS 2 Day Air - iGlobal'),
-            'UPS_3_DAY_AIR'=>         array('UPS', 'UPS 3 Day Air - iGlobal'),
-            'UPS_FREIGHT'=>           array('UPS', 'UPS Freight - iGlobal'),
-            'UPS_MAIL_INNOVATIONS'=>  array('UPS', 'Bodyguardz - UPS Mail Innovations - iGlobal'),
-            'UPS_NEXT_DAY_AIR_SAVER'=>array('UPS', 'UPS Next Day Air Saver - iGlobal'),
-            'UPS_WORLDEASE'=>         array('UPS', 'UPS WorldEase - iGlobal'),
-            'USPS_EPACKET'=>          array('UPS', 'USPS ePacket - iGlobal'),
-            'USPS_EXPRESS_1'=>        array('UPS', 'Express 1 Mail - iGlobal'),
-            'USPS_IPA'=>              array('UPS', 'USPS IPA - iGlobal'),
-            'USPS_PRIORITY_DOMESTIC'=>array('UPS', 'USPS Priority Domestic - iGlobal'),
-            'LANDMARK_LGINTREGU' =>   array('iGlobal', 'Landmark'),
-            'LANDMARK_LGINTSTD' =>    array('iGlobal', 'Landmark'),
-            'LANDMARK_LGINTSTDU' =>   array('iGlobal', 'Landmark'),
-            'MSI_PARCEL' =>           array('iGlobal', 'Landmark'),
-            'MSI_PRIORITY' =>         array('iGlobal', 'Landmark'),
-            'default' =>              array('iGlobal', 'International Shipping'),
-        );
+        $shippers = Mage::getModel("stores/carrier")->getAllowedMethods();
         $carrierMethod = $this->iglobal_order->shippingCarrierServiceLevel;
-        if (!isset($shippers[$carrierMethod]))
-        {
-            $carrierMethod = 'default';
+        if (!$carrierMethod || !array_key_exists($carrierMethod, $shippers)) {
+            $carrierMethod = 'ig';
         }
-        $shipper = $shippers[$carrierMethod];
-        $shippingMethod = $shipper[1];
-        if($this->iglobal_order->customerSelectedShippingName) {
-            $shippingMethod = $this->iglobal_order->customerSelectedShippingName;
+        $shippingMethod = $this->iglobal_order->customerSelectedShippingName;
+        if(!$shippingMethod) {
+            $shippingMethod = "International shipping";
         }
+
         //Add things to the register so they can be used by the shipping method
         Mage::register('shipping_cost', $this->iglobal_order->shippingTotal);
-        Mage::register('shipping_carriertitle', $shipper[0]);
+        Mage::register('shipping_carriertitle', $carrierMethod);
         Mage::register('shipping_methodtitle', $shippingMethod);
         $shippingAddress->setCollectShippingRates(true)
             ->collectShippingRates()
-            ->setShippingMethod('excellence_excellence');
+            ->setShippingMethod('ig_'.$carrierMethod);
         return $shippingAddress;
     }
 
@@ -313,7 +277,6 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $transId = Mage::getSingleton('checkout/session')->getLastRealOrderId($order->getIncrementId());
         //Save Order Invoice as paid
         $commentMessage = 'Order automatically imported from iGlobal order ID: '. $this->iglobal_order_id;
-
         try {
             $order = Mage::getModel("sales/order")->load($id);
             //add trans ID
@@ -369,6 +332,10 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             if($this->iglobal_order->nationalIdentifier) {
                 $extraNote .= "National Identifier: " . $this->iglobal_order->nationalIdentifier . "\n";
             }
+            if($this->iglobal_order->boxCount) {
+                $extraNote .= "Boxes: " . $this->iglobal_order->boxCount . "\n";
+            }
+
             if($extraNote) {
                 $order->addStatusHistoryComment($extraNote, false);
             }

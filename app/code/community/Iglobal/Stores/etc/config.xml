@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Iglobal_Stores>
-            <version>1.5.2</version>
+            <version>1.5.4</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
@@ -169,17 +169,6 @@
             </countries>
         </Iglobal_Stores>
     </modules>
-    <!--admin>
-        <routers>
-            <stores>
-                <use>admin</use>
-                <args>
-                    <module>Iglobal_Stores</module>
-                    <frontName>iglobal/admin</frontName>
-                </args>
-            </stores>
-        </routers>
-    </admin-->
     <global>
         <sales>
             <quote>
@@ -210,7 +199,6 @@
                     </iglobal_stores_model_observer_order_created>
                 </observers>
             </sales_order_place_after>
-
         </events>
         <models>
             <stores>
@@ -271,7 +259,7 @@
             </updates>
         </layout>
     </frontend>
-   <default>
+    <default>
         <payment>
             <iGlobal>
                 <active>1</active>
@@ -298,40 +286,49 @@
                 <group>offline</group>
             </iGlobalPaypal>
         </payment>
-
-	 <iglobal_integration>
-		<apireqs>
-			<secret>Your API Code Goes Here</secret>
-			<iglobalid>Your Store ID Goes Here</iglobalid>
-			<ice_toggle>0</ice_toggle>
-            <use_iframe>1</use_iframe>
-		</apireqs>
-		<igmat>
-			<welcome_mat_active>0</welcome_mat_active>
-		</igmat>
-		<igjq>
-			<enabled>0</enabled>
-		</igjq>
-		<igc_dev>
-			<dev_on>0</dev_on>
-		</igc_dev>
-    <ig_item_attribute>
-        <weight>weight</weight>
-        <length>ig_length</length>
-        <width>ig_width</width>
-        <height>ig_height</height>
-        <country_of_origin>country_of_manufacture</country_of_origin>
-    </ig_item_attribute>
-	</iglobal_integration>
-
-	<general>
-		<country>
-			<ig_domestic_countries>US</ig_domestic_countries>
-		</country>
-	</general>
-
+        <carriers>
+            <ig>
+                <active>1</active>
+                <model>stores/carrier</model>
+                <title>iGlobal</title>
+                <name>International Shipping</name>
+                <price>0.00</price>
+                <specificerrmsg>This shipping method is currently unavailable. If you would like to ship using this
+                    shipping method, please contact us.
+                </specificerrmsg>
+            </ig>
+        </carriers>
+        <iglobal_integration>
+            <apireqs>
+                <secret>Your API Code Goes Here</secret>
+                <iglobalid>Your Store ID Goes Here</iglobalid>
+                <ice_toggle>0</ice_toggle>
+                <use_iframe>1</use_iframe>
+            </apireqs>
+            <igmat>
+                <welcome_mat_active>0</welcome_mat_active>
+            </igmat>
+            <igjq>
+                <enabled>0</enabled>
+            </igjq>
+            <igc_dev>
+                <dev_on>0</dev_on>
+            </igc_dev>
+            <ig_item_attribute>
+                <weight>weight</weight>
+                <length>ig_length</length>
+                <width>ig_width</width>
+                <height>ig_height</height>
+                <country_of_origin>country_of_manufacture</country_of_origin>
+            </ig_item_attribute>
+        </iglobal_integration>
+        <general>
+            <country>
+                <ig_domestic_countries>US</ig_domestic_countries>
+            </country>
+        </general>
     </default>
-	<adminhtml>
+    <adminhtml>
         <acl>
             <resources>
                 <admin>
@@ -351,31 +348,24 @@
                 </admin>
             </resources>
         </acl>
-	 <layout>
-		<updates>
-			<iglobal>
-				<file>iglobal.xml</file>
-			</iglobal>
-		</updates>
-	</layout>
-	<!--<events>
-		<controller_action_predispatch>
-			<observers>
-				<iglobal_notification>
-					<type>singleton</type>
-					<class>stores/ddpd</class>
-					<method>observe</method>
-				</iglobal_notification>
-			</observers>
-		</controller_action_predispatch>
-	</events> -->
-	</adminhtml>
-	<crontab>
+        <layout>
+            <updates>
+                <iglobal>
+                    <file>iglobal.xml</file>
+                </iglobal>
+            </updates>
+        </layout>
+    </adminhtml>
+    <crontab>
         <jobs>
             <iglobal_order_update>
-                <schedule><cron_expr>*/30 * * * *</cron_expr></schedule>
-                <run><model>stores/observer::orderRec</model></run>
+                <schedule>
+                    <cron_expr>*/30 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>stores/observer::orderRec</model>
+                </run>
             </iglobal_order_update>
         </jobs>
-	</crontab>
+    </crontab>
 </config>
