@@ -19,7 +19,7 @@ Zend_Debug::dump($items);
          $my_product = Mage::getModel('catalog/product')->load($item->getProductId()); 
          $my_product_url = $my_product->getProductUrl();
 
-        echo '<div class="igItemDetails">':
+        echo '<div class="igItemDetails">';
 	 echo '<p class="igID">'.$item->getProductId().'</p><br />';
         echo '<p class="igName">'.$item->getName().'</p><br />';
         echo '<p class="igSku">'.$item->getSku().'</p><br />';

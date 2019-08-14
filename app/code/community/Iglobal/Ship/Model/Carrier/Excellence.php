@@ -10,10 +10,7 @@ implements Mage_Shipping_Model_Carrier_Interface {
 		}
 		
 		$price = $this->getConfigData('price'); // set a default shipping price maybe 0
-		$price = 0;
-		
 
-		$handling = Mage::getStoreConfig('carriers/'.$this->_code.'/handling');
 		$result = Mage::getModel('shipping/rate_result');
 		$show = Mage::registry('shipping_cost');
 		if($show){
@@ -29,8 +26,8 @@ implements Mage_Shipping_Model_Carrier_Interface {
 				$method->setPrice(Mage::registry('shipping_cost'));
 				$method->setCost(Mage::registry('shipping_cost'));
 			} else {
-				$method->setPrice($this->getConfigData('price'));//($price);
-				$method->setCost($this->getConfigData('price'));//($price);
+				$method->setPrice($price);
+				$method->setCost($price);
 			}
 			$result->append($method);
 

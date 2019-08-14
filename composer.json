@@ -3,7 +3,9 @@
     "type": "magento-module",
     "license": "OSL",
     "homepage": "",
-    "description": "Duties & Fees Integrated into Tax  and Improvements",
+    "description": "-Code improved for faster loading
+-Improved Logging
+-Improved Tax Integration",
     "authors": [
     {
         "name": "Matt Flamm",

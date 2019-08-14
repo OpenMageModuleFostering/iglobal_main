@@ -14,14 +14,14 @@ class Iglobal_Stores_Model_International_International extends Mage_Core_Model_A
 			$product = $item->getProduct();
 			$sku = $item->getSku();
 			$dimUnits = $product->getIgDemesionUnits();
-			$dim2inch = ['cm' => 2.54, 'in' => 1, '' => 1];
+			$dim2inch = array('cm' => 2.54, 'in' => 1, '' => 1);
 			$weight = $product->getIgWeight();
 			if (empty($weight))
 			{
 				$weight = $item->getWeight();
 			}
 
-			$items[] = [
+			$items[] = array(
 				"description" => $item->getName(),
 				"productId" => $item->getProductId(),
 				"sku" => $product->getTypeId() == 'bundle' ? substr($sku, strpos($sku, '-') + 1) : $sku,
@@ -36,14 +36,13 @@ class Iglobal_Stores_Model_International_International extends Mage_Core_Model_A
 				"imageURL" => str_replace("http:", "https:", Mage::helper('catalog/image')->init($product, 'thumbnail')),
 				"itemDescriptionLong" => $product->getDescription(),
 
-			];
+			);
 		}
 
 		$rest = Mage::getModel('stores/rest');
-		$response = $rest->createTempCart([
+		$response = $rest->createTempCart(array(
 			"storeId" =>Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid'),
-			"items" => $items,]);
+			"items" => $items,));
 		return $response->tempCartUUID;
 	}
 }
-?>

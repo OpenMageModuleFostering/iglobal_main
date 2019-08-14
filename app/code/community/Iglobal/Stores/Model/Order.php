@@ -55,14 +55,14 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
                 $this->iglobal_order->countryCode,
                 $this->iglobal_order->state,
                 $this->iglobal_order_id);
-            $region->load($regionId);
+            $region->load($regionId->magentoRegionId);
             if (!$region->getId())
             {
                 // Create a new region
-                $region->setData([
+                $region->setData(array(
                     'country_id' => $this->iglobal_order->countryCode,
                     'defalt_name' => $this->iglobal_order->state
-                ])->save();
+                ))->save();
 
             }
         }
@@ -130,40 +130,40 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
     protected function setShipping($shippingAddress)
     {
         //Figure out shipping carrier name etc.
-        $shippers = [
-            'DHL_EXPRESS' =>          ['DHL', 'Express - iGlobal'],
-            'DHL_GLOBAL_MAIL'=>       ['DHL', 'Global Mail - iGlobal'],
-            'FEDEX_ECONOMY'=>         ['FedExl', 'Economy - iGlobal'],
-            'FEDEX_GROUND'=>          ['FedEx', 'Ground - iGlobal'],
-            'FEDEX_PRIORITY'=>        ['FedEx', 'Priority - iGlobal'],
-            'UPS_EXPEDITED'=>         ['UPS', 'Expedited - iGlobal'],
-            'UPS_EXPRESS'=>           ['UPS', 'Express - iGlobal'],
-            'UPS_EXPRESS_SAVER' =>    ['UPS', 'Express Saver - iGlobal'],
-            'UPS_GROUND' =>           ['UPS', 'Canada Ground - iGlobal'],
-            'UPS_STANDARD'=>          ['UPS', 'Canada Standard - iGlobal'],
-            'USPS_FIRST_CLASS_MAIL_INTERNATIONAL'=>      ['USPS', 'First Class Mail, International - iGlobal'],
-            'USPS_PRIORITY_MAIL_EXPRESS_INTERNATIONAL'=> ['USPS', 'Priority Mail Express, International - iGlobal'],
-            'USPS_PRIORITY_MAIL_INTERNATIONAL'=>         ['USPS', 'Priority Mail, International - iGlobal'],
-            'APC_EXPEDITED_MAIL'=>    ['UPS', 'APC Expedited 3-5 Days - iGlobal'],
-            'APC_PRIORITY_MAIL'=>     ['UPS', 'APC Priority Mail 4-9 Days - iGlobal'],
-            'CANADA_POST_EXPEDITED'=> ['UPS', 'Canada Post Expedited - iGlobal'],
-            'FEDEX_IPD'=>             ['UPS', 'FedEx IPD - iGlobal'],
-            'UPS_2ND_DAY_AIR'=>       ['UPS', 'UPS 2 Day Air - iGlobal'],
-            'UPS_3_DAY_AIR'=>         ['UPS', 'UPS 3 Day Air - iGlobal'],
-            'UPS_FREIGHT'=>           ['UPS', 'UPS Freight - iGlobal'],
-            'UPS_MAIL_INNOVATIONS'=>  ['UPS', 'Bodyguardz - UPS Mail Innovations - iGlobal'],
-            'UPS_NEXT_DAY_AIR_SAVER'=>['UPS', 'UPS Next Day Air Saver - iGlobal'],
-            'UPS_WORLDEASE'=>         ['UPS', 'UPS WorldEase - iGlobal'],
-            'USPS_EPACKET'=>          ['UPS', 'USPS ePacket - iGlobal'],
-            'USPS_EXPRESS_1'=>        ['UPS', 'Express 1 Mail - iGlobal'],
-            'USPS_IPA'=>              ['UPS', 'USPS IPA - iGlobal'],
-            'LANDMARK_LGINTREGU' =>   ['iGlobal', 'Landmark'],
-            'LANDMARK_LGINTSTD' =>    ['iGlobal', 'Landmark'],
-            'LANDMARK_LGINTSTDU' =>   ['iGlobal', 'Landmark'],
-            'MSI_PARCEL' =>           ['iGlobal', 'Landmark'],
-            'MSI_PRIORITY' =>         ['iGlobal', 'Landmark'],
-            'default' =>              ['iGlobal', 'International Shipping'],
-        ];
+        $shippers = array(
+            'DHL_EXPRESS' =>          array('DHL', 'Express - iGlobal'),
+            'DHL_GLOBAL_MAIL'=>       array('DHL', 'Global Mail - iGlobal'),
+            'FEDEX_ECONOMY'=>         array('FedExl', 'Economy - iGlobal'),
+            'FEDEX_GROUND'=>          array('FedEx', 'Ground - iGlobal'),
+            'FEDEX_PRIORITY'=>        array('FedEx', 'Priority - iGlobal'),
+            'UPS_EXPEDITED'=>         array('UPS', 'Expedited - iGlobal'),
+            'UPS_EXPRESS'=>           array('UPS', 'Express - iGlobal'),
+            'UPS_EXPRESS_SAVER' =>    array('UPS', 'Express Saver - iGlobal'),
+            'UPS_GROUND' =>           array('UPS', 'Canada Ground - iGlobal'),
+            'UPS_STANDARD'=>          array('UPS', 'Canada Standard - iGlobal'),
+            'USPS_FIRST_CLASS_MAIL_INTERNATIONAL'=>      array('USPS', 'First Class Mail, International - iGlobal'),
+            'USPS_PRIORITY_MAIL_EXPRESS_INTERNATIONAL'=> array('USPS', 'Priority Mail Express, International - iGlobal'),
+            'USPS_PRIORITY_MAIL_INTERNATIONAL'=>         array('USPS', 'Priority Mail, International - iGlobal'),
+            'APC_EXPEDITED_MAIL'=>    array('UPS', 'APC Expedited 3-5 Days - iGlobal'),
+            'APC_PRIORITY_MAIL'=>     array('UPS', 'APC Priority Mail 4-9 Days - iGlobal'),
+            'CANADA_POST_EXPEDITED'=> array('UPS', 'Canada Post Expedited - iGlobal'),
+            'FEDEX_IPD'=>             array('UPS', 'FedEx IPD - iGlobal'),
+            'UPS_2ND_DAY_AIR'=>       array('UPS', 'UPS 2 Day Air - iGlobal'),
+            'UPS_3_DAY_AIR'=>         array('UPS', 'UPS 3 Day Air - iGlobal'),
+            'UPS_FREIGHT'=>           array('UPS', 'UPS Freight - iGlobal'),
+            'UPS_MAIL_INNOVATIONS'=>  array('UPS', 'Bodyguardz - UPS Mail Innovations - iGlobal'),
+            'UPS_NEXT_DAY_AIR_SAVER'=>array('UPS', 'UPS Next Day Air Saver - iGlobal'),
+            'UPS_WORLDEASE'=>         array('UPS', 'UPS WorldEase - iGlobal'),
+            'USPS_EPACKET'=>          array('UPS', 'USPS ePacket - iGlobal'),
+            'USPS_EXPRESS_1'=>        array('UPS', 'Express 1 Mail - iGlobal'),
+            'USPS_IPA'=>              array('UPS', 'USPS IPA - iGlobal'),
+            'LANDMARK_LGINTREGU' =>   array('iGlobal', 'Landmark'),
+            'LANDMARK_LGINTSTD' =>    array('iGlobal', 'Landmark'),
+            'LANDMARK_LGINTSTDU' =>   array('iGlobal', 'Landmark'),
+            'MSI_PARCEL' =>           array('iGlobal', 'Landmark'),
+            'MSI_PRIORITY' =>         array('iGlobal', 'Landmark'),
+            'default' =>              array('iGlobal', 'International Shipping'),
+        );
         $carrierMethod = $this->iglobal_order->shippingCarrierServiceLevel;
         if (!isset($shippers[$carrierMethod]))
         {
@@ -213,7 +213,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
 
         $id = $order->getEntityId();
 
-        if (!Mage::helper('sales')->canSendNewOrderEmail($storeId) && Mage::getStoreConfig('iglobal_integration/apireqs/send_order_email')) {
+        if (!Mage::helper('sales')->canSendNewOrderEmail() && Mage::getStoreConfig('iglobal_integration/apireqs/send_order_email')) {
                 $order->sendNewOrderEmail();
         }
         Mage::getSingleton('checkout/session')->setLastOrderId($order->getId());

@@ -6,8 +6,6 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
     
     public function showHiddenProductFields($item)
     {
-        $i = self::$_i;
-
         $sku = $item->getProduct()->getTypeId() == 'bundle' ? substr($item->getSku(), strpos($item->getSku(), '-')+1) : $item->getSku();
         $id = $item->getProductId();
         $price = $item->getPrice();
@@ -20,8 +18,6 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
         try {
 
             $allItemData = Mage::getModel('catalog/product')->load($item['product_id']);
-            $weightUnits = "";
-            $dimUnits = "";
             try {
                 $weightUnits = "";
                 if (!empty($allItemData['ig_weight_units'])) {

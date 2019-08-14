@@ -69,7 +69,7 @@ class Iglobal_Stores_Model_Rest extends Mage_Core_Model_Abstract
         return $this->callApi(
             'magento-region',
             $data,
-            ["serviceToken" => "31ae7155-5b9e-461f-8353-9a8c3f8ae35974ffec3a-88dc-4acb-8420-270df7967338"]
+            array("serviceToken" => "31ae7155-5b9e-461f-8353-9a8c3f8ae35974ffec3a-88dc-4acb-8420-270df7967338")
         );
     }
 }
