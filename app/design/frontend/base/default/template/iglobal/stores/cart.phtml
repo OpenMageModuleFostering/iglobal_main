@@ -58,6 +58,8 @@
 		 echo '<span class="igDescription">'. Mage::getModel('catalog/product')->load($item->getProductId())->getDescription().'</span>'; 
 
 		 echo '<span class="igShortDescription">'. Mage::getModel('catalog/product')->load($item->getProductId())->getShortDescription().'</span>';
+		 
+		 echo '<span class="MageWeight">'.$item->getWeight().'</span>';
 
 		 
 

@@ -12,8 +12,10 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 			//Mage::log('in the try', null, 'iglobal.log');
 			
             $quote = Mage::getSingleton('checkout/session')->getQuote()->setStoreId(Mage::app()->getStore()->getId());//if more than one store, then this should be set dynamically
-
-            $orderExists = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchRow("SELECT `entity_id` FROM `sales_flat_order` WHERE `ig_order_number` = '{$_order}'");
+		$table = "sales_flat_order"; 
+		$tableName = Mage::getSingleton("core/resource")->getTableName($table); 
+		$existsQuery = "SELECT `entity_id` FROM `" . $tableName. "` WHERE `ig_order_number` = '{$_order}'";
+            $orderExists = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchRow($existsQuery);
 
             if(!$_order || $orderExists) header('Location: /');
 
@@ -26,7 +28,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 		$quote->setFeeAmount($data['dutyTaxesTotal']); 
 
             $_name = explode(' ', $data['name'], 2);
-	     if ($data['testOrder'] = true) {
+	     if ($data['testOrder'] == "true") {
 		     $name_first = "TEST ORDER! DO NOT SHIP! - " . array_shift($_name);
 		     $name_last = array_pop($_name);
 		} else {
@@ -37,7 +39,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
             $quote->setCustomerFirstname($name_first);
             $quote->setCustomerLastname($name_last);
 
-            $street = $data['address2'] ? implode(' ', array($data['address1'], $data['address2'])) : $data['address1'];
+            $street = $data['address2'] ?  array($data['address1'], $data['address2']) : $data['address1'];
 			
 			// to fix error with countries w/o zip codes
 			if (is_array($data['zip'])){
@@ -53,37 +55,45 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
                 'city' => $data['city'],
                 'postcode' => $igcZipCode,
                 'telephone' => $data['phone'],
+		  'region' => $data['state'],
                 'country_id' => $data['countryCode'],
+		  'company' => $data['company'],
             );
 	     
-            $_nameBilling = explode(' ', $data['billingName'], 2);
-	     if ($data['testOrder'] = true) {
-		     $name_first_billing = "TEST ORDER! DO NOT SHIP! - " . array_shift($_nameBilling);
-		     $name_last_billing = array_pop($_nameBilling);
-		} else {
-		     $name_first_billing = array_shift($_nameBilling);
-		     $name_last_billing = array_pop($_nameBilling);		
-		}
-		
-
-            $streetBilling = $data['billingAddress2'] ? implode(' ', array($data['billingAddress1'], $data['billingAddress2'])) : $data['billingAddress1'];
-			
-			// to fix error with countries w/o zip codes
-			if (is_array($data['billingZip'])){
-				$igcZipCodeBilling = ' ';
-			}else {
-				$igcZipCodeBilling = $data['billingZip'];
+		$billingCheckVar = $data['billingAddress1'];
+		if (!empty($billingCheckVar)){ 
+			$_nameBilling = explode(' ', $data['billingName'], 2);
+		     if ($data['testOrder'] == "true") {
+			     $name_first_billing = "TEST ORDER! DO NOT SHIP! - " . array_shift($_nameBilling);
+			     $name_last_billing = array_pop($_nameBilling);
+			} else {
+			     $name_first_billing = array_shift($_nameBilling);
+			     $name_last_billing = array_pop($_nameBilling);		
 			}
-	     
-            $billingAddressData = array(
-                'firstname' => $name_first_billing,
-                'lastname' => $name_last_billing,
-                'street' => $streetBilling,
-                'city' => $data['billingCity'],
-                'postcode' => $igcZipCodeBilling,
-                'telephone' => $data['billingPhone'],
-                'country_id' => $data['billingCountryCode'],
-            );
+			
+
+		     $streetBilling = $data['billingAddress2'] ? array($data['billingAddress1'], $data['billingAddress2']) : $data['billingAddress1'];
+				
+				// to fix error with countries w/o zip codes
+				if (is_array($data['billingZip'])){
+					$igcZipCodeBilling = ' ';
+				}else {
+					$igcZipCodeBilling = $data['billingZip'];
+				}
+		          
+		     $billingAddressData = array(
+			  'firstname' => $name_first_billing,
+			  'lastname' => $name_last_billing,
+			  'street' => $streetBilling,
+			  'city' => $data['billingCity'],
+			  'postcode' => $igcZipCodeBilling,
+			  'telephone' => $data['billingPhone'],
+			  'region' => $data['billingState'],
+			  'country_id' => $data['billingCountryCode'],
+		     );
+	     } else {
+			$billingAddressData = $addressData;
+	     }
 
 	     /*
 		// code to pull available shipping methods pulls all available shipping methods and makes an array.  used if you want to use merchants avaialable methods instead of iglobal custom method.
@@ -274,13 +284,13 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
                 $order->save();
             }
 
-		if ($data['testOrder'] = true) {
+		if ($data['testOrder'] == 'true') {
 			//Set the international_order flag and the ig_order_number on the order
-			$query = $query = "UPDATE `sales_flat_order` SET `international_order` = 1, `ig_order_number` = '{$_order}', `iglobal_test_order` = 1 WHERE `entity_id` = '{$id}'";
+			$query = "UPDATE `" . $tableName . "` SET `international_order` = 1, `ig_order_number` = '{$_order}', `iglobal_test_order` = 1 WHERE `entity_id` = '{$id}'";
 			Mage::getSingleton('core/resource')->getConnection('core_write')->query($query);
 		} else {
 		     //Set the international_order flag and the ig_order_number on the order
-		     $query = "UPDATE `sales_flat_order` SET `international_order` = 1, `ig_order_number` = '{$_order}' WHERE `entity_id` = '{$id}'";
+		     $query = "UPDATE `" . $tableName . "` SET `international_order` = 1, `ig_order_number` = '{$_order}' WHERE `entity_id` = '{$id}'";
 		     Mage::getSingleton('core/resource')->getConnection('core_write')->query($query);
 		}
 

@@ -7,8 +7,7 @@ $igc =jQuery
 	var igSubdomain = "checkout"; //this can be set by updating the "iGlobal Hosted Checkout Subdomain" in Magento conficuration options
 	var igCartUrl = "/magento/index.php/checkout/cart";
 	var ajaxPath = window.location.href.replace(window.location.origin, '')
-	ajaxPath = '/iglobal/ajax/icedata'; //parses the uri to figure out how to get to the right controller
-	ajaxPath = '/magento/index.php/iglobal/ajax/icedata'; //just here to make it easy for me to override the default path while debugging.  comment this out on a live site
+	ajaxPath = '/index.php/iglobal/ajax/icedata'; //parses the uri to figure out how to get to the right controller
 	//ajaxPath = ajaxPath.substring(0, ajaxPath.indexOf("index.php")+9) + '/iglobal/ajax/icedata'; //parses the url to figure out how to get to the right controller
 
 
@@ -65,11 +64,6 @@ function igcGetItems() {
 		 var descTxt  = '<span class="itemDescription">' + $igc(this).find('.igName').text() + '</span>';// + $igc(this).find('.igItemOptions').html();
 		var sku = $igc(this).find('.igSku').text();
 		var pid =$igc(this).find('.igID').text();
-		if ($igc(this).find('.ig_itemWeight').text()){
-			var weight = $igc(this).find('.ig_itemWeight').text();
-		} else {
-			var weight = $igc(this).find('.MageWeight').text();
-		}
 		var weight = $igc(this).find('.ig_itemWeight').text();
 		var length = $igc(this).find('.ig_itemLength').text();
 		var width = $igc(this).find('.ig_itemWidth').text();
