@@ -2,16 +2,9 @@
 
 	//build our URL to be able to check for cart page
 	$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-	$igcDevMode = Mage::getStoreConfig('iglobal_integration/igc_dev/dev_on'); //set to 1 for localhost dev environment, 0 for anything not on localhost
-//	$localHostUrl = 'http://localhost';
+
 	//label the area of DOM
 	echo '<!--Added for iGlobal-->';
-	
-	//if (Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid')) {
-	//	echo '<span id="iglobal_store_id" style="display:none;">' . Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid') . "</span>";
-	//}
-	
-//If (!$igcDevMode){
 
 	//set include for welcome mat
 	if (Mage::getStoreConfig('iglobal_integration/igmat/welcome_mat_active')){ //welcome mat is on
@@ -61,45 +54,5 @@
 		}
 	}
 	
-/*	
-}else{ //devmode includes
-	
-	//set include for welcome mat
-		if (Mage::getStoreConfig('iglobal_integration/apireqs/welcome_mat_active')){ //welcome mat is on
-			if (Mage::getStoreConfig('iglobal_integration/apireqs/welcome_mat_script')){ //custom welcome mat has been uploaded
-			
-				//  these lines are used in localhost dev environment only
-				echo '<script type="text/javascript" src="'.$localHostUrl.'/magento/js/iGlobal/'.Mage::getStoreConfig('iglobal_integration/apireqs/welcome_mat_script').'"></script>'; //temp call b/c of problems with localhost:88
-				echo '<link rel="stylesheet" type="text/css" href="'.$localHostUrl.'/magento/js/iGlobal/' . Mage::getStoreConfig('iglobal_integration/apireqs/welcome_mat_css') . '">';//temp call b/c of problems with localhost:88
-						
-			} else { //welcome mat is on, but no custom file has been uploaded
-
-				// these lines are used in localhost dev environment only
-				echo '<script type="text/javascript" src="'.$localHostUrl.'/magento/js/iGlobal/ig_welcome_mat_default.js"></script>';
-				echo '<link rel="stylesheet" type="text/css" href="'.$localHostUrl.'/magento/js/iGlobal/ig_welcome_mat_default.css">';
-
-			}
-		} else { //welcome mat is off
-			echo '<span id="welcome_mat_deactivated" style="display:none;"></span>';
-		}
-		
-		//set includes for ICE and main
-			if ((false !== strpos($url,'cart')) || (false !== strpos($url,'checkout'))) {
-				
-				//include main js
-				 echo '<script type="text/javascript" src="https://checkout.iglobalstores.com/js/igc.cs.main.js"></script>'; 
-				
-				if (Mage::getStoreConfig('iglobal_integration/apireqs/ice')){
-					//include custom ICE
-					//echo Mage::getStoreConfig('iglobal_integration/apireqs/ice');
-					echo '<script type="text/javascript" src="'.Mage::getStoreConfig('iglobal_integration/apireqs/ice').'">';
-				} else {
-					//include default ICE
-					echo '<script type="text/javascript" src="'.$localHostUrl.'/magento/js/iGlobal/igc.cs.localhost.js"></script>'; // used for dev only
-				}
-			}
-	
-} */
-	//echo '<span id="ajaxpath" display="none" value = "'. Mage::getUrl("iglobal/ajax") .'"></span>';
 	echo '<!--End of iGlobal-->';
 ?>

@@ -15,19 +15,9 @@ var ig_logoUrl = "http://iglobalstores.com/images/iglobal-stores.png";
 var ig_flagLocation = "body";
 var ig_flagMethod = "prepend";
 var ig_flagCode = '<div id="igFlag"></div>';
-var ajaxPath = window.location.href.replace(window.location.origin, '')
-ajaxPath ='/iglobal/ajax/matdata';// ajaxPath.substring(0, ajaxPath.indexOf("/",1)) + '/iglobal/ajax/matdata'; //parses the uri to figure out how to get to the right controller
+var ajaxPath = window.location.href.replace(window.location.origin, '');
+ajaxPath ='/magento/index.php/iglobal/ajax/matdata';// override this when a different path is needed to reach the ajax controller
 
-/* TODO: this method was taking too long.  still promising route.  check into it again.
-if (window.location.href.indexOf("index.php") != -1){
-	var ajaxPath = window.location.href.replace(window.location.origin, '');
-	ajaxPath = ajaxPath.substring(0, ajaxPath.indexOf("index.php")+9) + '/iglobal/ajax/matdata'; //parses the url to figure out how to get to the right controller
-} else if (window.location.href == window.location.origin) {
-	var ajaxPath = window.location.href.replace(window.location.origin, '').substring(0, ajaxPath.indexOf("index.php")+9) + '/iglobal/ajax/matdata'; //parses the url to figure out how to get to the right controller
-}
-//	console.log(ajaxPath);
-ajaxPath = 'iglobal/ajax/matdata';*/
-//
 // Set internal JQuery Variable
 // Can set to existing $ on page, or can include Jquery here, and set igJq to jquery-no-conflict
 //
@@ -96,34 +86,7 @@ var ajaxResult = igJq.ajax({
 				}); 
 
 
-//console.log('outside: method: ' + ig_flagMethod + ' || flag: ' + ig_flagLocation + ' || code: ' + ig_flagCode  + ' || Domestic countries: ' + ig_domestic + " || Serviced Countries: " + ig_countries);
 
-
-
-
-
-
-//
-// Append <div id="igFlag"></div> to specific element on page
-// edit using Magento Config
-//
-
-
-/* 
-* methods to use:
-* 	append
-*	prepend
-* 	after
-*	before
-* 	replaceWith
-
-igJq(function(){
-	if 
-    igJq(ig_flagLocation).prepend( '<div id="igFlag"></div>' );
-});
-
-
-*/
 
 igJq(function(){
 	if (ig_flagMethod == "prepend"){

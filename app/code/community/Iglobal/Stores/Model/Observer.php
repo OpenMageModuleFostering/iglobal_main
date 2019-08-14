@@ -75,8 +75,10 @@ class Iglobal_Stores_Model_Observer
 		
 		//build array of orders with keypairs "ig_order_number" => "the number as a string"
 		foreach($orderData as $row => $order){
-			$newId = $order['id'];
-			array_push($restOrders, $newId);
+			if($data['testOrder'] == "false"){
+				$newId = $order['id'];
+				array_push($restOrders, $newId);
+			}
 		}
 		
 		//build array of orders currently in magento	
@@ -105,6 +107,7 @@ class Iglobal_Stores_Model_Observer
 		$mail->setToName('iGlobal Customer');
 		if (Mage::getStoreConfig('iglobal_integration/apireqs/admin_email')) {
 			$mail->setBcc('monitoring@iglobalstores.com');
+			$mail->setCc('magentomonitoring@iglobalstores.com');
 			$mail->setToEmail(Mage::getStoreConfig('iglobal_integration/apireqs/admin_email')); 
 		} else {
 			$mail->setToEmail('monitoring@iglobalstores.com');

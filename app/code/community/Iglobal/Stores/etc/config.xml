@@ -4,7 +4,7 @@
 <config>    
     <modules>
         <Iglobal_Stores>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
             <currencies>
                 <AED></AED>
                 <ARS>&amp;#8371;</ARS>
@@ -228,7 +228,7 @@
         </resources>
     </global>
     <frontend>
-       <!--  <routers>
+       <routers>
             <iglobal>
                 <use>standard</use>
                 <args>
@@ -236,7 +236,7 @@
                     <frontName>iglobal</frontName>
                 </args>
             </iglobal>
-        </routers>  -->
+       </routers> 
         <layout>
             <updates>
                 <stores>
@@ -335,12 +335,12 @@
 		</controller_action_predispatch>
 	</events> -->
 	</adminhtml>
-	<crontab>
+	<!-- <crontab>
         <jobs>
             <iglobal_order_update>
                 <schedule><cron_expr>* * */2 * *</cron_expr></schedule>
                 <run><model>stores/observer::orderRec</model></run>
             </iglobal_order_update>
         </jobs>
-</crontab>
+	</crontab> -->
 </config>

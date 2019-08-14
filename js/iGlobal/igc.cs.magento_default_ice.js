@@ -6,12 +6,9 @@ $igc =jQuery
 	var igStoreId = "3"; //this can be set by updating the "iGlobal Store ID Number" in Magento conficuration options
 	var igSubdomain = "checkout"; //this can be set by updating the "iGlobal Hosted Checkout Subdomain" in Magento conficuration options
 	var igCartUrl = "/magento/index.php/checkout/cart";
-	var ajaxPath = window.location.href.replace(window.location.origin, '')
-	ajaxPath = '/iglobal/ajax/icedata'; //parses the uri to figure out how to get to the right controller
-	ajaxPath = '/magento/index.php/iglobal/ajax/icedata'; //just here to make it easy for me to override the default path while debugging.  comment this out on a live site
-	//ajaxPath = ajaxPath.substring(0, ajaxPath.indexOf("index.php")+9) + '/iglobal/ajax/icedata'; //parses the url to figure out how to get to the right controller
-
-
+	var ajaxPath = window.location.href.replace(window.location.origin, '');
+	ajaxPath = '/magento/index.php/iglobal/ajax/icedata'; //override this to adjust for different paths in different installs
+	
 $igc.post (
 	ajaxPath,
 	//'/magento/iglobal/ajax/icedata',
