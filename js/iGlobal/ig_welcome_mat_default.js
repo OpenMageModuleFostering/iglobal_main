@@ -87,7 +87,7 @@ function ig_createSplashHtml() {
 
 function ig_createSplashContentsHtml() { // Feel free to edit the HTML below to match your site
     var ig_splashHtml = '' +
-        '<div class="close">' +
+        '<div class="igClose">' +
 		    '<i class="material-icons">&#xE14C;</i>' +
         '</div>' +
 		'<div class="igModalHeader">' +
@@ -135,7 +135,7 @@ function ig_createSplashContentsHtml() { // Feel free to edit the HTML below to 
 
     ig_splashHtml += '' +
 		'<div class="igWelcomeCTAButton">' +
-				'<button class="close">Start Shopping</button>' +
+				'<button class="igClose">Start Shopping</button>' +
 			'</div><!--/.igWelcomeCTAButton -->' +
 		'</div><!--/.igModalBody -->' +
 		'<div class="igModalFooter">' +
@@ -158,6 +158,7 @@ function ig_showTheSplash() {
 
     //init easyModal.js modal, after modal content was placed on the page (line above)
     igJq("#igSplashElement").easyModal({
+        closeButtonClass: '.igClose',
         onClose: function(myModal){
             //on close, let's remove the modal contents and the modal smokescreen created by easyModal.js
             igJq("#igSplashElement").remove();

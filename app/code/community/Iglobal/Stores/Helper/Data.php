@@ -126,6 +126,7 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutUrl($tempCart){
         $subdomain = (Mage::getStoreConfig('iglobal_integration/apireqs/igsubdomain') ? Mage::getStoreConfig('iglobal_integration/apireqs/igsubdomain') : "checkout");
 		$storeNumber = (Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid') ? Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid') : "3");
+ 		$storeNumber = trim($storeNumber, ' ');
 		$countryCode = (isset($_COOKIE['igCountry']) ? $_COOKIE['igCountry'] : "");
         $url = 'https://' . $subdomain . '.iglobalstores.com/?store=' . $storeNumber . '&tempCartUUID=' . $tempCart . '&country=' . $countryCode;
 
@@ -218,7 +219,7 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     protected  function getProductAttribute($product, $attributeName) {
-        $value = Mage::getStoreconfig('iglobal_integration/ig_item_attribute/' . $attributeName);
+        $value = Mage::getStoreConfig('iglobal_integration/ig_item_attribute/' . $attributeName);
         if($value) {
             return $product->getData($value);
         }
