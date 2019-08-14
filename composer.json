@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Iglobal_Main",
+    "type": "magento-module",
+    "license": "OSL",
+    "homepage": "",
+    "description": "Leverage iGlobal Stores' technology for international eCommerce on your Magento store.",
+    "authors": [
+    {
+        "name": "Matt Flamm",
+        "email": "matt@iglobalstores.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
