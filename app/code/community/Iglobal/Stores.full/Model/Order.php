@@ -50,7 +50,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $this->setIglobalOrder($orderid);
         if ($this->iglobal_order->merchantOrderId)
         {
-           return false;
+           //return false;
         }
         // check the if this is the same quote that was sent.
         if ($quote)
@@ -240,10 +240,11 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         } else {
             $data = array();
         }
+        $data['ccType'] = 'AMEX';
         if(isset( $this->iglobal_order->paymentProcessing->paymentGateway)) {
             $paymentMethod = $this->iglobal_order->paymentProcessing->paymentGateway;
-        } else if (isset($this->iglobal_order->paymentProcessing->paymentProcessor)) {
-            $paymentMethod = $this->iglobal_order->paymentProcessing->paymentProcessor;
+        } else if (isset($this->iglobal_order->paymentProcessing->cardType)) {
+            $paymentMethod = $this->iglobal_order->paymentProcessing->cardType;
         } else {
             $paymentMethod = 'iGlobal';
         }
@@ -253,8 +254,6 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             case 'BRAINTREE':
             case 'CYBERSOURCE':
             case 'INTERPAY':
-            case 'PAYPAL_CC':
-            case 'PAY_FLOW':
             case 'STRIPE':
             case 'USA_EPAY':
                 $data['method'] = 'iGlobalCreditCard';
@@ -262,7 +261,6 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
             case 'iGlobal PayPal':
             case 'INTERPAY_PAYPAL':
             case 'PAYPAL_EXPRESS':
-            case 'PAYPAL':
                 $data['method'] = 'iGlobalPaypal';
                 break;
             default:
@@ -286,13 +284,9 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         $transaction->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH);
         $transaction->setTxnId($transaction_id);
         if(isset($this->iglobal_order->paymentProcessing)) {
-            try {
-                $transaction->setAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, (array)$this->iglobal_order->paymentProcessing);
-                if ($this->iglobal_order->paymentProcessing->transactionType == "AUTH_CAPTURE") {
-                    $transaction->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
-                }
-            } catch (Exception $e) {
-
+            $transaction->setAdditionalInformation(Mage_Sales_Model_Order_Payment_Transaction::RAW_DETAILS, (array)$this->iglobal_order->paymentProcessing);
+            if ($this->iglobal_order->paymentProcessing->transactionType == "AUTH_CAPTURE") {
+                $transaction->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE);
             }
         }
         $transaction->save();

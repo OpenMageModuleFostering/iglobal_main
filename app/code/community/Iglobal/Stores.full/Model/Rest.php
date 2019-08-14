@@ -11,12 +11,10 @@ class Iglobal_Stores_Model_Rest extends Mage_Core_Model_Abstract
 		//set store ID
 		if (Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid')) {
             $this->_store = Mage::getStoreConfig('iglobal_integration/apireqs/iglobalid');
-            $this->_store = trim($this->_store, ' ');
         }
 		//Set API Key
 		if (Mage::getStoreConfig('iglobal_integration/apireqs/secret')) {
             $this->_key = Mage::getStoreConfig('iglobal_integration/apireqs/secret');
-            $this->_key = trim($this->_key, ' ');
         }
     }
 
