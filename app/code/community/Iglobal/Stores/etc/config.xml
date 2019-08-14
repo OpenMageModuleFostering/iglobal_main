@@ -186,7 +186,8 @@
                 <totals>
                     <tax>
                         <class>stores/sales_quote_address_total_fee</class>
-                        <before>subtotal</before>
+                        <after>subtotal,shipping</after>
+                        <before>grand_total</before>
                     </tax>
                 </totals>
             </quote>
@@ -355,12 +356,12 @@
 		</controller_action_predispatch>
 	</events> -->
 	</adminhtml>
-	<!-- <crontab>
+	<crontab>
         <jobs>
             <iglobal_order_update>
                 <schedule><cron_expr>* * */2 * *</cron_expr></schedule>
                 <run><model>stores/observer::orderRec</model></run>
             </iglobal_order_update>
         </jobs>
-	</crontab> -->
+	</crontab>
 </config>

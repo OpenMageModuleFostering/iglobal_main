@@ -1,273 +1,50 @@
 <?php
 
 
+echo '<div class="igItemAttr" style="display: none;">';
 
+$cart = Mage::getModel('checkout/cart')->getQuote();
+$helper = Mage::helper('stores');
+foreach ($cart->getAllVisibleItems() as $item) {
+    echo '<div class="igItemDetails '.$item->getName().'">';
+    $details = $helper->getItemDetails($item);
 
-      echo '<div class="igItemAttr" style="display: none;">';
-
-
-
-
-      
-
-
-      $cart = Mage::getModel('checkout/cart')->getQuote();
-
-
-	foreach ($cart->getAllVisibleItems() as $item) {
-
-	        echo '<div class="igItemDetails '.$item->getName().'">';
-		$product = $item->getProduct();
-
-		/* figure this item type problem out, okay? 
-		
+    /* figure this item type problem out, okay?
 		$options = $item->getOptionByCode('simple_product')->getProduct()->getTypeInstance(true)->getOrderOptions($item->getProduct());
 		  if ($options){
-			
-
 			if(isset($options['options'])){
-			
 				echo '<span class="igItemOptions"><dl class="igOptionsList">';
-
 				$optionArray = $options['options'];
 				foreach ($optionArray as $optionDetails) {
 					echo '<dt>' . $optionDetails['label'] . '</dt>';
 					echo '<dd>' . $optionDetails['value'] . '</dd>';
 				}
-				
 				echo '</dl></span>';
 			}
-	
 		  } */
 
-
-
-		 echo '<span class="igID">'.$item->getProductId().'</span>';
-
-		 echo '<span class="igName">'.$item->getName().'</span>';
-
-		 echo '<span class="igSku">'.$item->getSku().'</span>';
-
-		 echo '<span class="igQty">'.$item->getQty().'</span>';
-
-		 echo '<span class="igPrice">'.$item->getPrice().'</span>';
-
-		 echo '<span class="igUrl">'.$product->getProductUrl().'</span>';
-
-		 echo '<span class="igImage">'. str_replace("http:", "https:",Mage::helper('catalog/image')->init($item->getProduct(), 'thumbnail')).'</span>';
-
-		 echo '<span class="igDescription">'.$product->getDescription().'</span>';
-
-		 echo '<span class="igShortDescription">'.$product->getShortDescription().'</span>';
-		 
-		 echo '<span class="MageWeight">'.$item->getWeight().'</span>';
-
-		 
-
-		 
-
-		 //starts here
-
-        $sku = $product->getTypeId() == 'bundle' ? substr($item->getSku(), strpos($item->getSku(), '-')+1) : $item->getSku();
-
-        $id = $item->getProductId();
-
-        $price = $item->getPrice();
-
-        // This is because Magento fails to load the custom attributes on this php template, hence we have to go back to the DB.
-
-        $weight = "";
-
-        $length = "";
-
-        $width = "";
-
-        $height = "";
-
-
-
-        try {
-
-            $weightUnits = "";
-
-            $dimUnits = "";
-
-            try {
-
-                $weightUnits = "";
-
-                if (!empty($product['ig_weight_units'])) {
-
-                    $weightUnits = $product->getAttributeText('ig_weight_units');
-
-                }
-
-            } catch (Exception $e) {
-
-                $weightUnits = "";
-
-            }
-
-            try {
-
-                $weight = "";
-
-                if (!empty($product['ig_weight'])) {
-
-                    $weight = $product->getData('ig_weight');
-
-                } else if (!empty($product['weight'])) {
-
-			$weight = $item->getWeight();
-
-		  }
-
-                if (!empty($weight)) {
-
-                    if ($weightUnits=="kg") {
-
-                        $weight = round(floatval($weight) / 0.453592, 2);
-
-                    } else if ($weightUnits=="oz") {
-
-                        $weight = round(floatval($weight) / 16, 2);
-
-                    } else if ($weightUnits=="g") {
-
-                        $weight = round(floatval($weight) / 453.592, 2);
-
-                    } else {//Default is lbs
-
-                        $weight = round(floatval($weight), 2);
-
-                    }
-
-                } else {
-
-                    $weight = "";
-
-                }
-
-            } catch(Exception $e) {
-
-                $weight = "";
-
-            }
-
-            try {
-
-                $dimUnits = "";
-
-                if (!empty($product['ig_dimension_units'])) {
-
-                    $dimUnits = $product->getAttributeText('ig_dimension_units');
-
-                }
-
-            } catch (Exception $e) {
-
-                $dimUnits = "";
-
-            }
-
-            try {
-
-                $length = "";
-
-                if (!empty($product['ig_length'])) {
-
-                    $length = $product->getData('ig_length');
-
-                }
-
-                $width = "";
-
-                if (!empty($product['ig_width'])) {
-
-                    $width = $product->getData('ig_width');
-
-                }
-
-                $height = "";
-
-                if (!empty($product['ig_height'])) {
-
-                    $height = $product->getData('ig_height');
-
-                }
-
-                if (!empty($length) && !empty($width) && !empty($height)) {
-
-                    if ($dimUnits=="cm") {
-
-                        $length = ceil(floatval($length) / 2.54);
-
-                        $width = ceil(floatval($width) / 2.54);
-
-                        $height = ceil(floatval($height) / 2.54);
-
-                    } else {//Default is inches
-
-                        $length = ceil(floatval($length));
-
-                        $width = ceil(floatval($width));
-
-                        $height = ceil(floatval($height));
-
-                    }
-
-                } else {
-
-                    $length = "";
-
-                    $width = "";
-
-                    $height = "";
-
-                }
-
-            } catch(Exception $e) {
-
-                $length = "";
-
-                $width = "";
-
-                $height = "";
-
-            }
-
-        } catch (Exception $outerE) {
-
-
-
-        }
-
-
-
-       // echo "<div class='ig_itemAttributes' style='display:none;'>";
-
-        echo "<span class='ig_itemProductId'>".$id."</span>";
-
-        echo "<span class='ig_itemSku'>".$sku."</span>";
-
-        echo "<span class='ig_itemPrice'>".$price."</span>";
-
-        echo "<span class='ig_itemWeight'>".$weight."</span>";
-
-        echo "<span class='ig_itemLength'>".$length."</span>";
-
-        echo "<span class='ig_itemWidth'>".$width."</span>";
-
-        echo "<span class='ig_itemHeight'>".$height."</span>";
-
-        //echo "</div>";  
-
-	 //ends here
-
-		 
-
-		echo '</div><!-- end igItemDetails-->';
-
-	}
-
-	echo '</div><!--end igItemAttr-->';
+    echo '<span class="igID">'.$details['productId'].'</span>';
+    echo '<span class="igName">'.$details['description'].'</span>';
+    echo '<span class="igSku">'.$details['sku'].'</span>';
+    echo '<span class="igQty">'.$details['quantity'].'</span>';
+    echo '<span class="igPrice">'.$details['unitPrice'].'</span>';
+    echo '<span class="igUrl">'.$details['itemURL'].'</span>';
+    echo '<span class="igImage">'. $details['imageURL'].'</span>';
+    echo '<span class="igDescription">'.$details['itemDescriptionLong'].'</span>';
+    echo '<span class="igShortDescription">'.$item->getProduct()->getShortDescription().'</span>';
+    echo '<span class="MageWeight">'.$details['weight'].'</span>';
+
+    // echo "<div class='ig_itemAttributes' style='display:none;'>";
+    echo "<span class='ig_itemProductId'>".$details['productId']."</span>";
+    echo "<span class='ig_itemSku'>".$details['sku']."</span>";
+    echo "<span class='ig_itemPrice'>".$details['unitPrice']."</span>";
+    echo "<span class='ig_itemWeight'>".$details['weight']."</span>";
+    echo "<span class='ig_itemLength'>".$details['length']."</span>";
+    echo "<span class='ig_itemWidth'>".$details['width']."</span>";
+    echo "<span class='ig_itemHeight'>".$details['height']."</span>";
+    //echo "</div>";
+
+    echo '</div><!-- end igItemDetails-->';
+}
+
+echo '</div><!--end igItemAttr-->';

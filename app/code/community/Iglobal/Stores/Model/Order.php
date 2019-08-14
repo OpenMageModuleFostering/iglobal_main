@@ -2,22 +2,70 @@
 
 class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
 {
+
+    const STATUS_FRAUD      = 'IGLOBAL_FRAUD_REVIEW';
+    const STATUS_IN_PROCESS = 'IGLOBAL_ORDER_IN_PROCESS';
+    const STATUS_HOLD       = 'IGLOBAL_ORDER_ON_HOLD';
+    const STATUS_CANCELED   = 'IGLOBAL_ORDER_CANCELED';
+
     protected $quote = null;
     protected $iglobal_order_id = null;
     protected $iglobal_order = null;
     protected $rest = null;
+
     public function setQuote($quote)
     {
         $this->quote = $quote;
     }
 
-    public function processOrder($orderid)
+    public function checkStatus($order)
+    {
+        if (!$this->iglobal_order)
+        {
+            $this->setIglobalOrder($order->getIgOrderNumber());
+        }
+        $status = $this->iglobal_order->orderStatus;
+        if (($status == self::STATUS_FRAUD || $status == self::STATUS_HOLD || $status == self::STATUS_CANCELED) && $order->canHold()) {
+            $order->hold();
+            $order->addStatusHistoryComment("Order Set to {$status} by iGlobal", false);
+            $order->save();
+        } elseif ($status == self::STATUS_IN_PROCESS && $order->canUnHold()) {
+            $order->unHold();
+            $order->addStatusHistoryComment("Order Set to {$status} by iGlobal", false);
+            $order->save();
+        }
+    }
+    public function setIglobalOrder($orderid)
     {
         $this->iglobal_order_id = $orderid;
-        $this->rest = Mage::getModel('stores/rest');
-        $this->iglobal_order = $this->rest->getOrder($this->iglobal_order_id)->order;
+        if (!$this->iglobal_order)
+        {
+            $this->rest = Mage::getModel('stores/rest');
+            $this->iglobal_order = $this->rest->getOrder($this->iglobal_order_id)->order;
+        }
+    }
+
+    public function processOrder($orderid, $quote=NULL)
+    {
+        $this->setIglobalOrder($orderid);
+
+        // check the if this is the same quote that was sent.
+        if ($quote)
+        {
+            $this->quote = $quote;
+        } elseif (!$this->quote) {
+            $this->quote = Mage::getSingleton('checkout/session')->getQuote();
+        }
+
+        if ($this->iglobal_order->referenceId && $this->iglobal_order->referenceId != $this->quote->getId())
+        {
+            $this->quote->load($this->iglobal_order->referenceId);
+        }
+
+        // Set the duty_tax for the address total collection to use
         Mage::register('duty_tax', $this->iglobal_order->dutyTaxesTotal);
         $shippingAddress = $this->setContactInfo();
+        $this->setItems();
         $shippingAddress = $this->setShipping($shippingAddress);
         $this->setPayment($shippingAddress);
         return $this->createOrder();
@@ -124,7 +172,34 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
 
     protected function setItems()
     {
-        // @todo pull in the item details in case they have changed.
+        $quote_items = array();
+        $ig_items = array();
+        foreach($this->quote->getAllVisibleItems() as $item) {
+            $quote_items[$item->getProductId()] = $item;
+        }
+        foreach ($this->iglobal_order->items as $item) {
+            if ($item->productId) { // discounts do not have a productId set
+                $ig_items[$item->productId] = $item;
+            }
+        }
+
+        $missing = array_diff_key($ig_items, $quote_items);
+        $extra = array_diff_key($quote_items, $ig_items);
+        foreach ($missing as $pid => $item)
+        {
+            // Add the product to the quote
+            $product = Mage::getModel("catalog/product")->load($pid);
+            if ($product->getId())
+            {
+                $this->quote->addProduct($product, new Varien_Object(array('qty'=> $item->quantity)));
+            } else {
+                Mage::log("Missing sku `{$item->sku}' for {$this->iglobal_order_id}", null, 'iglobal.log', true);
+            }
+        }
+        foreach($extra as $item)
+        {
+            $this->quote->removeItem($item->getId());
+        }
     }
 
     protected function setShipping($shippingAddress)
@@ -184,7 +259,7 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
     protected function setPayment($address)
     {
         $address->setPaymentMethod('iGlobalCreditCard');
-      
+
         //updates payment type in Magento Admin area
         $paymentMethod = $this->iglobal_order->paymentProcessing->paymentGateway;
         if($paymentMethod === 'iGlobal_CC'){
@@ -227,7 +302,11 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
         try {
             $order = Mage::getModel("sales/order")->load($id);
             //add trans ID
-            $transaction_id = '34234234234'; //todo: this needs to be set dynamically
+            try {
+                $transaction_id = $this->iglobal_order->paymentProcessing->transactionId;
+            } catch (Exception $e){
+                $transaction_id = '34234234234';
+            }
             $transaction = Mage::getModel('sales/order_payment_transaction');
             $transaction->setOrderPaymentObject($order->getPayment());
             $transaction->setTxnType(Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH);
@@ -255,25 +334,22 @@ class Iglobal_Stores_Model_Order extends Mage_Core_Model_Abstract
                     $transactionSave->save();
                 }
             }
+            $this->checkStatus($order);
         } catch (Exception $e) {
             $order->addStatusHistoryComment('iGlobal Invoicer: Exception occurred during automatically invoicing. Exception message: '.$e->getMessage(), false);
             $order->save();
         }
-        $tableName = Mage::getSingleton("core/resource")->getTableName("sales_flat_order");
         if ($this->iglobal_order->testOrder) {
-            //Set the international_order flag and the ig_order_number on the order and mark as a test order
-            $query = "UPDATE `" . $tableName . "` SET `international_order` = 1, `ig_order_number` = '{$this->iglobal_order_id}', `iglobal_test_order` = 1 WHERE `entity_id` = '{$id}'";
-            Mage::getSingleton('core/resource')->getConnection('core_write')->query($query);
-        } else {
-            //Set the international_order flag and the ig_order_number on the order
-            $query = "UPDATE `" . $tableName . "` SET `international_order` = 1, `ig_order_number` = '{$this->iglobal_order_id}' WHERE `entity_id` = '{$id}'";
-            Mage::getSingleton('core/resource')->getConnection('core_write')->query($query);
+            $order->setIglobalTestOrder(1);
         }
+        $order->setIgOrderNumber($this->iglobal_order_id);
+        $order->setInternationalOrder(1);
+        $order->save();
 
         //Send the magento id to iGlobal
-        $this->rest->sendMagentoOrderId($this->iglobal_order_id, $id);
+        $this->rest->sendMagentoOrderId($this->iglobal_order_id, $order->getIncrementId());
         return $order;
     }
 
-    
+
 }

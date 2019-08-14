@@ -10,19 +10,15 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
         try
         {
             $quote = Mage::getSingleton('checkout/session')->getQuote()->setStoreId(Mage::app()->getStore()->getId());
-            $table = "sales_flat_order";
-            $tableName = Mage::getSingleton("core/resource")->getTableName($table);
-            $existsQuery = "SELECT `entity_id` FROM `" . $tableName. "` WHERE `ig_order_number` = '{$_order}'";
-            $orderExists = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchRow($existsQuery);
+            $order = Mage::getModel('sales/order')->loadByAttribute('ig_order_number', $_order);
 
-            if(!$_order || $orderExists) {
+            if(!$_order || $order->getId()) {
                 header('Location: /');
                 die();
             }
 
             $order = Mage::getModel('stores/order');
-            $order->setQuote($quote);
-            $order->processOrder($_order);
+            $order->processOrder($_order, $quote);
         }
         catch(Exception $e)
         {

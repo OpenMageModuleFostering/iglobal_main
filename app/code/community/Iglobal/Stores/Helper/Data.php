@@ -2,110 +2,6 @@
 
 class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
 {
-    protected static $_i = 1;
-    
-    public function showHiddenProductFields($item)
-    {
-        $sku = $item->getProduct()->getTypeId() == 'bundle' ? substr($item->getSku(), strpos($item->getSku(), '-')+1) : $item->getSku();
-        $id = $item->getProductId();
-        $price = $item->getPrice();
-        // This is because Magento fails to load the custom attributes on this php template, hence we have to go back to the DB.
-        $weight = "";
-        $length = "";
-        $width = "";
-        $height = "";
-
-        try {
-
-            $allItemData = Mage::getModel('catalog/product')->load($item['product_id']);
-            try {
-                $weightUnits = "";
-                if (!empty($allItemData['ig_weight_units'])) {
-                    $weightUnits = $allItemData->getAttributeText('ig_weight_units');
-                }
-            } catch (Exception $e) {
-                $weightUnits = "";
-            }
-            try {
-                $weight = "";
-                if (!empty($allItemData['ig_weight'])) {
-                    $weight = $allItemData->getData('ig_weight');
-                }
-                if (!empty($weight)) {
-                    if ($weightUnits=="kg") {
-                        $weight = round(floatval($weight) / 0.453592, 2);
-                    } else if ($weightUnits=="oz") {
-                        $weight = round(floatval($weight) / 16, 2);
-                    } else if ($weightUnits=="g") {
-                        $weight = round(floatval($weight) / 453.592, 2);
-                    } else {//Default is lbs
-                        $weight = round(floatval($weight), 2);
-                    }
-                } else {
-                    $weight = "";
-                }
-            } catch(Exception $e) {
-                $weight = "";
-            }
-            try {
-                $dimUnits = "";
-                if (!empty($allItemData['ig_dimension_units'])) {
-                    $dimUnits = $allItemData->getAttributeText('ig_dimension_units');
-                }
-            } catch (Exception $e) {
-                $dimUnits = "";
-            }
-            try {
-                $length = "";
-                if (!empty($allItemData['ig_length'])) {
-                    $length = $allItemData->getData('ig_length');
-                }
-                $width = "";
-                if (!empty($allItemData['ig_width'])) {
-                    $width = $allItemData->getData('ig_width');
-                }
-                $height = "";
-                if (!empty($allItemData['ig_height'])) {
-                    $height = $allItemData->getData('ig_height');
-                }
-                if (!empty($length) && !empty($width) && !empty($height)) {
-                    if ($dimUnits=="cm") {
-                        $length = ceil(floatval($length) / 2.54);
-                        $width = ceil(floatval($width) / 2.54);
-                        $height = ceil(floatval($height) / 2.54);
-                    } else {//Default is inches
-                        $length = ceil(floatval($length));
-                        $width = ceil(floatval($width));
-                        $height = ceil(floatval($height));
-                    }
-                } else {
-                    $length = "";
-                    $width = "";
-                    $height = "";
-                }
-            } catch(Exception $e) {
-                $length = "";
-                $width = "";
-                $height = "";
-            }
-        } catch (Exception $outerE) {
-
-        }
-
-        echo "<div class='ig_itemAttributes' style='display:none;'>";
-        echo "<span class='ig_itemProductId'>".$id."</span>";
-        echo "<span class='ig_itemSku'>".$sku."</span>";
-        echo "<span class='ig_itemPrice'>".$price."</span>";
-        echo "<span class='ig_itemWeight'>".$weight."</span>";
-        echo "<span class='ig_itemLength'>".$length."</span>";
-        echo "<span class='ig_itemWidth'>".$width."</span>";
-        echo "<span class='ig_itemHeight'>".$height."</span>";
-        echo "</div>";
-
-        self::$_i++;
-    }
-
-	//stuff for jquery observer
 	/**
      * Path for config.
      */
@@ -125,6 +21,70 @@ class Iglobal_Stores_Helper_Data extends Mage_Core_Helper_Abstract
         'jquery.js',
         'jquery.noconflict.js',
     );
+
+    public function units2lbs($value, $unit='lbs')
+    {
+        $convert = array('kg' => 0.453592, 'oz' => 16, 'g' => 453.592, 'lbs' => 1, '' => 1);
+        $value = round(floatval($value) / $convert[$unit], 2);
+        if($value){
+            return $value;
+        }
+        return null;
+    }
+
+    public function dim2inch($value, $dim='in')
+    {
+        $convert = array('cm' => 2.54, 'in' => 1, '' => 1);
+        $value = ceil(floatval($value) / $convert[$dim]);
+        if($value){
+            return $value;
+        }
+        return null;
+    }
+
+    public function getDimensions($product, $item)
+    {
+        $dim = $product->getIgDemesionUnits();
+        $weight = $product->getIgWeight();
+        if (empty($weight))
+        {
+            $weight = $item->getWeight();
+        }
+        $dimensions = array(
+            'weight' => $this->units2lbs($weight, $product->getIgWeightUnits()),
+            'length' => $this->dim2inch($product->getIgLength(), $dim),
+            'width'  => $this->dim2inch($product->getIgWidth(), $dim),
+            'height' => $this->dim2inch($product->getIgHeight(), $dim),
+        );
+        return $dimensions;
+    }
+
+    public function getItemDetails($item)
+    {
+        $product = $item->getProduct();
+
+        //get options on the items
+        $options = $product->getTypeInstance(true)->getOrderOptions($product);
+        $optionList = "";
+        if ($options && isset($options["options"])) {
+            $optionList = "|";
+            foreach ($options["options"] as $option) { //todo: add loops for $options[additional_options] and $options[attributes_info] to get all possible options
+                $optionList = $optionList . $option["label"] . ':"' . $option["value"] . '"|';
+            }
+        }
+
+        return array(
+            'productId'   => $product->getId(),
+            'sku'         => $product->getSku(),
+            'description' => $product->getName(),
+            'unitPrice'   => $item->getPrice(),
+            'quantity'    => $item->getQty(),
+            'itemURL' => $product->getProductUrl(),
+            'imageURL' => str_replace("http:", "https:", Mage::helper('catalog/image')->init($product, 'thumbnail')),
+            'itemDescriptionLong' => $optionList,
+        ) + $this->getDimensions($product, $item);
+
+    }
 
     /**
      * Check enabled.
