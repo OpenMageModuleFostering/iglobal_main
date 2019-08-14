@@ -4,8 +4,23 @@ $installer = $this;
 
 // This whole /sql setup idea is the most awesome way to make updates and new tables in the DB
 $installer->startSetup();
-$installer->run('ALTER TABLE `sales_flat_order` ADD `international_order` BOOLEAN NOT NULL DEFAULT 0');
-$installer->run('ALTER TABLE `sales_flat_order` ADD `ig_order_number` VARCHAR( 15 ) NULL DEFAULT NULL , ADD INDEX ( `ig_order_number` )');
+//$installer->run('ALTER TABLE `sales_flat_order` ADD `international_order` BOOLEAN NOT NULL DEFAULT 0');
+
+$installer->getConnection()
+    ->addColumn($installer->getTable('sales_flat_order'),
+        'international_order', "BOOLEAN NOT NULL DEFAULT 0" 
+
+    );
+$installer->getConnection()    
+    ->addColumn($installer->getTable('sales_flat_order'),
+        'ig_order_number',  "VARCHAR( 15 ) NULL DEFAULT NULL , ADD INDEX ( `ig_order_number` )" 
+
+    );
+
+
+//$installer->run('ALTER TABLE `sales_flat_order` ADD `ig_order_number` VARCHAR( 15 ) NULL DEFAULT NULL , ADD INDEX ( `ig_order_number` )');
+
+
 $installer->createAttribute('iGlobal Length','ig_length', 'text');
 $installer->createAttribute('iGlobal Width', 'ig_width', 'text');
 $installer->createAttribute('iGlobal Height', 'ig_height', 'text');

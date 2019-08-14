@@ -8,16 +8,35 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
         $_order = $this->getRequest()->getParam('orderId', null);
         try
         {
+		/*
+		Mage::log('in the try', null, 'iglobal.log');
 		
-			//Mage::log('in the try', null, 'iglobal.log');
+		//try and log the whole trace to see what is calling this
+		 Mage::log(' ******* Entered the controller.  Begin backtrace: *******', null, 'mattscustom.log');
+		 foreach(debug_backtrace() as $key=>$info)
+		 {
+		     Mage::Log("#" . $key . 
+		     " Called " . 
+		     $info['function'] .
+		     " in " .
+		     $info['file'] .
+		     " on line " .
+		     $info['line'], null, 'mattscustom.log');         
+		 }
+		*/
 			
             $quote = Mage::getSingleton('checkout/session')->getQuote()->setStoreId(Mage::app()->getStore()->getId());//if more than one store, then this should be set dynamically
 		$table = "sales_flat_order"; 
 		$tableName = Mage::getSingleton("core/resource")->getTableName($table); 
 		$existsQuery = "SELECT `entity_id` FROM `" . $tableName. "` WHERE `ig_order_number` = '{$_order}'";
+		//Mage::log('Exists Query: ' . $existsQuery, null, 'mattscustom.log');
             $orderExists = Mage::getSingleton('core/resource')->getConnection('core_read')->fetchRow($existsQuery);
-
+		//Mage::log('Order Exists: ' . $orderExists, null, 'mattscustom.log');
+		
             if(!$_order || $orderExists) header('Location: /');
+
+	     //log that we passed the location change
+	    // Mage::log('**** We made it past the the redirect: $_order and $orderExist are true ****', null, 'mattscustom.log');
 
             $rest = Mage::getModel('stores/rest_order');
             $data = $rest->getOrder($_order);
@@ -25,7 +44,7 @@ class Iglobal_Stores_SuccessController extends Mage_Core_Controller_Front_Action
 
 		$quote->setCustomerEmail($data['email']);
 		//set ddp
-		$quote->setFeeAmount($data['dutyTaxesTotal']); 
+		$quote->setFeeAmount($data['dutyTaxesTotal']); //turn this back on to get the fee stff working again
 
             $_name = explode(' ', $data['name'], 2);
 	     if ($data['testOrder'] == "true") {
