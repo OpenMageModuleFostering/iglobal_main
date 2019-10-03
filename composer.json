@@ -1,16 +1,19 @@
 {
-    "name": "OpenMageModuleFostering/Iglobal_Main",
+    "name": "OpenMageModuleFostering\/Iglobal_Main",
     "type": "magento-module",
     "license": "OSL",
     "homepage": "",
     "description": "Leverage iGlobal Stores' technology for international eCommerce",
     "authors": [
-    {
-        "name": "Brian Olsen",
-        "email": "brian@iglobalstores.com"
-    }
-],
+        {
+            "name": "Brian Olsen",
+            "email": "brian@iglobalstores.com"
+        }
+    ],
     "suggest": {
-        "magento-hackathon/magento-composer-installer": "*"
-    }
+        "magento-hackathon\/magento-composer-installer": "*"
+    },
+    "keywords": [
+        "openmage-module"
+    ]
 }
