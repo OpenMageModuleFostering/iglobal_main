@@ -1,7 +1,7 @@
 {
-    "name": "OpenMageModuleFostering\/Iglobal_Main",
+    "name": "openmage-module-fostering\/iglobal_main",
     "type": "magento-module",
-    "license": "OSL",
+    "license": "OSL-3.0",
     "homepage": "",
     "description": "Leverage iGlobal Stores' technology for international eCommerce",
     "authors": [
